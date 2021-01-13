@@ -2,6 +2,11 @@ from django.contrib import admin
 from .models import Diagnosis, Patient, Treatment
 
 
+class TreatmentInline(admin.TabularInline):
+    model = Treatment
+    extra = 0
+
+
 @admin.register(Diagnosis)
 class DiagnosesAdmin(admin.ModelAdmin):
     pass
@@ -9,9 +14,13 @@ class DiagnosesAdmin(admin.ModelAdmin):
 
 @admin.register(Patient)
 class PatientAdmin(admin.ModelAdmin):
-    pass
+    inlines = [TreatmentInline]
 
 
 @admin.register(Treatment)
 class Treatment(admin.ModelAdmin):
-    pass
+    list_display = ["admin_list_item_image", "patient"]
+
+
+admin.site.site_header = 'Admin-panel'
+admin.site.index_title = 'Databases'
