@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .forms import *
+from .models import Patient, Treatment, Diagnosis
 
 
 def test_form(request):
@@ -8,7 +9,7 @@ def test_form(request):
 
 
 def success(request):
-    return 'success!'
+    return render(request, 'success.html')
 
 
 def treatment_form_view(request):
@@ -16,6 +17,27 @@ def treatment_form_view(request):
         form = TreatmentForm(request.POST, request.FILES)
 
         if form.is_valid():
+            patient = Patient()
+            treatment = Treatment()
+
+            patient.full_name = form.cleaned_data['full_name']
+            patient.age = form.cleaned_data['age']
+
+            treatment.conscious_level = form.cleaned_data['conscious_level']
+            treatment.general_state = form.cleaned_data['general_state']
+            treatment.hematoma_volume = form.cleaned_data['hematoma_volume']
+            treatment.coagupathy = form.cleaned_data['coagupathy']
+            treatment.takes_anticoagulants = form.cleaned_data['takes_anticoagulants']
+            treatment.time_passed = form.cleaned_data['time_passed']
+            treatment.snapshot = form.cleaned_data['snapshot']
+            patient.save()
+
+            for diagnosis in form.cleaned_data['diagnoses'].iterator():
+                patient.diagnoses.add(diagnosis)
+
+            treatment.save()
+            patient.save()
+
             return HttpResponseRedirect('/success')
 
     else:

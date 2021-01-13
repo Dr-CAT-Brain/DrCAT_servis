@@ -16,7 +16,7 @@ class Patient(models.Model):
     diagnoses = models.ManyToManyField(Diagnosis, null=True)
 
     def __str__(self):
-        return self.name.capitalize()
+        return self.full_name.capitalize()
 
 
 class Treatment(models.Model):
