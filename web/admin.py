@@ -19,7 +19,7 @@ class PatientAdmin(admin.ModelAdmin):
 
 @admin.register(Treatment)
 class Treatment(admin.ModelAdmin):
-    list_display = ["admin_list_item_image", "patient"]
+    list_display = ["get_snapshot_html", "patient"]
 
 
 admin.site.site_header = 'Admin-panel'

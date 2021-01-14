@@ -38,7 +38,7 @@ class Treatment(models.Model):
     def __str__(self):
         return self.patient.full_name
 
-    def admin_list_item_image(self):
+    def get_snapshot_html(self):
         width = 270
         height = 150
         return mark_safe(f'<img src="{settings.MEDIA_URL}{self.snapshot}" width="{width}" height="{height}" />')

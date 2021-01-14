@@ -1,0 +1,53 @@
+{% load widget_tweaks %}
+{% block content %}
+<h1>Book List</h1>
+
+<style>
+  .well{
+  max-width:76%;
+  padding: 30px;
+  margin:auto;
+  margin-bottom: 30px;
+}
+</style>
+
+<form method="get">
+    <div class="well">
+        <h4 style="margin-top: 0">Filter</h4>
+        <div class="row">
+            <div class="form-group col-sm-4 col-md-3">
+                {{ filter.form.hematoma_volume__icontains.label_tag }}
+                {% render_field filter.form.hematoma_volume__icontains class="form-control" %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Search
+        </button>
+    </div>
+</form>
+
+
+{% if filter.qs %}
+<div class="row">
+    {% for treatment in filter.qs %}
+    <div class="form-group col-sm-4 col-md-3">
+        <div style="min-width: 300px;">
+            {% if treatment.snapshot %}
+                {{ treatment.get_snapshot_html }}
+                <br>
+            {% endif %}
+            <div style="">
+                <a href="treatment.get_absolute_url">{{ treatment.time_passed }}</a>
+                <br><br>
+                <p>{{treatment.hematoma_volume}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<p>There are no books in the library.</p>
+{% endif %}
+
+{% endblock %}

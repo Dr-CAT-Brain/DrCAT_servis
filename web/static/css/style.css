@@ -1,0 +1,421 @@
+.indexBackground {
+  background-size: 100%;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+}
+
+.indexBackground h1 {
+  font-family: 'Maler';
+  color: white;
+  font-weight: 400;
+  font-size: 100px;
+  padding-top: 300px;
+  padding-left: 80px;
+}
+
+.indexBackground p {
+  font-family: 'Maler';
+  color: white;
+  font-weight: 400;
+  font-size: 25px;
+  margin-left: 80px;
+  width: 550px;
+  margin-top: 10px;
+}
+
+.indexBackground .button-start {
+  border-radius: 44px;
+  background-color: #de3a3a;
+  width: 150px;
+  height: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-left: 75px;
+  cursor: pointer;
+}
+
+.indexBackground .button-start a {
+  font-family: 'Maler';
+  color: white;
+  font-weight: 400;
+  font-size: 25px;
+  margin: 0 auto;
+}
+
+.indexBackground .button-start a:hover {
+  text-decoration: none;
+  cursor: pointer;
+  color: white;
+}
+
+.btn-start {
+  display: block;
+  width: 100px;
+  height: 40px;
+  font-size: large;
+}
+
+#exampleModal .modal-dialog {
+  max-width: 830px;
+  margin-top: 100px;
+}
+
+#exampleModal .modal-dialog .modal-content {
+  border-radius: 39px;
+  height: 500px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-header {
+  border: none;
+  padding: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-header .row {
+  width: 100%;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-header .row .col-left {
+  border-right: 1.5px double #919191;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-header .row .col-right {
+  padding: 16px 16px 16px 15px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-header button:focus {
+  outline: none;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body {
+  padding: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row {
+  width: 100%;
+  height: 100%;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left {
+  border-right: 1.5px solid #919191;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-main {
+  height: 34px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-left: 5px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-main .col-auto {
+  padding: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-main .col-auto h2 {
+  font-family: 'Montserrat';
+  font-weight: 600;
+  font-size: 19px;
+  margin: 0 10px 0 34px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-main .col-auto img {
+  width: 34px;
+  height: 34px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-1 {
+  height: 34px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  margin-top: 40px;
+  margin-left: 5px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-1 .col-auto {
+  padding: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-1 .col-auto h2 {
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-size: 19px;
+  margin: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-1 .col-auto img {
+  width: 34px;
+  height: 34px;
+  margin-left: 34px;
+  margin-right: 10px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-2 {
+  height: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  margin-top: 40px;
+  margin-left: 5px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-2 .col-auto {
+  padding: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-2 .col-auto h2 {
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-size: 19px;
+  margin: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-2 .col-auto img {
+  width: 30px;
+  height: 30px;
+  margin-left: 40px;
+  margin-right: 10px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-3 {
+  height: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  margin-top: 40px;
+  margin-left: 5px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-3 .col-auto {
+  padding: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-3 .col-auto h2 {
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-size: 19px;
+  margin: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-3 .col-auto img {
+  width: 32px;
+  height: 32px;
+  margin-left: 42px;
+  margin-right: 10px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-4 {
+  height: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  margin-top: 40px;
+  margin-left: 5px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-4 .col-auto {
+  padding: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-4 .col-auto h2 {
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-size: 19px;
+  margin: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .row-4 .col-auto img {
+  width: 30px;
+  height: 30px;
+  margin-left: 43px;
+  margin-right: 10px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .button-without {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .button-without div {
+  width: 260px;
+  height: 50px;
+  border-radius: 44px;
+  background-color: #3583de;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 35px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-left .button-without div a {
+  color: white;
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: none;
+  height: 100%;
+  text-align: center;
+  padding-top: 12px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .col-head {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .col-head h2 {
+  font-family: 'Maler';
+  font-weight: 400;
+  font-size: 50px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right h3 {
+  font-family: 'Montserrat';
+  font-size: 30px;
+  font-weight: 600;
+  margin-left: 30px;
+  margin-top: 10px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .input-email {
+  margin-left: 30px;
+  margin-top: 30px;
+  border-bottom: 2px solid #c6c6c6;
+  padding-bottom: 4px;
+  width: 330px;
+  height: auto;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .input-email .col-auto-left {
+  padding: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .input-email .col input {
+  border: none;
+  font-family: 'Montserrat';
+  font-weight: 500;
+  color: #3b3b3b;
+  width: 270px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .input-email .col input:focus {
+  outline: none;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .input-password {
+  margin-left: 30px;
+  margin-top: 30px;
+  border-bottom: 2px solid #c6c6c6;
+  padding-bottom: 4px;
+  width: 330px;
+  height: auto;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .input-password .col-auto-left {
+  padding: 0;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .input-password .col input {
+  border: none;
+  font-family: 'Montserrat';
+  font-weight: 500;
+  color: #3b3b3b;
+  width: 270px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .input-password .col input:focus {
+  outline: none;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .auth-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .auth-buttons .button-auth {
+  width: 150px;
+  height: 50px;
+  border-radius: 44px;
+  background-color: #de3a3a;
+  font-family: 'Montserrat';
+  font-size: 22px;
+  color: white;
+  border: none;
+  margin-top: 32px;
+  margin-bottom: 15px;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .auth-buttons .button-auth:focus {
+  outline: none;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .auth-buttons .auth-reg {
+  color: #393939;
+  font-family: 'Montserrat';
+  font-weight: 500;
+  font-size: 18px;
+  text-decoration: none;
+  position: relative;
+  -webkit-transition: all 0.6s;
+  transition: all 0.6s;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .auth-buttons .auth-reg:before {
+  content: "";
+  width: 0;
+  height: 0.1em;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  background: #00aeff;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+#exampleModal .modal-dialog .modal-content .modal-body .row .col-right .auth-buttons .auth-reg:hover:before {
+  width: 100%;
+  left: 0;
+  background: #de3a3a;
+}

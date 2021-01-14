@@ -1,12 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views import generic
+from .filters import TreatmentFilter
+
 from .forms import *
 from .models import Patient, Treatment, Diagnosis
 
 
 def index(request):
-    return render(request, "start_page.html")
+    return render(request, "index.html")
 
 
 def test_form(request):
@@ -18,8 +22,8 @@ def cabinet_view(request):
     return render(request, 'cabinet.html')
 
 
-def success(request):
-    return render(request, 'success.html')
+def treatment_report(request):
+    return render(request, 'treatment_report.html')
 
 
 def treatment_form_view(request):
@@ -49,9 +53,24 @@ def treatment_form_view(request):
             treatment.save()
             patient.save()
 
-            return HttpResponseRedirect('/success')
+            return HttpResponseRedirect('report')
 
     else:
         form = TreatmentForm(initial={'name': 'David', })
 
     return render(request, 'form_test.html', {'form': form})
+
+
+class TreatmentListView(generic.ListView):
+    # paginate_by = 10
+    model = Treatment
+    template_name = 'treatment_list.html'
+
+    def get_ordering(self):
+        ordering = self.request.GET.get('ordering', 'hematoma_volume')
+        return ordering
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = TreatmentFilter(self.request.GET, queryset=self.get_queryset())
+        return context

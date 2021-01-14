@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web',
     'widget_tweaks',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'DrCAT.wsgi.application'
+
+LOGIN_REDIRECT_URL = '/cabinet'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -101,6 +104,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "/static/")
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

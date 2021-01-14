@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+{% if user.is_authenticated %}
+    <p>фильтры here</p>
+{% else %}
+    Для использования данной функции необходимо <a href="accounts/login">Войти</a>
+{% endif %}
+</body>
+</html>
