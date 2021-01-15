@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 {% block content %}
-<h1>Book List</h1>
+<h1>Список обращений</h1>
 
 <style>
   .well{
@@ -11,19 +11,23 @@
 }
 </style>
 
+{% if user.is_authenticated %}
+
 <form method="get">
-    <div class="well">
-        <h4 style="margin-top: 0">Filter</h4>
-        <div class="row">
-            <div class="form-group col-sm-4 col-md-3">
-                {{ filter.form.hematoma_volume__icontains.label_tag }}
-                {% render_field filter.form.hematoma_volume__icontains class="form-control" %}
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">
-            <span class="glyphicon glyphicon-search"></span> Search
-        </button>
-    </div>
+    {{ filter.form.as_p }}
+    <input type="submit" value="Найти"/>
+    <!--    <div class="well">-->
+    <!--        <h4 style="margin-top: 0">Filter</h4>-->
+    <!--        <div class="row">-->
+    <!--            <div class="form-group col-sm-4 col-md-3">-->
+    <!--                {{ filter.form.hematoma_volume__icontains.label_tag }}-->
+    <!--                {% render_field filter.form.hematoma_volume__icontains class="form-control" %}-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <button type="submit" class="btn btn-primary">-->
+    <!--            <span class="glyphicon glyphicon-search"></span> Search-->
+    <!--        </button>-->
+    <!--    </div>-->
 </form>
 
 
@@ -33,11 +37,11 @@
     <div class="form-group col-sm-4 col-md-3">
         <div style="min-width: 300px;">
             {% if treatment.snapshot %}
-                {{ treatment.get_snapshot_html }}
-                <br>
+            {{ treatment.get_snapshot_html }}
+            <br>
             {% endif %}
             <div style="">
-                <a href="treatment.get_absolute_url">{{ treatment.time_passed }}</a>
+                <a href="treatment.get_absolute_url">{{ treatment.patient.full_name }}</a>
                 <br><br>
                 <p>{{treatment.hematoma_volume}}</p>
             </div>
@@ -47,7 +51,13 @@
 </div>
 
 {% else %}
-<p>There are no books in the library.</p>
+<p>Ничего не найдено</p>
+{% endif %}
+
+{% else %}
+
+{% include "authentication_need.html" %}
+
 {% endif %}
 
 {% endblock %}

@@ -38,5 +38,5 @@ class TreatmentForm(forms.Form):
 
     time_passed = forms.IntegerField(min_value=0, required=True,
                                      widget=get_placeholder_widget("Время от начала симптомов"))
-
+    is_injure = forms.BooleanField(required=False, initial=False)
     snapshot = forms.ImageField()

@@ -1,21 +1,22 @@
 import django_filters
+from django import forms
 
 from .models import Treatment
 
 
 class TreatmentFilter(django_filters.FilterSet):
-    FILTER_CHOICES = (
-        ('hematoma_volume', 'Объем гематомы (возрастание)'),
-        ('-hematoma_volume', 'Объем гематомы (убывание)'),
-    )
+    conscious_level = django_filters.CharFilter(lookup_expr='iexact')
 
-    ordering = django_filters.ChoiceFilter(label="Order by", choices=FILTER_CHOICES, method="get_order_by")
+    hematoma_volume = django_filters.RangeFilter(label="Объем гематомы")
+    general_state = django_filters.RangeFilter(label="Общее состояние")
+    conscious_level = django_filters.RangeFilter(label="Уровень сознания")
+    time_passed = django_filters.NumberFilter(label="Время после симптомов")
+    coagupathy = django_filters.BooleanFilter(label="Коагуапатия", widget=forms.CheckboxInput)
+    takes_anticoagulants = django_filters.BooleanFilter(label="Принимает антикоагулянты",
+                                                        widget=forms.CheckboxInput)
 
-    def get_order_by(self, queryset, name, value):
-        return queryset.order_by(value)
+    is_injury = django_filters.BooleanFilter(label='Травма', widget=forms.CheckboxInput)
 
     class Meta:
         model = Treatment
-        fields = {
-            'hematoma_volume': ['range'],
-        }
+        fields = {}

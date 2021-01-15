@@ -8,7 +8,7 @@
 {% if user.is_authenticated %}
     <p>фильтры here</p>
 {% else %}
-    Для использования данной функции необходимо <a href="accounts/login">Войти</a>
+    {% include "authentication_need.html" %}
 {% endif %}
 </body>
 </html>

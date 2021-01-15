@@ -2,6 +2,16 @@ from django.db import models
 from django.utils.html import mark_safe
 from django.conf import settings
 
+stroke_types = ['epidural', 'subdural']
+
+
+class StrokeTypes:
+    epidural = 'epidural'
+    subdural = 'subdural'
+    venticular = 'venticular'
+    subaraxnoidal = 'subaraxnoidal'
+    ishemic = 'ishemic'
+
 
 class Diagnosis(models.Model):
     name = models.CharField(max_length=200, null=False)
@@ -32,6 +42,7 @@ class Treatment(models.Model):
 
     time_passed = models.PositiveSmallIntegerField(null=True)
     snapshot = models.ImageField(upload_to='snapshots', null=True)
+    is_injury = models.BooleanField(default=False)
 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
 

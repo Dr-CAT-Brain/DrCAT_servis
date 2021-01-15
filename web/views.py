@@ -44,6 +44,7 @@ def treatment_form_view(request):
             treatment.takes_anticoagulants = form.cleaned_data['takes_anticoagulants']
             treatment.time_passed = form.cleaned_data['time_passed']
             treatment.snapshot = form.cleaned_data['snapshot']
+            treatment.is_injury = form.cleaned_data['is_injure']
             treatment.patient = patient
             patient.save()
 
@@ -72,5 +73,5 @@ class TreatmentListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = TreatmentFilter(self.request.GET, queryset=self.get_queryset())
+        context['filter'] = TreatmentFilter(self.request.GET, queryset=Treatment.objects.all())
         return context

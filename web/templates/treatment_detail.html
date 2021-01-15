@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Обращение детально</title>
+</head>
+<body>
+{% block content %}
+
+{% if user.authenticated %}
+    <h1>Информация о пациенте</h1>
+
+    {{ treatment.patient.full_name }}
+    {{ treatment.patient.age }}
+    <br>
+    <h2>Основная информация:</h2>
+    {{ treatment.hematoma_volume }}
+    {{ treatment.is_injure }}
+{% else %}
+    {% include "authentication_need.html" %}
+{% endif %}
+
+{% end block %}
+</body>
+</html>
