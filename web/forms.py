@@ -20,9 +20,6 @@ class TreatmentForm(forms.Form):
     conscious_level = forms.CharField(min_length=1, max_length=100,
                                       widget=get_placeholder_widget("Уровень сознания"))
 
-    general_state = forms.IntegerField(min_value=0, max_value=6,
-                                       widget=get_placeholder_widget("Общее состояние"))
-
     diagnoses = forms.ModelMultipleChoiceField(
         queryset=Diagnosis.objects.all(),
         widget=forms.CheckboxSelectMultiple,

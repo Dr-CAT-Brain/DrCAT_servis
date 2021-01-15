@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from .filters import TreatmentFilter
@@ -75,3 +76,9 @@ class TreatmentListView(generic.ListView):
         context = super().get_context_data(**kwargs)
         context['filter'] = TreatmentFilter(self.request.GET, queryset=Treatment.objects.all())
         return context
+
+
+class TreatmentsDetailView(generic.DetailView):
+    model = Treatment
+    template_name = "treatment_detail.html"
+

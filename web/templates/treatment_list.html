@@ -41,7 +41,7 @@
             <br>
             {% endif %}
             <div style="">
-                <a href="treatment.get_absolute_url">{{ treatment.patient.full_name }}</a>
+                <a href="{{ treatment.get_absolute_url }}">{{ treatment.patient.full_name }}</a>
                 <br><br>
                 <p>{{treatment.hematoma_volume}}</p>
             </div>

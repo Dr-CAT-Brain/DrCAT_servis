@@ -12,6 +12,7 @@ urlpatterns = [
     path('treatment-list', views.TreatmentListView.as_view(), name='treatment_list'),
     path('cabinet', views.cabinet_view, name='login'),
     path('accounts/', include('django.contrib.auth.urls')),
+    url(r'^treatment/(?P<pk>\d+)$', views.TreatmentsDetailView.as_view(), name='treatment_detail'),
 ]
 
 if settings.DEBUG:

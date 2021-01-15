@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.html import mark_safe
 from django.conf import settings
 
@@ -33,7 +34,6 @@ class Patient(models.Model):
 
 class Treatment(models.Model):
     conscious_level = models.CharField(max_length=100, null=True)
-    general_state = models.PositiveSmallIntegerField(null=True)
 
     hematoma_volume = models.PositiveSmallIntegerField(null=True)
 
@@ -53,3 +53,6 @@ class Treatment(models.Model):
         width = 270
         height = 150
         return mark_safe(f'<img src="{settings.MEDIA_URL}{self.snapshot}" width="{width}" height="{height}" />')
+
+    def get_absolute_url(self):
+        return reverse('treatment_detail', args=[str(self.id)])
