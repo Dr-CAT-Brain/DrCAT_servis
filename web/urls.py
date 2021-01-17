@@ -6,12 +6,12 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('index', views.index, name='index'),
+    path('', include('django.contrib.auth.urls')),
     path('treatment-form', views.treatment_form_view, name='treatment_form'),
     path('report', views.treatment_report, name='treatment_report'),
     path('treatment-list', views.TreatmentListView.as_view(), name='treatment_list'),
     path('cabinet', views.cabinet_view, name='login'),
-    path('accounts/', include('django.contrib.auth.urls')),
     url(r'^treatment/(?P<pk>\d+)$', views.TreatmentsDetailView.as_view(), name='treatment_detail'),
 ]
 

@@ -1,39 +1,75 @@
 from django import forms
-from django.core.exceptions import ValidationError
-from django.core.files.storage import FileSystemStorage
 from django.utils.translation import ugettext_lazy as _
-import datetime
-from .models import Diagnosis
+from .models import Diagnosis, TemporaryContraindications
 
 
 def get_placeholder_widget(name):
     return forms.TextInput(attrs={'placeholder': name})
 
 
+def choice_to_bool(string: str) -> bool:
+    choice_to_bool_dict = {
+        'yes': True,
+        'no': False,
+        'unknown': None
+    }
+
+    return choice_to_bool_dict[string.lower()]
+
+
 class TreatmentForm(forms.Form):
-    full_name = forms.CharField(max_length=100, required=False,
-                                widget=get_placeholder_widget('ФИО'))
+    unknown_placeholder = get_placeholder_widget('Неизвестно')
 
+    full_name = forms.CharField(max_length=100, required=False, label='ФИО пациента',
+                                widget=unknown_placeholder)
     age = forms.IntegerField(max_value=100, min_value=1, required=False,
-                             widget=get_placeholder_widget('Возраст'))
+                             label='Возраст', widget=unknown_placeholder)
 
-    conscious_level = forms.CharField(min_length=1, max_length=100,
-                                      widget=get_placeholder_widget("Уровень сознания"))
+    time_passed = forms.IntegerField(min_value=0, required=False,
+                                     label="Время от начала симптомов (ч)", widget=unknown_placeholder)
+    hematoma_volume = forms.IntegerField(max_value=200, required=False,
+                                         label="Объем гематомы (см³)", widget=unknown_placeholder)
+
+    is_injure = forms.ChoiceField(
+        choices=[(True, 'Да'), (False, 'Нет'), (None, 'Неизвестно')],
+        initial=None,
+        label='Травма',
+        widget=forms.RadioSelect,
+    )
+
+    has_stroke_symptoms = forms.ChoiceField(required=False,
+                                            label='Симптомы инусльта',
+                                            choices=[(True, 'Да'), (False, 'Нет')],
+                                            initial='yes',
+                                            widget=forms.RadioSelect)
+
+    neurological_deficit = forms.ChoiceField(
+        choices=[(1, 'I'), (2, 'II'), (3, 'III'), (4, 'IV')],
+        initial=1,
+        widget=forms.RadioSelect,
+        label='Неврологический дефицит*'
+    )
+
+    conscious_level = forms.ChoiceField(
+        choices=[(15, '15 Ясное'), (14, '14-13 Умеренное оглушение'), (12, '12-11 Глубокое оглушение'),
+                 (9, '10-8 Сопор'), (7, 'Умеренная кома'), (5, 'Глубокая кома'), (3, 'Терминальная кома')],
+        initial=15,
+        widget=forms.RadioSelect,
+        label='Неврологический дефицит*'
+    )
 
     diagnoses = forms.ModelMultipleChoiceField(
         queryset=Diagnosis.objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        label="Загрузите изображение",
+        label="Сопутствующие паталогии",
         required=False,
     )
 
-    hematoma_volume = forms.IntegerField(max_value=200, required=False,
-                                         widget=get_placeholder_widget("Объем внутримозговой гематомы"))
+    temporary_contraindications = forms.ModelMultipleChoiceField(
+        queryset=TemporaryContraindications.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label="Иные противопоказания",
+        required=False,
+    )
 
-    coagupathy = forms.BooleanField(required=False, initial=False)
-    takes_anticoagulants = forms.BooleanField(required=False, initial=False)
-
-    time_passed = forms.IntegerField(min_value=0, required=True,
-                                     widget=get_placeholder_widget("Время от начала симптомов"))
-    is_injure = forms.BooleanField(required=False, initial=False)
-    snapshot = forms.ImageField()
+    snapshot = forms.ImageField(required=False)

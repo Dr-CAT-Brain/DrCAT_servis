@@ -15,7 +15,7 @@ def index(request):
 
 
 def test_form(request):
-    return render(request, 'form_test.html')
+    return render(request, 'treatment_form.html')
 
 
 @login_required
@@ -37,30 +37,34 @@ def treatment_form_view(request):
 
             patient.full_name = form.cleaned_data['full_name']
             patient.age = form.cleaned_data['age']
-
-            treatment.conscious_level = form.cleaned_data['conscious_level']
-            treatment.general_state = form.cleaned_data['general_state']
-            treatment.hematoma_volume = form.cleaned_data['hematoma_volume']
-            treatment.coagupathy = form.cleaned_data['coagupathy']
-            treatment.takes_anticoagulants = form.cleaned_data['takes_anticoagulants']
-            treatment.time_passed = form.cleaned_data['time_passed']
-            treatment.snapshot = form.cleaned_data['snapshot']
-            treatment.is_injury = form.cleaned_data['is_injure']
-            treatment.patient = patient
             patient.save()
+
+            treatment.time_passed = form.cleaned_data['time_passed']
+            treatment.hematoma_volume = form.cleaned_data['hematoma_volume']
+
+            treatment.is_injury = form.cleaned_data['is_injure']
+            treatment.has_stroke_symptoms = form.cleaned_data['has_stroke_symptoms']
+
+            treatment.neurological_deficit = form.cleaned_data['neurological_deficit']
+            treatment.conscious_level = form.cleaned_data['conscious_level']
+
+            treatment.snapshot = form.cleaned_data['snapshot']
+            treatment.patient = patient
+            treatment.save()
 
             for diagnosis in form.cleaned_data['diagnoses'].iterator():
                 patient.diagnoses.add(diagnosis)
 
+            for contraindications in form.cleaned_data['temporary_contraindications'].iterator():
+                treatment.temporary_contraindications.add(contraindications)
+
             treatment.save()
             patient.save()
-
             return HttpResponseRedirect('report')
-
     else:
         form = TreatmentForm(initial={'name': 'David', })
 
-    return render(request, 'form_test.html', {'form': form})
+    return render(request, 'treatment_form.html', {'form': form})
 
 
 class TreatmentListView(generic.ListView):
@@ -81,4 +85,3 @@ class TreatmentListView(generic.ListView):
 class TreatmentsDetailView(generic.DetailView):
     model = Treatment
     template_name = "treatment_detail.html"
-

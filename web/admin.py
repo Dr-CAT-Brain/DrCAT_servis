@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Diagnosis, Patient, Treatment
+from .models import *
 
 
 class TreatmentInline(admin.TabularInline):
@@ -20,6 +20,11 @@ class PatientAdmin(admin.ModelAdmin):
 @admin.register(Treatment)
 class Treatment(admin.ModelAdmin):
     list_display = ["get_snapshot_html", "patient"]
+
+
+@admin.register(TemporaryContraindications)
+class TemporaryContraindications(admin.ModelAdmin):
+    pass
 
 
 admin.site.site_header = 'Admin-panel'

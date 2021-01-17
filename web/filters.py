@@ -5,12 +5,14 @@ from .models import Treatment
 
 
 class TreatmentFilter(django_filters.FilterSet):
-    conscious_level = django_filters.CharFilter(lookup_expr='iexact')
+    conscious_level = django_filters.CharFilter(lookup_expr='iexact', label='Уровень сознания')
+    neurological_deficit = django_filters.RangeFilter(label='Неврологический дефицит')
 
     hematoma_volume = django_filters.RangeFilter(label="Объем гематомы")
     general_state = django_filters.RangeFilter(label="Общее состояние")
     conscious_level = django_filters.RangeFilter(label="Уровень сознания")
-    time_passed = django_filters.NumberFilter(label="Время после симптомов")
+    time_passed = django_filters.RangeFilter(label="Время после симптомов")
+
     coagupathy = django_filters.BooleanFilter(label="Коагуапатия", widget=forms.CheckboxInput)
     takes_anticoagulants = django_filters.BooleanFilter(label="Принимает антикоагулянты",
                                                         widget=forms.CheckboxInput)
