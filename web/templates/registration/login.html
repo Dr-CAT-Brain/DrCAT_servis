@@ -8,6 +8,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Dr.Cat</title>
+    <meta id="csrf_token" data-content="{{ csrf_token }}">
 </head>
 
 <style>
@@ -18,6 +19,7 @@
   font-style: normal;
   font-weight: normal;
 }
+
 
 
 
@@ -168,45 +170,7 @@
 {% load static %}
 <script src="{% static 'js/indexEvents.js' %}"></script>
 
-<script>
-function login() {
-    var username = $.trim($('#id_username').val());
-    var pwd = $.trim($('#id_password').val());
-    var stayloggedIn = true;
-    $.ajax({
-        url: "api/login/",
-        type: "post",
-        data: {
-            username: username,
-            pwd: pwd,
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            stayloggedIn: stayloggedIn,
-        }
-    }).done(function(data) {
-        alert(data);
-    });
-}
-
-$('#login_btn').click(function() {
-  var username = $.trim($('#id_username').val());
-    var pwd = $.trim($('#id_password').val());
-    var stayloggedIn = true;
-    $.ajax({
-        url: "api/login/",
-        type: "post",
-        data: {
-            username: username,
-            pwd: pwd,
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            stayloggedIn: stayloggedIn,
-        }
-    }).done(function(data) {
-        if (data == 'Success'){
-            window.location.href = window.location.href.replace('login', 'cabinet');
-        }
-        alert(data);
-    });
-});
-</script>
+{% load static %}
+<script src="{% static 'js/login.js' %}"></script>
 
 </html>
