@@ -11,8 +11,9 @@ urlpatterns = [
     path('treatment-form', views.treatment_form_view, name='treatment_form'),
     path('report', views.treatment_report, name='treatment_report'),
     path('treatment-list', views.TreatmentListView.as_view(), name='treatment_list'),
-    path('cabinet', views.cabinet_view, name='login'),
+    path('cabinet/', views.cabinet_view, name='login'),
     url(r'^treatment/(?P<pk>\d+)$', views.TreatmentsDetailView.as_view(), name='treatment_detail'),
+    url('api/login', views.api_login)
 ]
 
 if settings.DEBUG:

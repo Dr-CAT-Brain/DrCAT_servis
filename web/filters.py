@@ -1,7 +1,7 @@
 import django_filters
 from django import forms
 
-from .models import Treatment
+from .models import Treatment, Diagnosis, TemporaryContraindications
 
 
 class TreatmentFilter(django_filters.FilterSet):
@@ -9,15 +9,23 @@ class TreatmentFilter(django_filters.FilterSet):
     neurological_deficit = django_filters.RangeFilter(label='Неврологический дефицит')
 
     hematoma_volume = django_filters.RangeFilter(label="Объем гематомы")
-    general_state = django_filters.RangeFilter(label="Общее состояние")
     conscious_level = django_filters.RangeFilter(label="Уровень сознания")
     time_passed = django_filters.RangeFilter(label="Время после симптомов")
 
-    coagupathy = django_filters.BooleanFilter(label="Коагуапатия", widget=forms.CheckboxInput)
-    takes_anticoagulants = django_filters.BooleanFilter(label="Принимает антикоагулянты",
-                                                        widget=forms.CheckboxInput)
+    choices = (
+        (True, "Да"),
+        (False, "Нет"),
+        (None, "Неважно")
+    )
+    is_injury = django_filters.ChoiceFilter(label='Травма', choices=choices,
+                                            widget=forms.RadioSelect, empty_label=None)
+    has_stroke_symptoms = django_filters.ChoiceFilter(label='Симптомы инсульта', choices=choices,
+                                                      widget=forms.RadioSelect, empty_label=None)
 
-    is_injury = django_filters.BooleanFilter(label='Травма', widget=forms.CheckboxInput)
+    temporary_contraindications = django_filters.ModelMultipleChoiceFilter(
+        to_field_name='id',
+        queryset=TemporaryContraindications.objects.all(),
+        label='Иные противопоказания', )
 
     class Meta:
         model = Treatment

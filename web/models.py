@@ -3,16 +3,6 @@ from django.urls import reverse
 from django.utils.html import mark_safe
 from django.conf import settings
 
-stroke_types = ['epidural', 'subdural']
-
-
-class StrokeTypes:
-    epidural = 'epidural'
-    subdural = 'subdural'
-    venticular = 'venticular'
-    subaraxnoidal = 'subaraxnoidal'
-    ishemic = 'ishemic'
-
 
 class Diagnosis(models.Model):
     name = models.CharField(max_length=200, null=False)

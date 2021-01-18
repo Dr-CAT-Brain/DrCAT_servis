@@ -23,7 +23,7 @@ function startHandler(event) {
   }
 }
 
-let authButton = document.querySelector(".auth-buttons > input");
+let authButton = document.querySelector(".auth-buttons > button");
 authButton.onmouseover = authButton.onmouseout = authHandler;
 
 function authHandler(event) {

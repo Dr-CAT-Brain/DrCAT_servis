@@ -1,6 +1,10 @@
+import json
+
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views import generic
@@ -85,3 +89,24 @@ class TreatmentListView(generic.ListView):
 class TreatmentsDetailView(generic.DetailView):
     model = Treatment
     template_name = "treatment_detail.html"
+
+
+def api_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('pwd')
+        stay_logged_in = request.POST.get('stayloggedIn')
+
+        if stay_logged_in != "true":
+            request.session.set_expiry(0)
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponse('Success')
+            else:
+                return HttpResponse('inactive user')
+        else:
+            return HttpResponse('Bad request')
