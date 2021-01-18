@@ -11,22 +11,15 @@
     <meta id="csrf_token" data-content="{{ csrf_token }}">
 </head>
 
+<!--Load font-->
 <style>
-    @font-face {
+@font-face {
   font-family: "Maler";
   {% load static %}
   src: url({% static "/assets/fonts/Maler.ttf" %}) format("truetype");
   font-style: normal;
   font-weight: normal;
 }
-
-
-
-
-
-
-
-
 </style>
 
 {% load static %}
@@ -167,6 +160,7 @@
         crossorigin="anonymous"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+
 {% load static %}
 <script src="{% static 'js/indexEvents.js' %}"></script>
 

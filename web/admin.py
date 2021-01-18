@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import *
 
 
@@ -24,6 +25,11 @@ class Treatment(admin.ModelAdmin):
 
 @admin.register(TemporaryContraindications)
 class TemporaryContraindications(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Doctor)
+class Doctor(admin.ModelAdmin):
     pass
 
 

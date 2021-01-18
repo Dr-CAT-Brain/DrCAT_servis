@@ -1,30 +1,33 @@
-import json
-
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import generic
 from .filters import TreatmentFilter
 
 from .forms import *
-from .models import Patient, Treatment, Diagnosis
-
-
-def index(request):
-    return render(request, "index.html")
-
-
-def test_form(request):
-    return render(request, 'treatment_form.html')
+from .models import Patient, Treatment, Doctor
 
 
 @login_required
 def cabinet_view(request):
-    return render(request, 'cabinet.html')
+    doctor = request.user.doctor
+    data = {
+        'full_name': doctor.full_name,
+        'qualification': doctor.qualification,
+        'work_place': doctor.work_place,
+        'education': doctor.education,
+        'experience': doctor.experience,
+        'contacts': doctor.contacts
+    }
+    form = PersonalData(data)
+
+    return render(request, 'cabinet.html',
+                  context={'header': 'Личный кабинет',
+                           'doctor': request.user.doctor,
+                           'form': form
+                           })
 
 
 def treatment_report(request):
@@ -54,6 +57,9 @@ def treatment_form_view(request):
 
             treatment.snapshot = form.cleaned_data['snapshot']
             treatment.patient = patient
+
+            if request.user:
+                treatment.doctor = request.user.doctor
             treatment.save()
 
             for diagnosis in form.cleaned_data['diagnoses'].iterator():
@@ -66,7 +72,7 @@ def treatment_form_view(request):
             patient.save()
             return HttpResponseRedirect('report')
     else:
-        form = TreatmentForm(initial={'name': 'David', })
+        form = TreatmentForm()
 
     return render(request, 'treatment_form.html', {'form': form})
 
@@ -83,6 +89,22 @@ class TreatmentListView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filter'] = TreatmentFilter(self.request.GET, queryset=Treatment.objects.all())
+        context['header'] = 'Библиотека снимков'
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class TreatmentHistoryView(generic.ListView):
+    model = Treatment
+    template_name = 'treatment_list.html'
+
+    def get_queryset(self):
+        return Treatment.objects.filter(doctor=self.request.user.doctor).all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter'] = TreatmentFilter(self.request.GET, queryset=self.get_queryset())
+        context['header'] = 'История'
         return context
 
 

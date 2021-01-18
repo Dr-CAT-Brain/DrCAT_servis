@@ -1,0 +1,23 @@
+#id_profile_image{
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+}
+
+#id_personal_info{
+    background-color: red;
+}
+
+#id_edit_form{
+    background-color: gray;
+}
+
+.container{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	align-content: center;
+}
+

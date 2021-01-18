@@ -26,7 +26,7 @@ class TreatmentForm(forms.Form):
                              label='Возраст', widget=unknown_placeholder)
 
     time_passed = forms.IntegerField(min_value=0, required=False,
-                                     label="Время от начала симптомов (ч)", widget=unknown_placeholder)
+                                     label="Время начала симптоматики (ч)", widget=unknown_placeholder)
     hematoma_volume = forms.IntegerField(max_value=200, required=False,
                                          label="Объем гематомы (см³)", widget=unknown_placeholder)
 
@@ -34,13 +34,14 @@ class TreatmentForm(forms.Form):
         choices=[(True, 'Да'), (False, 'Нет'), (None, 'Неизвестно')],
         initial=None,
         label='Травма',
+        required=False,
         widget=forms.RadioSelect,
     )
 
     has_stroke_symptoms = forms.ChoiceField(required=False,
                                             label='Симптомы инусльта',
                                             choices=[(True, 'Да'), (False, 'Нет')],
-                                            initial='yes',
+                                            initial=True,
                                             widget=forms.RadioSelect)
 
     neurological_deficit = forms.ChoiceField(
@@ -73,3 +74,15 @@ class TreatmentForm(forms.Form):
     )
 
     snapshot = forms.ImageField(required=False)
+
+
+class PersonalData(forms.Form):
+    full_name = forms.CharField(max_length=100, required=True, label='ФИО')
+    qualification = forms.CharField(max_length=100, required=False, label='Квалификация')
+    experience = forms.IntegerField(min_value=0, max_value=70, required=False, label='Стаж')
+    work_place = forms.CharField(max_length=100, required=False, label='Место работы')
+    education = forms.CharField(max_length=100, required=False, label='Образование')
+    contacts = forms.CharField(max_length=100, required=False, label='Контакты')
+    image = forms.ImageField(required=False, allow_empty_file=False)
+
+

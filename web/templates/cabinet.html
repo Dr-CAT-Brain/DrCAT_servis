@@ -1,13 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Кабинет</title>
-</head>
-<body>
-    <h1>Кабинет</h1>
-    <ul>
-        <li><a href="treatment-list"> Список случаев </a></li>
-    </ul>
-</body>
-</html>
+{% extends "cabinet_generic.html" %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/cabinet.css' %}">
+<div class="container">
+  <image src="{{ doctor.photo.url }}" id="id_profile_image"></image>
+  <div id="id_personal_info">
+    {{ doctor.full_name }}
+    <br>
+    {{ doctor.qualification }}
+    <br>
+    {{ doctor.work_place }}
+    <br>
+    {{ doctor.education }}
+    <br>
+    {{ doctor.experience }}
+    <br>
+    {{ doctor.contacts }}
+  </div>
+
+  <form action="" method="post" enctype="multipart/form-data" id="id_edit_form">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Сохранить"/>
+    <button type="button">Отмена</button>
+  </form>
+</div>
+
+{% endblock %}
+
