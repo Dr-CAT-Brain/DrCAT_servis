@@ -18,7 +18,8 @@
         <div id="progress-bar" class="progress-bar"></div>
     </div>
 </div>
-<form action="#">
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <!--screen 1-->
     <div id="screen1">
         <div class="row col-one">
@@ -284,7 +285,7 @@
                 <p>Выбрать файл</p>
             </div>
         </label>
-        {{ form.snapshot }}
+
 
         <div id="file-list">
             <div class="file row">
@@ -302,6 +303,9 @@
                 </div>
             </div>
         </div>
+        {{ form.snapshot }}
+        {{ form.snapshot.label_tag }}
+        {{ form.snapshot.error }}
 
         <div class="footer">
             <div class="col-1">
@@ -309,11 +313,31 @@
                     <p>Назад</p>
                 </div>
             </div>
+            <div class="col-2">
+
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+
             <div id="btnNext3" class="col-2">
                 <label for="submitBtn">
                     <p>Завершить</p>
                 </label>
-                <input id="submitBtn" type="submit">
+                <input id="submitBtn" type="submit" value="Submit"/>
+<!--                <input id="submitBtn" type="submit">-->
             </div>
         </div>
     </div>

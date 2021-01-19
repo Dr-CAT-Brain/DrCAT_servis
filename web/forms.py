@@ -76,7 +76,12 @@ class TreatmentForm(forms.Form):
         required=False,
     )
 
-    snapshot = forms.ImageField(required=False)
+    snapshot = forms.ImageField(required=True)
+
+    def clean_snapshot(self):
+        data = self.cleaned_data['snapshot']
+        print(data)
+        return data
 
 
 class PersonalData(forms.Form):

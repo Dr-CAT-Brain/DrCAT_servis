@@ -56,6 +56,7 @@ def treatment_form_view(request):
             treatment.conscious_level = form.cleaned_data['conscious_level']
 
             treatment.snapshot = form.cleaned_data['snapshot']
+            form.clean_snapshot()
             treatment.patient = patient
 
             if request.user:

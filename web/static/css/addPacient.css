@@ -115,6 +115,10 @@ label {
   margin-left: calc(5px * 1);
 }
 
+#screen1 .next-1 label {
+  margin-bottom: 0;
+}
+
 #screen1 .next-2 {
   margin-left: calc(46px * 1);
 }
@@ -163,8 +167,10 @@ label {
   left: 0;
   -webkit-transition-duration: 0.5s;
           transition-duration: 0.5s;
-  -webkit-transition-property: border-top-left-radius, border-bottom-left-radius, border-top-right-radius, border-top-left-radius, left;
-  transition-property: border-top-left-radius, border-bottom-left-radius, border-top-right-radius, border-top-left-radius, left;
+  -webkit-transition-property: border-top-left-radius, border-bottom-left-radius, border-top-right-radius,
+ border-top-left-radius, left;
+  transition-property: border-top-left-radius, border-bottom-left-radius, border-top-right-radius,
+ border-top-left-radius, left;
 }
 
 #screen1 .condition .radio .col-main {
@@ -224,8 +230,10 @@ label {
   left: 0;
   -webkit-transition-duration: 0.5s;
           transition-duration: 0.5s;
-  -webkit-transition-property: border-top-left-radius, border-bottom-left-radius, border-top-right-radius, border-top-left-radius, left;
-  transition-property: border-top-left-radius, border-bottom-left-radius, border-top-right-radius, border-top-left-radius, left;
+  -webkit-transition-property: border-top-left-radius, border-bottom-left-radius, border-top-right-radius,
+ border-top-left-radius, left;
+  transition-property: border-top-left-radius, border-bottom-left-radius, border-top-right-radius,
+ border-top-left-radius, left;
 }
 
 #screen1 .condition .radio2 .col-main {
