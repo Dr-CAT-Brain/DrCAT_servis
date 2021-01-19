@@ -1,31 +1,47 @@
-{% extends "cabinet_generic.html" %}
-{% block content %}
+{% extends "cabinet_generic.html" %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/cabinet.css' %}" />
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/cabinet.css' %}">
+<!--JQuery-->
+<script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+
+<script rel="stylesheet" src="{% static 'js/cabinet.js' %}"></script>
+
 <div class="container">
   <image src="{{ doctor.photo.url }}" id="id_profile_image"></image>
   <div id="id_personal_info">
-    {{ doctor.full_name }}
-    <br>
-    {{ doctor.qualification }}
-    <br>
-    {{ doctor.work_place }}
-    <br>
-    {{ doctor.education }}
-    <br>
-    {{ doctor.experience }}
-    <br>
-    {{ doctor.contacts }}
+    <h2>{{ doctor.full_name }}</h2>
+    <h3>{{ doctor.qualification }}</h3>
+    <br />
+    <p>Место работы: {{ doctor.work_place }}</p> 
+    <br />
+    <p>Образование: {{ doctor.education }}</p> 
+    <br />
+    <p>Стаж: {{ doctor.experience }}</p>
+    <br />
+    <p>Контакты: {{ doctor.contacts }}</p>
+
+    <button id="id_editing_start">Редактировать</button>
   </div>
 
-  <form action="" method="post" enctype="multipart/form-data" id="id_edit_form">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-    </table>
-    <input type="submit" value="Сохранить"/>
-    <button type="button">Отмена</button>
-  </form>
+  <div id="id_edit_div" style="display: none;">
+    <form
+      action=""
+      method="post"
+      enctype="multipart/form-data"
+      id="id_edit_form"
+    >
+      {% csrf_token %}
+      <table>
+        {{ form.as_table }}
+      </table>
+      <input type="submit" value="Сохранить" />
+      <button id="id_cancel_editing" type="button">Отмена</button>
+      
+    </form>
+  </div>
 </div>
 
 {% endblock %}

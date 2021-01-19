@@ -12,6 +12,18 @@ from .models import Patient, Treatment, Doctor
 
 @login_required
 def cabinet_view(request):
+    if request.method == "POST":
+        form = PersonalData(request.POST, request.FILES)
+        if form.is_valid():
+            doctor = request.user.doctor
+            doctor.full_name = form.cleaned_data['full_name']
+            doctor.qualification = form.cleaned_data['qualification']
+            doctor.experience = form.cleaned_data['experience']
+            doctor.work_place = form.cleaned_data['work_place']
+            doctor.education = form.cleaned_data['education']
+            doctor.contacts = form.cleaned_data['contacts']
+            doctor.image = form.cleaned_data['image']
+            doctor.save()
     doctor = request.user.doctor
     data = {
         'full_name': doctor.full_name,
@@ -22,7 +34,6 @@ def cabinet_view(request):
         'contacts': doctor.contacts
     }
     form = PersonalData(data)
-
     return render(request, 'cabinet.html',
                   context={'header': 'Личный кабинет',
                            'doctor': request.user.doctor,
