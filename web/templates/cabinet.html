@@ -1,5 +1,9 @@
-{% extends "cabinet_generic.html" %} {% block content %} {% load static %}
+{% extends "nav_bar.html" %}
+{% block content %}
+{% load static %}
 <link rel="stylesheet" href="{% static 'css/cabinet.css' %}" />
+
+{% if user.is_authenticated %}
 {% load static %}
 <!--JQuery-->
 <script
@@ -39,10 +43,20 @@
       </table>
       <input type="submit" value="Сохранить" />
       <button id="id_cancel_editing" type="button">Отмена</button>
-      
     </form>
   </div>
 </div>
-
+<ul>
+  {% for treatment in history %}
+    {% if treatment.patient.full_name %}
+      <li>{{ treatment.patient.full_name }}.{{ treatment.hematoma_volume}}</li>
+    {% else %}
+      <li>Имя не указано</li>
+    {% endif %}
+  {% endfor %}
+</ul>
+{% else %}
+{% include 'authentication_need/html' %}
+{% endif %}
 {% endblock %}
 

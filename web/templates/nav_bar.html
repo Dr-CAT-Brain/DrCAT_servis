@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+<title>{% block title %}{% endblock %}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+
+<body>
+  {% block navbar %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/nav_bar.css' %}">
+  <nav class="navbar justify-content-between">
+    <div>
+      <a class="navbar-brand" href="#">
+        {% load static %}
+        <img src="{% static 'assets/svg/logo.svg' %}" class="d-inline-block align-top" alt="Logo">
+        Dr.CAT
+      </a>
+      <a id="buttonBegin" href="#" class="begin d-inline-block">
+        <p>Начать диагностику</p>
+      </a>
+    </div>
+    <nav class="d-flex justify-content-between">
+      {% if user.is_authenticated %}
+        <div class="active">
+          <a class="now" href="{% url 'cabinet' %}">Личный кабинет</a>
+        </div>
+        <a class="activ" href="{% url 'pass' %}">Люди</a>
+        <a class="activ" href="{% url 'treatment_list' %}">Библиотека снимков</a>
+        <a class="activ" href="{% url 'pass' %}">Справка</a>
+      {% else %}
+        <div class="active">
+          <a class="now" href="{% url 'login' %}">Войти</a>
+        </div>
+        <a class="deactive" href="{% url 'login' %}">Люди</a>
+        <a class="deactive" href="{% url 'login' %}">Библиотека снимков</a>
+        <a class="activ" href="{% url 'pass' %}">Справка</a>
+      {% endif %}
+    </nav>
+  </nav>
+  {% endblock %}
+
+  <div class="div">
+    <h1>{{ header }}</h1>
+    {% block content %}{% endblock %}
+  </div>
+</body>
+
+<!--Montserrat font-->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+</html>

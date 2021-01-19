@@ -34,10 +34,14 @@ def cabinet_view(request):
         'contacts': doctor.contacts
     }
     form = PersonalData(data)
+
+    history = Treatment.objects.filter(doctor=doctor).all()
+
     return render(request, 'cabinet.html',
                   context={'header': 'Личный кабинет',
                            'doctor': request.user.doctor,
-                           'form': form
+                           'form': form,
+                           'history': history,
                            })
 
 
@@ -67,7 +71,6 @@ def treatment_form_view(request):
             treatment.conscious_level = form.cleaned_data['conscious_level']
 
             treatment.snapshot = form.cleaned_data['snapshot']
-            form.clean_snapshot()
             treatment.patient = patient
 
             if request.user:

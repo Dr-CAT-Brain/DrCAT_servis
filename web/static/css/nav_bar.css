@@ -1,0 +1,116 @@
+a {
+  font-family: "Montserrat";
+  font-weight: 700;
+}
+
+.navbar {
+  padding-left: 60px;
+  height: 80px;
+}
+
+.navbar a {
+  font-size: 25px;
+  color: black;
+  text-decoration: none;
+}
+
+.navbar a img {
+  width: 30px;
+  height: 30px;
+}
+
+.navbar .begin {
+  width: 206px;
+  height: 45px;
+  border-radius: 10px;
+  display: block;
+  background-color: #004dc1;
+  padding-top: 11px;
+  margin-left: 20px;
+}
+
+.navbar .begin p {
+  color: white;
+  font-size: 16px;
+  text-align: center;
+}
+
+.navbar nav {
+  width: 800px;
+  height: 100%;
+  padding-right: 40px;
+  display: none;
+}
+
+.navbar nav a {
+  font-size: 16px;
+  color: #aaaaaa;
+  text-decoration: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-right: 23px;
+  padding-left: 23px;
+}
+
+.navbar nav a.activ {
+  position: relative;
+  -webkit-transition: all 0.6s;
+  transition: all 0.6s;
+}
+
+.navbar nav a.activ:before {
+  content: "";
+  width: 0;
+  height: 3px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  background: #00aeff;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.navbar nav a.activ:hover:before {
+  width: 100%;
+  left: 0;
+  background: #ff5100;
+}
+
+.navbar nav a.deactive {
+  color: rgba(170, 170, 170, 0.5);
+  cursor: default;
+}
+
+.navbar nav .active {
+  height: 100%;
+  padding-left: 23px;
+  padding-right: 23px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: relative;
+}
+
+.navbar nav .active .now {
+  color: #004dc1;
+}
+
+.navbar nav .active:after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 5px;
+  background-color: #004dc1;
+}
