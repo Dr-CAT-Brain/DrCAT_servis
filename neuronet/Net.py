@@ -1,5 +1,6 @@
 import torch.nn as nn
 
+
 class SimpleCnn(nn.Module):
     def __init__(self, n_classes):
         super().__init__()
@@ -31,7 +32,6 @@ class SimpleCnn(nn.Module):
 
         self.out = nn.Linear(96 * 5 * 5, n_classes)
 
-
     def forward(self, x):
         x = self.conv1(x)
         x = self.conv2(x)
@@ -42,4 +42,3 @@ class SimpleCnn(nn.Module):
         x = x.view(x.size(0), -1)
         logits = self.out(x)
         return logits
-

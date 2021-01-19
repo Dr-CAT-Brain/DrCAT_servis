@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
@@ -5,6 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import generic
 from .filters import TreatmentFilter
+from neuronet.model_predict import predict_picture
 
 from .forms import *
 from .models import Patient, Treatment, Doctor
@@ -85,6 +88,11 @@ def treatment_form_view(request):
 
             treatment.save()
             patient.save()
+            # FIX THIS CRUTCH WITH PATH
+            image_absolute_path = os.path.dirname(os.path.abspath(__file__)).replace('\\web' , '') +\
+                                  treatment.snapshot.url.replace('/', '\\')
+            print(predict_picture(image_absolute_path))
+            ##
             return HttpResponseRedirect('report')
     else:
         form = TreatmentForm()
