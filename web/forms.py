@@ -3,8 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 from .models import Diagnosis, TemporaryContraindications
 
 
-def get_placeholder_widget(name):
-    return forms.TextInput(attrs={'placeholder': name})
+def get_placeholder_widget(name, css_class=None):
+    return forms.TextInput(attrs={'placeholder': name,
+                                  'class': css_class})
 
 
 def choice_to_bool(string: str) -> bool:
@@ -18,17 +19,19 @@ def choice_to_bool(string: str) -> bool:
 
 
 class TreatmentForm(forms.Form):
-    unknown_placeholder = get_placeholder_widget('Неизвестно')
+    unknown_text = 'Неизвестно'
+    unknown_placeholder = get_placeholder_widget(unknown_text)
 
     full_name = forms.CharField(max_length=100, required=False, label='ФИО пациента',
                                 widget=unknown_placeholder)
     age = forms.IntegerField(max_value=100, min_value=1, required=False,
-                             label='Возраст', widget=unknown_placeholder)
+                             label='Возраст', widget=get_placeholder_widget(unknown_text, 'num'))
 
     time_passed = forms.IntegerField(min_value=0, required=False,
                                      label="Время начала симптоматики (ч)", widget=unknown_placeholder)
     hematoma_volume = forms.IntegerField(max_value=200, required=False,
-                                         label="Объем гематомы (см³)", widget=unknown_placeholder)
+                                         label="Объем гематомы (см³)",
+                                         widget=get_placeholder_widget(unknown_text, 'num-2'))
 
     is_injure = forms.ChoiceField(
         choices=[(True, 'Да'), (False, 'Нет'), (None, 'Неизвестно')],
@@ -84,5 +87,3 @@ class PersonalData(forms.Form):
     education = forms.CharField(max_length=100, required=False, label='Образование')
     contacts = forms.CharField(max_length=100, required=False, label='Контакты')
     image = forms.ImageField(required=False, allow_empty_file=False)
-
-

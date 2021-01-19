@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+</head>
+<body>
+
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table>
+        {{ form.full_name }}
+        {{ form.full_name.label_tag }}
+        {{ form.full_name.error }}
+        <br>
+        {{ form.age }}
+        {{ form.age.label_tag }}
+        {{ form.age.error }}
+        <br>
+        {{ form.time_passed }}
+        {{ form.time_passed.label_tag }}
+        {{ form.time_passed.error }}
+        <br>
+        {{ form.hematoma_volume }}
+        {{ form.hematoma_volume.label_tag }}
+        {{ form.hematoma_volume.error }}
+        <br>
+        {{ form.is_injure }}
+        {{ form.is_injure.label_tag }}
+        {{ form.is_injure.error }}
+        <br>
+        {{ form.has_stroke_symptoms }}
+        {{ form.has_stroke_symptoms.label_tag }}
+        {{ form.has_stroke_symptoms.error }}
+        <br>
+        {{ form.neurological_deficit }}
+        {{ form.neurological_deficit.label_tag }}
+        {{ form.neurological_deficit.error }}
+        <br>
+        {{ form.conscious_level }}
+        {{ form.conscious_level.label_tag }}
+        {{ form.conscious_level.error }}
+        <br>
+        {{ form.diagnoses }}
+        {{ form.diagnoses.label_tag }}
+        {{ form.diagnoses.error }}
+        <br>
+        {{ form.temporary_contraindications }}
+        {{ form.temporary_contraindications.label_tag }}
+        {{ form.temporary_contraindications.error }}
+        <br>
+        {{ form.snapshot }}
+        {{ form.snapshot.label_tag }}
+        {{ form.snapshot.error }}
+    </table>
+
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <input type="submit" value="Submit"/>
+</form>
+
+
+<!--{% load widget_tweaks %}-->
+
+<!--<form method="post" novalidate>-->
+<!--    {% csrf_token %}-->
+
+<!--    {% for hidden_field in form.hidden_fields %}-->
+<!--        {{ hidden_field }}-->
+<!--    {% endfor %}-->
+
+<!--    {% if form.non_field_errors %}-->
+<!--        <div class="alert alert-danger" role="alert">-->
+<!--            {% for error in form.non_field_errors %}-->
+<!--                {{ error }}-->
+<!--            {% endfor %}-->
+<!--        </div>-->
+<!--    {% endif %}-->
+
+<!--    {% for field in form.visible_fields %}-->
+<!--    <div class="form-group">-->
+<!--        {{ field.label_tag }}-->
+
+<!--        {% if form.is_bound %}-->
+<!--            {% if field.errors %}-->
+<!--                {% render_field field class="form-control is-invalid" %}-->
+
+<!--                {% for error in field.errors %}-->
+<!--                    <div class="invalid-feedback">-->
+<!--                        {{ error }}-->
+<!--                    </div>-->
+<!--                {% endfor %}-->
+
+<!--            {% else %}-->
+<!--                {% render_field field class="form-control is-valid" %}-->
+<!--            {% endif %}-->
+
+<!--        {% else %}-->
+<!--            {% render_field field class="form-control" %}-->
+<!--        {% endif %}-->
+
+<!--        {% if field.help_text %}-->
+<!--            <small class="form-text text-muted">{{ field.help_text }}</small>-->
+<!--        {% endif %}-->
+<!--    </div>-->
+<!--    {% endfor %}-->
+
+<!--    <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--</form>-->
+
+</body>
+</html>

@@ -1,4 +1,12 @@
+@font-face {
+  font-family: "Maler";
+  src: url("/assets/fonts/Maler.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
 .indexBackground {
+  background-image: url(/assets/img/indexBackGround.jpg);
   background-size: 100%;
   background-repeat: no-repeat;
   width: 100vw;
@@ -267,7 +275,7 @@
   width: 260px;
   height: 50px;
   border-radius: 44px;
-  background-color: #3583de;
+  background-color: #004dc1;
   cursor: pointer;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -289,7 +297,7 @@
   text-decoration: none;
   height: 100%;
   text-align: center;
-  padding-top: 12px;
+  padding-top: 14px;
 }
 
 #exampleModal .modal-dialog .modal-content .modal-body .row .col-right .col-head {
@@ -385,6 +393,7 @@
   border: none;
   margin-top: 32px;
   margin-bottom: 15px;
+  text-decoration: none;
 }
 
 #exampleModal .modal-dialog .modal-content .modal-body .row .col-right .auth-buttons .button-auth:focus {

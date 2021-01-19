@@ -1,125 +1,342 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/addPacient.css' %}">
+    <title>Dr.Cat</title>
 </head>
-<body>
 
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table>
-        {{ form.full_name }}
-        {{ form.full_name.label_tag }}
-        {{ form.full_name.error }}
-        <br>
-        {{ form.age }}
-        {{ form.age.label_tag }}
-        {{ form.age.error }}
-        <br>
-        {{ form.time_passed }}
-        {{ form.time_passed.label_tag }}
-        {{ form.time_passed.error }}
-        <br>
-        {{ form.hematoma_volume }}
-        {{ form.hematoma_volume.label_tag }}
-        {{ form.hematoma_volume.error }}
-        <br>
-        {{ form.is_injure }}
-        {{ form.is_injure.label_tag }}
-        {{ form.is_injure.error }}
-        <br>
-        {{ form.has_stroke_symptoms }}
-        {{ form.has_stroke_symptoms.label_tag }}
-        {{ form.has_stroke_symptoms.error }}
-        <br>
-        {{ form.neurological_deficit }}
-        {{ form.neurological_deficit.label_tag }}
-        {{ form.neurological_deficit.error }}
-        <br>
-        {{ form.conscious_level }}
-        {{ form.conscious_level.label_tag }}
-        {{ form.conscious_level.error }}
-        <br>
-        {{ form.diagnoses }}
-        {{ form.diagnoses.label_tag }}
-        {{ form.diagnoses.error }}
-        <br>
-        {{ form.temporary_contraindications }}
-        {{ form.temporary_contraindications.label_tag }}
-        {{ form.temporary_contraindications.error }}
-        <br>
-        {{ form.snapshot }}
-        {{ form.snapshot.label_tag }}
-        {{ form.snapshot.error }}
-    </table>
-
-    {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-            <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
+<body class="container-custom">
+<div class="progress">
+    <h2 id="title">Данные о пациенте</h2>
+    <div class="progress-bc">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
+</div>
+<form action="#">
+    <!--screen 1-->
+    <div id="screen1">
+        <div class="row col-one">
+            <div class="col-auto">
+                <h2>{{ form.full_name.label_tag }}</h2>
+                {{ form.full_name }}
+                {{ form.full_name.error }}
             </div>
-        {% endfor %}
-    {% endif %}
+            <div class="col-auto">
+                <h2 class="h2-2">{{ form.time_passed.label_tag }}</h2>
+                {{ form.time_passed }}
+                {{ form.time_passed.error }}
+            </div>
+            <div class="col-auto">
+                <h2>{{ form.age.label_tag }}</h2>
+                {{ form.age }}
+                {{ form.age.error }}
+            </div>
+            <div class="col-auto">
+                <h2 class="h2-2">{{ form.hematoma_volume.label_tag }}</h2>
+                {{ form.hematoma_volume }}
+                {{ form.hematoma_volume.error }}
+            </div>
+        </div>
 
-    <input type="submit" value="Submit"/>
+        <div class="row">
+            <div class="col-auto">
+                <div class="next-1">
+                    <h2>{{ form.is_injure.label_tag }}<span>*</span></h2>
+                    {{ form.is_injure.error }}
+
+
+                    <div class="row">
+                        {% for choice in form.is_injure %}
+                            <div class="col-auto">
+                                {{ choice.tag }}
+                                <label for="id_is_injure_{{ forloop.counter0 }}">{{ choice.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="next-1 next-2">
+                    <h2>Симптомы инсульта<span>*</span></h2>
+                    <div class="row">
+                        {% for choice in form.has_stroke_symptoms %}
+                            <div class="col-auto">
+                                {{ choice.tag }}
+                                <label for="id_has_stroke_symptoms_{{ forloop.counter0 }}">{{ choice.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="condition">
+            <h2>Оценка состояния</h2>
+            <h3>Неврологический дефицит<span>*</span></h3>
+            <div class="radio row">
+
+                <div id="frame" class="col"></div>
+
+                {{ form.neurological_deficit.0.tag }}
+                <label id="deficit-1l" class="col col-main col-first" for="deficit-1" onclick="radioHandler1(this)">
+                    <h2>I</h2>
+                    <h3>Легкая головная боль</h3>
+                </label>
+
+                {{ form.neurological_deficit.1.tag }}
+                <label id="deficit-2l" class="col col-main" for="deficit-2" onclick="radioHandler1(this)">
+                    <h2>II</h2>
+                    <h3>Парезы ЧМН</h3>
+                </label>
+
+                {{ form.neurological_deficit.2.tag }}
+                <label id="deficit-3l" class="col col-main" for="deficit-3" onclick="radioHandler1(this)">
+                    <h2>III</h2>
+                    <h3>Легкий очаговый дефицит</h3>
+                </label>
+
+                {{ form.neurological_deficit.3.tag }}
+                <label id="deficit-4l" class="col col-main col-last" for="deficit-4" onclick="radioHandler1(this)">
+                    <h2>IV</h2>
+                    <h3>Выраженный очаговый дефицит</h3>
+                </label>
+            </div>
+
+            <h3>Уровень сознания<span>*</span></h3>
+            <div class="radio2 row">
+                <div id="frame2" class="col"></div>
+
+                {{ form.conscious_level.0.tag }}
+                <label id="level-1l" class="col col-main col-first" for="level-1" onclick="radioHandler2(this)">
+                    <h2>15</h2>
+                    <h3>Ясное</h3>
+                </label>
+
+                {{ form.conscious_level.1.tag }}
+                <label id="level-2l" class="col col-main" for="level-2" onclick="radioHandler2(this)">
+                    <h2>14-13</h2>
+                    <h3>Умеренное оглушение</h3>
+                </label>
+
+                {{ form.conscious_level.2.tag }}
+                <label id="level-3l" class="col col-main" for="level-3" onclick="radioHandler2(this)">
+                    <h2>12-11</h2>
+                    <h3>Глубокое оглушение</h3>
+                </label>
+
+                {{ form.conscious_level.3.tag }}
+                <label id="level-4l" class="col col-main" for="level-4" onclick="radioHandler2(this)">
+                    <h2>10-8</h2>
+                    <h3>Сопор</h3>
+                </label>
+
+                {{ form.conscious_level.4.tag }}
+                <label id="level-5l" class="col col-main" for="level-5" onclick="radioHandler2(this)">
+                    <h2>7-6</h2>
+                    <h3>Умеренная кома</h3>
+                </label>
+
+                {{ form.conscious_level.5.tag }}
+                <label id="level-6l" class="col col-main" for="level-6" onclick="radioHandler2(this)">
+                    <h2>5-4</h2>
+                    <h3>Глубокая кома</h3>
+                </label>
+
+                {{ form.conscious_level.6.tag }}
+                <label id="level-7l" class="col col-main col-last" for="level-7" onclick="radioHandler2(this)">
+                    <h2>3</h2>
+                    <h3>Терминальная кома</h3>
+                </label>
+            </div>
+        </div>
+
+        <div class="footer1">
+            <div class="col-1">
+                <a href="index.html">
+                    <p>Назад</p>
+                </a>
+            </div>
+            <div class="col-2">
+                <div onclick="nextScreen1()">
+                    <p>Далее</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--screen 2-->
+    <div id="screen2">
+
+        <div class="row">
+            <div id="mainPathology" class="col">
+                <h2>{{ form.diagnoses.label_tag }}</h2>
+
+                <div id="pathology" class="box">
+                {% for row in form.diagnoses %}
+                    {{ row.items }}
+
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ row.tag }}
+                        </div>
+                        <div class="col-auto">
+                                <p>{{ row.choice_label }}</p>
+                        </div>
+                    </div>
+                    {% if not forloop.last %}
+                            <div class="hr"></div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="row absent">
+                            <div class="col-auto">
+                                <input id="checkboxUnknown1" type="checkbox" onclick="checkboxHandler1(this)">
+                            </div>
+                            <div class="col-auto">
+                                <p>Отсутствуют</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="row absent">
+                            <div class="col-auto">
+                                <input id="checkboxNone1" type="checkbox" onclick="checkboxHandler1(this)">
+                            </div>
+                            <div class="col-auto">
+                                <p>Неизвестно</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mainOther" class="col">
+                <h2>{{form.temporary_contraindications.label_tag}}</h2>
+
+                <div id="other" class="box">
+                {% for row in form.temporary_contraindications %}
+                    {{ row.items }}
+
+                    <div class="row">
+                        <div class="col-auto">
+                            {{ row.tag }}
+                        </div>
+                        <div class="col-auto">
+                                <p>{{ row.choice_label }}</p>
+                        </div>
+                    </div>
+                    {% if not forloop.last %}
+                            <div class="hr"></div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+
+                <div class="row">
+                    <div class="row absent">
+                        <div class="col-auto">
+                            <input id="checkboxNone2" type="checkbox" onclick="checkboxHandler2(this)">
+                        </div>
+                        <div class="col-auto">
+                            <p>Отсутствуют</p>
+                        </div>
+                    </div>
+                    <div class="row absent">
+                        <div class="col-auto">
+                            <input id="checkboxUnknown2" type="checkbox" onclick="checkboxHandler2(this)">
+                        </div>
+                        <div class="col-auto">
+                            <p>Неизвестно</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="col-1">
+                <div onclick="previousScreen1()">
+                    <p>Назад</p>
+                </div>
+            </div>
+            <div id="btnNext1" class="col-2">
+                <div onclick="">
+                    <p>Далее</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--screen 3-->
+    <div id="screen3">
+        <label id="select" for="id_snapshot" class="cloud">
+            {% load static %}
+            <img src="{% static 'assets/svg/download-cloud.svg' %}" alt="Cloud img">
+            <h2>Просто перетащите файл сюда</h2>
+            <div class="select">
+                <p>Выбрать файл</p>
+            </div>
+        </label>
+        {{ form.snapshot }}
+
+        <div id="file-list">
+            <div class="file row">
+                <div class="col-auto">
+                    {% load static %}
+                    <img src="{% static 'assets/svg/img_ico.svg' %}" alt="Img icon">
+                </div>
+                <div class="col-auto">
+                    <p></p>
+                </div>
+                <div class="col-auto">
+                    {% load static %}
+                    <img id="trash-btn" src="{% static 'assets/svg/trash.svg' %}" alt="Trash icon"
+                         onclick="preventDefaultInput(this)">
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="col-1">
+                <div onclick="previousScreen3()">
+                    <p>Назад</p>
+                </div>
+            </div>
+            <div id="btnNext3" class="col-2">
+                <label for="submitBtn">
+                    <p>Завершить</p>
+                </label>
+                <input id="submitBtn" type="submit">
+            </div>
+        </div>
+    </div>
 </form>
-
-
-<!--{% load widget_tweaks %}-->
-
-<!--<form method="post" novalidate>-->
-<!--    {% csrf_token %}-->
-
-<!--    {% for hidden_field in form.hidden_fields %}-->
-<!--        {{ hidden_field }}-->
-<!--    {% endfor %}-->
-
-<!--    {% if form.non_field_errors %}-->
-<!--        <div class="alert alert-danger" role="alert">-->
-<!--            {% for error in form.non_field_errors %}-->
-<!--                {{ error }}-->
-<!--            {% endfor %}-->
-<!--        </div>-->
-<!--    {% endif %}-->
-
-<!--    {% for field in form.visible_fields %}-->
-<!--    <div class="form-group">-->
-<!--        {{ field.label_tag }}-->
-
-<!--        {% if form.is_bound %}-->
-<!--            {% if field.errors %}-->
-<!--                {% render_field field class="form-control is-invalid" %}-->
-
-<!--                {% for error in field.errors %}-->
-<!--                    <div class="invalid-feedback">-->
-<!--                        {{ error }}-->
-<!--                    </div>-->
-<!--                {% endfor %}-->
-
-<!--            {% else %}-->
-<!--                {% render_field field class="form-control is-valid" %}-->
-<!--            {% endif %}-->
-
-<!--        {% else %}-->
-<!--            {% render_field field class="form-control" %}-->
-<!--        {% endif %}-->
-
-<!--        {% if field.help_text %}-->
-<!--            <small class="form-text text-muted">{{ field.help_text }}</small>-->
-<!--        {% endif %}-->
-<!--    </div>-->
-<!--    {% endfor %}-->
-
-<!--    <button type="submit" class="btn btn-primary">Submit</button>-->
-<!--</form>-->
-
 </body>
+
+<!--bootstrap-->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+
+<!--Montserrat font-->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+<!--jQuery-->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+{% load static %}
+<script src="{% static 'js/addNew.js' %}"></script>
+<script src="{% static 'js/inputHandler.js' %}"></script>
+
 </html>
