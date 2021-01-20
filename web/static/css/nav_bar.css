@@ -5,6 +5,7 @@ a {
 
 .navbar {
   padding-left: 60px;
+  padding-bottom: 0;
   height: 80px;
   background-color: #fff;
 }

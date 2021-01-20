@@ -20,7 +20,7 @@
         <img src="{% static 'assets/svg/logo.svg' %}" class="d-inline-block align-top" alt="Logo">
         Dr.CAT
       </a>
-      <a id="buttonBegin" href="#" class="begin d-inline-block">
+      <a id="buttonBegin" href="{% url 'treatment_form'%}" class="begin d-inline-block">
         <p>Начать диагностику</p>
       </a>
     </div>
@@ -45,7 +45,6 @@
   {% endblock %}
 
   <div class="div">
-    <h1>{{ header }}</h1>
     {% block content %}{% endblock %}
   </div>
 </body>

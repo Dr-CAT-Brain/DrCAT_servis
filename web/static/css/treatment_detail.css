@@ -66,6 +66,8 @@ html ::-webkit-scrollbar-thumb {
   font-size: 18px;
 }
 
+
+
 #content .row .col-right .result .row .col-text {
   padding: 0;
 }
@@ -137,16 +139,17 @@ html ::-webkit-scrollbar-thumb {
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.555);
   z-index: 2;
-  padding: 50px;
+  padding: 35px 50px 50px 50px;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
   opacity: 0;
   display: none;
+  justify-content: center;
 }
 
 #imgFullScreen img {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   -o-object-fit: contain;
      object-fit: contain;
 }
@@ -319,7 +322,7 @@ html ::-webkit-scrollbar-thumb {
 }
 
 #sidebar #data .data ul {
-  padding-left: 15px;
+  padding-left: 2px;
 }
 
 #sidebar #data .data ul li {

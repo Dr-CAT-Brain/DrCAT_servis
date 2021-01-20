@@ -8,11 +8,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import generic
 from .filters import TreatmentFilter
-from neuronet.recomendation_algo import decode_label
+from .LabelDecoder import decode_label
 from neuronet.model_predict import predict_picture
 
 from .forms import *
 from .models import Patient, Treatment, NeuronetPrediction
+from neuronet.recomendation_algo import give_recommend
 
 
 @login_required
@@ -49,10 +50,6 @@ def cabinet_view(request):
                            'form': form,
                            'history': history,
                            })
-
-
-# def treatment_report(request):
-#     return render(request, 'treatment_report.html')
 
 
 def get_absolute_path_to_project():
@@ -103,7 +100,16 @@ def treatment_form_view(request):
             # 4. Получаем рекомендации
             # 5. Сохраняем рекомендации
             prediction = predict_picture(image_absolute_path)
-
+            prediction.recommend_text = give_recommend(prediction.classification_type,
+                                                       treatment.neurological_deficit,
+                                                       treatment.conscious_level,
+                                                       treatment.time_passed,
+                                                       treatment.hematoma_volume,
+                                                       treatment.is_injury,
+                                                       treatment.has_stroke_symptoms,
+                                                       treatment.patient.get_diagnoses_name_list(),
+                                                       treatment.get_temporary_contraindications_name_list())
+            prediction.save()
             treatment.predict = prediction
             treatment.save()
 
@@ -182,6 +188,7 @@ class TreatmentDetailView(generic.DetailView):
         context['neurological_deficit'] = neurological_deficit_to_str[treatment.neurological_deficit]
         context['conscious_level'] = conscious_level_to_str[treatment.conscious_level]
         context['predicted_diagnosis'] = decode_label(treatment.predict.classification_type)
+        # context['operation_text'] = treatment.predict.recommen
         return context
 
 

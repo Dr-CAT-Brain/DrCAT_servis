@@ -33,5 +33,15 @@ class Doctor(admin.ModelAdmin):
     pass
 
 
+@admin.register(RecommendText)
+class RecommendText(admin.ModelAdmin):
+    pass
+
+
+@admin.register(NeuronetPrediction)
+class NeuronetPrediction(admin.ModelAdmin):
+    pass
+
+
 admin.site.site_header = 'Admin-panel'
 admin.site.index_title = 'Databases'

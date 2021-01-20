@@ -33,7 +33,7 @@ let isOpen = false;
 
 function imgFullScreenOpen(target) {
     $("#imgFullScreen > img").attr("src", target.children[0].src);
-    document.getElementById("imgFullScreen").style.display = "block"
+    document.getElementById("imgFullScreen").style.display = "flex"
     document.getElementById("imgFullScreen").style.opacity = "1";
     isOpen = !isOpen;
 }

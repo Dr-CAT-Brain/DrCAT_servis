@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.conf import settings
-from neuronet.recomendation_algo import decode_label
+from .LabelDecoder import decode_label
 
 
 class Diagnosis(models.Model):
@@ -33,6 +33,11 @@ class Patient(models.Model):
     def __str__(self):
         return self.full_name
 
+    def get_diagnoses_name_list(self):
+        if self.diagnoses:
+            return [i.name for i in self.diagnoses.all()]
+        return []
+
 
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -49,9 +54,17 @@ class Doctor(models.Model):
         return f'{self.user.first_name} {self.user.last_name}; username: {self.user.username}'
 
 
+class RecommendText(models.Model):
+    operation = models.CharField(max_length=100)
+    treatment_tactics = models.TextField()
+    tactics_if_agree = models.TextField()
+
+
 class NeuronetPrediction(models.Model):
     classification_type = models.PositiveSmallIntegerField(null=True)
     confidence = models.FloatField(null=True)
+
+    recommend_text = models.OneToOneField(RecommendText, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{decode_label(self.classification_type)} : {format(self.confidence, ".2f")}%'
@@ -86,3 +99,10 @@ class Treatment(models.Model):
 
     def get_absolute_url(self):
         return reverse('treatment_detail', args=[str(self.id)])
+
+    def get_temporary_contraindications_name_list(self):
+        if self.temporary_contraindications:
+            return [i.name for i in self.temporary_contraindications.all()]
+        return []
+
+
