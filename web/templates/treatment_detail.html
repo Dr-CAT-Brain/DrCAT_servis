@@ -1,27 +1,223 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
     <meta charset="UTF-8">
-    <title>Обращение детально</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/treatment_detail.css' %}">
+    <title>Результаты</title>
 </head>
+
 <body>
-{% block content %}
+    <div onclick="imgFullScreenClose(this)" id="imgFullScreen">
+        <img src="#" alt="Img Full Screen">
+    </div>
 
-{% if user.is_authenticated %}
-    <h2>Информация о пациенте</h2>
+    <header style="height: 80px;"></header>
 
-    <p>ФИО: {{ treatment.patient.full_name }}</p>
-    <p>Возраст: {{ treatment.patient.age }}</p>
-    <br>
-    <h2>Основная информация:</h2>
-    <p>Объем гематомы: {{ treatment.hematoma_volume }}</p>
-    <p>Травма: {{ treatment.is_injure }}</p>
-    <p>Снимок: </p>
-    <img src="{{ treatment.snapshot.url }}" style="width:250px; height:130px;">
-{% else %}
-    {% include "authentication_need.html" %}
-{% endif %}
+    <div class="wrapper">
+        <div id="content">
 
-{% endblock %}
+            <h1 class="title">Результаты</h1>
+            <div class="row">
+                <div class="col-auto col-left">
+                    <div class="img" onclick="imgFullScreenOpen(this)">
+                        <img src="{{ treatment.snapshot.url }}" alt="Img result">
+                    </div>
+                </div>
+                <div class="col col-right">
+                    <h2 class="diagnosis">Предполагаемый диагноз:</h2>
+                    <p>{{ predicted_diagnosis }}</p>
+
+                    <h2 class="recommendation">Рекомендации:</h2>
+                    <div class="result">
+                        <div class="row">
+                            <div class="col-auto col-tags">
+                                <p>Операция:</p>
+                                <p>Необходимо:</p>
+                            </div>
+                            <div class="col-auto col-text">
+                                <p>не показана</p>
+                            </div>
+                        </div>
+                        <div class="text">
+                            <p>Съешь же ещё этих мягких французских булок, да выпей чаю. ъешь же ещё этих мягких
+                                французских
+                                булок, да выпей чаю. ъешь же ещё этих мягких французских булок, да выпей чаю. ъешь же ещё
+                                этих мягких французских булок, да выпей чаю. Съешь же ещё этих мягких французских булок, да выпей чаю. ъешь же ещё этих мягких
+                                французских
+                                булок, да выпей чаю. ъешь же ещё этих мягких французских булок, да выпей чаю. ъешь же ещё
+                                этих мягких французских булок, да выпей чаю.Съешь же ещё этих мягких французских булок, да выпей чаю. ъешь же ещё этих мягких
+                                французских
+                                булок, да выпей чаю. ъешь же ещё этих мягких французских булок, да выпей чаю. ъешь же ещё
+                                этих мягких французских булок, да выпей чаю.Съешь же ещё этих мягких французских булок, да выпей чаю. ъешь же ещё этих мягких
+                                французских
+                                булок, да выпей чаю. ъешь же ещё этих мягких французских булок, да выпей чаю. ъешь же ещё
+                                этих мягких французских булок, да выпей чаю.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="open-buttons" class="row">
+            <div class="col-auto">
+                <button id="sidebarCollapse">
+                    <p>Смотреть сведения</p>
+                </button>
+            </div>
+            <div class="col-auto">
+                <button id="simularCollapse">
+                    {% load static %}
+                    <img src="{% static 'assets/svg/Similar.svg' %}" alt="Simular icons">
+                </button>
+            </div>
+        </div>
+
+        <button id="previousButton">
+            <p>Назад</p>
+        </button>
+
+        <nav id="sidebar">
+            <div id="data">
+                <div class="row">
+                    <div class="col-auto">
+                        <h1 class="title">Сведения о пациенте</h1>
+                    </div>
+                    <div class="col-auto">
+                        <button id="sidebarCollapse2">
+                            <p>Свернуть</p>
+                        </button>
+                    </div>
+                </div>
+                
+                <h2 class="data-title">Данные о пациенте</h2>
+    
+                <div class="data">
+                    <div class="row">
+                        {% if treatment.patient.full_name %}
+                            <div class="col-auto">
+                                <span>{{ treatment.patient.full_name }}</span>
+                            </div>
+                        {% endif %}
+                        {% if treatment.patient.age %}
+                            <div class="col-auto">
+                                <span>{{ treatment.patient.age }} лет</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="row data1">
+                        <div class="col-auto">
+                            <p>Травма</p>
+                            <span>{{ is_injure_label }}</span>
+                        </div>
+                        <div class="col-auto">
+                            <p>Симптомы инсульта</p>
+                            <span>{{ has_stroke_symptoms }}</span>
+                        </div>
+                        {% if treatment.hematoma_volume %}
+                            <div class="col-auto">
+                                <p>Объем гематомы</p>
+                                <span>{{ treatment.hematoma_volume }} см³</span>
+                            </div>
+                        {% endif %}
+                    </div>
+    
+                    <h2 class="data-title2">Неврологический дефицит</h2>
+                    <span class="d-span">{{ neurological_deficit }}</span>
+    
+                    <h2 class="data-title3">Уровень сознания</h2>
+                    <span class="d-span">{{ conscious_level }}</span>
+    
+                    <h2 class="pathologies">Сопутствующие патологии</h2>
+    
+                    <ul>
+                        {% for i in treatment.patient.diagnoses.all %}
+                            <li><span>{{ i.name }}</span></li>
+                        {% endfor %}
+                    </ul>
+    
+                    <h2 class="pathologies">Иные противопоказания</h2>
+    
+                    <ul>
+                        {% for i in treatment.temporary_contraindications.all %}
+                            <li><span>{{ i.name }}</span></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div id="simular">
+                <div class="row">
+                    <div class="col-auto">
+                        <h1 class="title">Похожие</h1>
+                    </div>
+                    <div class="col-auto">
+                        <button id="simularCollapse2">
+                            <p>Свернуть</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="data">
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    <div class="img-min" onclick="imgFullScreenOpen(this)">
+                        <img src="assets/img/img-result-test.jpg" alt="Img result">
+                    </div>
+                    
+                </div>
+            </div>
+        </nav>
+    </div>
 </body>
+<!--bootstrap-->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+
+<!--Montserrat font-->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+{% load static %}
+<script src="{% static 'js/TreatmentDetailEvents.js' %}"></script>
 </html>

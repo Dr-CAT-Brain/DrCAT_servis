@@ -8,10 +8,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import generic
 from .filters import TreatmentFilter
+from neuronet.recomendation_algo import decode_label
 from neuronet.model_predict import predict_picture
 
 from .forms import *
-from .models import Patient, Treatment, Doctor
+from .models import Patient, Treatment, NeuronetPrediction
 
 
 @login_required
@@ -26,7 +27,7 @@ def cabinet_view(request):
             doctor.work_place = form.cleaned_data['work_place']
             doctor.education = form.cleaned_data['education']
             doctor.contacts = form.cleaned_data['contacts']
-            doctor.image = form.cleaned_data['image']
+            doctor.photo = form.cleaned_data['image']
             doctor.save()
     doctor = request.user.doctor
     data = {
@@ -35,7 +36,8 @@ def cabinet_view(request):
         'work_place': doctor.work_place,
         'education': doctor.education,
         'experience': doctor.experience,
-        'contacts': doctor.contacts
+        'contacts': doctor.contacts,
+        'photo': doctor.photo,
     }
     form = PersonalData(data)
 
@@ -49,12 +51,12 @@ def cabinet_view(request):
                            })
 
 
-def treatment_report(request):
-    return render(request, 'treatment_report.html')
+# def treatment_report(request):
+#     return render(request, 'treatment_report.html')
 
 
 def get_absolute_path_to_project():
-    return os.path.dirname(os.path.abspath(__file__)).replace('\\web', '')
+    return os.path.dirname(os.path.abspath(__file__)).replace('\\web', '').replace('\\', '/')
 
 
 def treatment_form_view(request):
@@ -93,10 +95,19 @@ def treatment_form_view(request):
 
             treatment.save()
             patient.save()
-            image_absolute_path = get_absolute_path_to_project() + treatment.snapshot.url.replace('/', '\\')
-            print(treatment.predict)
-            print(predict_picture(image_absolute_path))
-            return HttpResponseRedirect('report')
+
+            image_absolute_path = get_absolute_path_to_project() + treatment.snapshot.url
+            # 1. Конвертируем полученную табличку в число
+            # 2. Сохраняем число
+            # 3. Сохраняем вероятность
+            # 4. Получаем рекомендации
+            # 5. Сохраняем рекомендации
+            prediction = predict_picture(image_absolute_path)
+
+            treatment.predict = prediction
+            treatment.save()
+
+            return HttpResponseRedirect(f'report/{treatment.id}')
     else:
         form = TreatmentForm()
 
@@ -134,9 +145,44 @@ class TreatmentHistoryView(generic.ListView):
         return context
 
 
-class TreatmentsDetailView(generic.DetailView):
+class TreatmentDetailView(generic.DetailView):
     model = Treatment
     template_name = "treatment_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        treatment = Treatment.objects.filter(id=pk).first()
+
+        bool_to_str = {
+            True: 'Да',
+            False: 'Нет',
+            None: 'Неизвестно'
+        }
+
+        neurological_deficit_to_str = {
+            1: 'Лёгкая головная боль',
+            2: 'Парезы ЧМН',
+            3: 'Легкий очаговый дефицит',
+            4: 'Выраженный очаговый дефицит',
+        }
+
+        conscious_level_to_str = {
+            15: 'Ясное',
+            14: 'Умеренное оглушение',
+            12: 'Глубокое оглушение',
+            9: 'Сопор',
+            7: 'Умеренная кома',
+            5: 'Глубокая кома',
+            3: 'Терминальная кома',
+        }
+
+        context['is_injure_label'] = bool_to_str[treatment.is_injury]
+        context['has_stroke_symptoms'] = bool_to_str[treatment.has_stroke_symptoms]
+        context['neurological_deficit'] = neurological_deficit_to_str[treatment.neurological_deficit]
+        context['conscious_level'] = conscious_level_to_str[treatment.conscious_level]
+        context['predicted_diagnosis'] = decode_label(treatment.predict.classification_type)
+        return context
 
 
 def api_login(request):

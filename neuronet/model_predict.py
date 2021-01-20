@@ -9,6 +9,7 @@ import torch.nn as nn
 
 from neuronet.KTDataset import KTDataset
 from neuronet.Net import SimpleCnn
+from web.models import NeuronetPrediction
 
 num_classes = 14
 base_model = SimpleCnn(num_classes)
@@ -34,7 +35,6 @@ def predict(model, test_loader):
 
 
 def predict_picture(full_path):
-    # full_path = os.path.abspath('' + file_name)
     test_files = [str(pathlib.PurePosixPath(full_path))]
     test_dataset = KTDataset(test_files, mode="test")
     test_loader = DataLoader(test_dataset, shuffle=False, batch_size=64)
@@ -42,7 +42,14 @@ def predict_picture(full_path):
     predicted_proba = np.max(probs) * 100
     y_pred = np.argmax(probs)
     predicted_label = label_encoder.classes_[y_pred]
-    return predicted_label, predicted_proba
+
+    prediction = NeuronetPrediction(
+        classification_type=y_pred,
+        confidence=predicted_proba
+    )
+    prediction.save()
+
+    return prediction
 
 
 if __name__ == '__main__':

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Обращение детально</title>
+</head>
+<body>
+{% block content %}
+
+{% if user.is_authenticated %}
+    <h2>Информация о пациенте</h2>
+
+    <p>ФИО: {{ treatment.patient.full_name }}</p>
+    <p>Возраст: {{ treatment.patient.age }}</p>
+    <br>
+    <h2>Основная информация:</h2>
+    <p>Объем гематомы: {{ treatment.hematoma_volume }}</p>
+    <p>Травма: {{ treatment.is_injure }}</p>
+    <p>Снимок: </p>
+    <img src="{{ treatment.snapshot.url }}" style="width:250px; height:130px;">
+    {{  }}
+{% else %}
+    {% include "authentication_need.html" %}
+{% endif %}
+
+{% endblock %}
+</body>
+</html>
