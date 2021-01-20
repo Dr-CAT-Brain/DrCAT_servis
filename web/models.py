@@ -48,6 +48,15 @@ class Doctor(models.Model):
         return f'{self.user.first_name} {self.user.last_name}; username: {self.user.username}'
 
 
+class ClassificationTypes:
+    VMG = 0
+
+
+class NeuronetPrediction(models.Model):
+    classification_type = models.PositiveSmallIntegerField(null=False)
+    confidence = models.PositiveSmallIntegerField(null=True)
+
+
 class Treatment(models.Model):
     neurological_deficit = models.PositiveSmallIntegerField(null=False, default=1)
     conscious_level = models.PositiveSmallIntegerField(null=False, default=15)
@@ -64,6 +73,12 @@ class Treatment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True, blank=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, null=True, default=None, blank=True)
 
+    prediction = models.OneToOneField(
+        NeuronetPrediction,
+        on_delete=models.CASCADE,
+        default=None
+    )
+
     def __str__(self):
         return self.patient.full_name
 
@@ -74,14 +89,3 @@ class Treatment(models.Model):
 
     def get_absolute_url(self):
         return reverse('treatment_detail', args=[str(self.id)])
-
-
-class NeuronetPrediction(models.Model):
-    classification_type = models.PositiveSmallIntegerField(null=False)
-    confidence = models.PositiveSmallIntegerField(null=True)
-
-
-class ClassificationTypes:
-    VMG = 0
-
-
