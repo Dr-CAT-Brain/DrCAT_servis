@@ -1,7 +1,4 @@
-{% extends 'nav_bar.html' %}
-{% block content %}
-
-{% load static %}
+{% extends 'nav_bar.html' %} {% block content %} {% load static %}
 <link rel="stylesheet" href="{% static 'css/treatment_detail.css' %}" />
 <div onclick="imgFullScreenClose(this)" id="imgFullScreen">
   <img src="#" alt="Img Full Screen" />
@@ -17,27 +14,28 @@
         </div>
       </div>
       <div class="col col-right">
-        <h2 class="diagnosis">Предполагаемая патология:</h2>
+        <h2 class="diagnosis">Предполагаемый диагноз:</h2>
         <p>{{ predicted_diagnosis }}</p>
 
         <h2 class="recommendation">Рекомендации:</h2>
         <div class="result">
-          <div class="row">
-            <div class="col-auto col-tags">
-              <p>Операция:</p>
-              <p>Необходимо:</p>
+            <div class="text">
+                <p><span>Операция:</span> {{ treatment.predict.recommend_text.operation }}</p>
+                <p><span>Рекомендации:</span></p>
+                 <p class="big-text">
+                    {{ treatment.predict.recommend_text.treatment_tactics }}
+                 </p>
+                <p><span>Рекомендации при согласии на хирургическое лечение:</span></p>
+                <p class="big-text">
+                  {% if  treatment.predict.recommend_text.tactics_if_agree %}
+                    {{ treatment.predict.recommend_text.tactics_if_agree }}
+                  {% else %}
+                    Отсутствуют
+                  {% endif %}
+                </p>
             </div>
-            <div class="col-auto col-text">
-              <p>{{ treatment.predict.recommend_text.operation }}</p>
-            </div>
-          </div>
-          <div class="text">
-            <p>
-              {{ treatment.predict.recommend_text.treatment_tactics }}
-            </p>
-          </div>
         </div>
-      </div>
+    </div>
     </div>
   </div>
   <div id="open-buttons" class="row">
@@ -109,20 +107,26 @@
         <span class="d-span">{{ conscious_level }}</span>
 
         <h2 class="pathologies">Сопутствующие патологии</h2>
-
-        <ul>
-          {% for i in treatment.patient.diagnoses.all %}
-          <li><span>{{ i.name }}</span></li>
-          {% endfor %}
-        </ul>
+        {% if  treatment.patient.diagnoses.all %}
+          <ul>
+            {% for i in treatment.patient.diagnoses.all %}
+            <li><span>{{ i.name }}</span></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Отсутствуют</p>
+        {% endif %}
 
         <h2 class="pathologies">Иные противопоказания</h2>
-
-        <ul>
-          {% for i in treatment.temporary_contraindications.all %}
-          <li><span>{{ i.name }}</span></li>
-          {% endfor %}
-        </ul>
+        {% if  treatment.temporary_contraindications.all %}
+          <ul>
+            {% for i in treatment.temporary_contraindications.all %}
+            <li><span>{{ i.name }}</span></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>Отсутствуют</p>
+        {% endif %}
       </div>
     </div>
 

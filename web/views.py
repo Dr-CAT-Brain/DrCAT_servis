@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import generic
 from .filters import TreatmentFilter
-from .LabelDecoder import decode_label
+from .LabelDecoder import decode_label, decode_label_detail
 from neuronet.model_predict import predict_picture
 
 from .forms import *
@@ -187,8 +187,7 @@ class TreatmentDetailView(generic.DetailView):
         context['has_stroke_symptoms'] = bool_to_str[treatment.has_stroke_symptoms]
         context['neurological_deficit'] = neurological_deficit_to_str[treatment.neurological_deficit]
         context['conscious_level'] = conscious_level_to_str[treatment.conscious_level]
-        context['predicted_diagnosis'] = decode_label(treatment.predict.classification_type)
-        # context['operation_text'] = treatment.predict.recommen
+        context['predicted_diagnosis'] = decode_label_detail(treatment.predict.classification_type)
         return context
 
 

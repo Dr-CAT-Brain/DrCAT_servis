@@ -15,6 +15,6 @@ $('#login_btn').click(function() {
         if (data == 'Success'){
             window.location.href = window.location.href.replace('login', 'cabinet');
         }
-        alert(data);
+//        alert(data);
     });
 });

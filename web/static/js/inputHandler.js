@@ -177,8 +177,8 @@ function checkboxHandler2(target) {
 }
 
 //блокировка кнопки "Далее1"
-let checkedBoxs1 = 0;
-let checkBoxs2 = 0;
+let checkedBoxs1 = $("#mainPathology > [type='checkbox']:checked").length;
+let checkBoxs2 = $("#mainOther > [type='checkbox']:checked").length;
 
 $('#mainPathology :checkbox').change(function () {
     if (this.checked) {

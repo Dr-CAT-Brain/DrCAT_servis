@@ -26,7 +26,7 @@
 <body class="indexBackground" style="background-image: url({% static 'assets/img/indexBackGround.jpg' %})">
 
 <h1>DR.CAT</h1>
-<p>Инновационное приложение
+<p>Инновационное приложение,
     помогающее врачам в постановке
     диагноза</p>
 <div id="button-start" class="button-start" data-toggle="modal" data-target="#exampleModal">
@@ -104,7 +104,7 @@
 
                         <div class="button-without">
                             <div id="button-without">
-                                <a href="treatment-form">Продолжить без регистрации</a>
+                                <a href="{% url 'treatment_form' %}">Продолжить без регистрации</a>
                             </div>
                         </div>
                     </div>
