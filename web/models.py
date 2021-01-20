@@ -73,11 +73,8 @@ class Treatment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True, blank=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, null=True, default=None, blank=True)
 
-    prediction = models.OneToOneField(
-        NeuronetPrediction,
-        on_delete=models.CASCADE,
-        default=None
-    )
+    predict = models.OneToOneField(NeuronetPrediction,
+                                     on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.patient.full_name

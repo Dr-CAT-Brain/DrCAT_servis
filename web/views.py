@@ -94,6 +94,7 @@ def treatment_form_view(request):
             treatment.save()
             patient.save()
             image_absolute_path = get_absolute_path_to_project() + treatment.snapshot.url.replace('/', '\\')
+            print(treatment.predict)
             print(predict_picture(image_absolute_path))
             return HttpResponseRedirect('report')
     else:
