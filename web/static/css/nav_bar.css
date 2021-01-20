@@ -6,6 +6,7 @@ a {
 .navbar {
   padding-left: 60px;
   height: 80px;
+  background-color: #fff;
 }
 
 .navbar a {

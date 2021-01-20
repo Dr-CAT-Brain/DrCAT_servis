@@ -1,4 +1,5 @@
 import os
+import pathlib
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -52,6 +53,10 @@ def treatment_report(request):
     return render(request, 'treatment_report.html')
 
 
+def get_absolute_path_to_project():
+    return os.path.dirname(os.path.abspath(__file__)).replace('\\web', '')
+
+
 def treatment_form_view(request):
     if request.method == 'POST':
         form = TreatmentForm(request.POST, request.FILES)
@@ -88,11 +93,8 @@ def treatment_form_view(request):
 
             treatment.save()
             patient.save()
-            # FIX THIS CRUTCH WITH PATH
-            image_absolute_path = os.path.dirname(os.path.abspath(__file__)).replace('\\web' , '') +\
-                                  treatment.snapshot.url.replace('/', '\\')
+            image_absolute_path = get_absolute_path_to_project() + treatment.snapshot.url.replace('/', '\\')
             print(predict_picture(image_absolute_path))
-            ##
             return HttpResponseRedirect('report')
     else:
         form = TreatmentForm()

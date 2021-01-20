@@ -74,3 +74,14 @@ class Treatment(models.Model):
 
     def get_absolute_url(self):
         return reverse('treatment_detail', args=[str(self.id)])
+
+
+class NeuronetPrediction(models.Model):
+    classification_type = models.PositiveSmallIntegerField(null=False)
+    confidence = models.PositiveSmallIntegerField(null=True)
+
+
+class ClassificationTypes:
+    VMG = 0
+
+
