@@ -7,7 +7,6 @@ from . import views
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
-    path('pass', lambda x: x, name='pass'),
     path('cabinet/', views.cabinet_view, name='cabinet'),
     path('peoples/', views.DoctorsListView.as_view(), name='peoples'),
     path('treatment-form', views.treatment_form_view, name='treatment_form'),
@@ -15,7 +14,8 @@ urlpatterns = [
     path('treatment-list/', views.TreatmentListView.as_view(), name='treatment_list'),
     path('history', views.TreatmentHistoryView.as_view(), name='history_list'),
     url(r'^treatment/(?P<pk>\d+)$', views.TreatmentDetailView.as_view(), name='treatment_detail'),
-    url('api/login', views.api_login)
+    url('api/login', views.api_login),
+    path('signup/', views.sign_up, name='sign_up'),
 ]
 
 if settings.DEBUG:

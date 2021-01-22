@@ -3,6 +3,7 @@ import pathlib
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
@@ -219,6 +220,40 @@ def api_login(request):
                 return HttpResponse('inactive user')
         else:
             return HttpResponse('Bad request')
+
+
+def sign_up(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            full_name = form.cleaned_data.get('full_name')
+            username = full_name if full_name else f'acc_{User.objects.count() + 1}'
+
+            user = User.objects.create_user(username=username,
+                                            email=form.cleaned_data.get('email'),
+                                            password=form.cleaned_data.get('password1'))
+            user.save()
+            doctor = Doctor(
+                user=user,
+                full_name=full_name,
+                qualification=form.cleaned_data.get('qualification'),
+                experience=form.cleaned_data.get('experience'),
+                work_place=form.cleaned_data.get('work_place'),
+                education=form.cleaned_data.get('education'),
+                contacts=form.cleaned_data.get('contacts'),
+                photo=form.cleaned_data.get('photo'),
+            )
+            doctor.save()
+
+            email = form.cleaned_data.get('email')
+            raw_password = form.cleaned_data.get('password1')
+            user_a = authenticate(email=email, password=raw_password,
+                                  backend='django.contrib.auth.backends.EmailBackend')
+            login(request, user)
+            return redirect('cabinet')
+    else:
+        form = SignUpForm()
+    return render(request, 'registration/sign_up.html', {'form': form})
 
 
 class DoctorsListView(LoginRequiredMixin, generic.ListView):

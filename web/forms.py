@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from .models import Diagnosis, TemporaryContraindications
 
@@ -87,3 +89,21 @@ class PersonalData(forms.Form):
     education = forms.CharField(max_length=100, required=False, label='Образование')
     contacts = forms.CharField(max_length=100, required=False, label='Контакты')
     image = forms.ImageField(required=False, allow_empty_file=False)
+
+
+class SignUpForm(UserCreationForm):
+    full_name = forms.CharField(max_length=100, required=True)
+    email = forms.EmailField(max_length=254, required=True)
+    password1 = forms.CharField(widget=forms.PasswordInput())
+    qualification = forms.CharField(max_length=40, required=False)
+    work_place = forms.CharField(max_length=60, required=False)
+    education = forms.CharField(max_length=30, required=False)
+    experience = forms.IntegerField(min_value=0, required=False)
+    contacts = forms.CharField(max_length=150, required=False)
+    photo = forms.ImageField(required=False, allow_empty_file=True)
+
+    class Meta:
+        model = User
+        fields = ('full_name', 'email', 'password1', 'qualification', 'work_place',
+                  'education', 'experience', 'contacts', 'photo')
+
