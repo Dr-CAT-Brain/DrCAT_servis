@@ -14,7 +14,9 @@
 <script rel="stylesheet" src="{% static 'js/cabinet.js' %}"></script>
 
 <div class="container">
+  {% if doctor.photo %}
   <image src="{{ doctor.photo.url }}" id="id_profile_image"></image>
+  {% endif %}
   <div id="id_personal_info">
     <h2>{{ doctor.full_name }}</h2>
     <h3>{{ doctor.qualification }}</h3>
@@ -46,6 +48,11 @@
     </form>
   </div>
 </div>
+
+<form action="{% url 'cabinet' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
 <ul>
   {% for treatment in history %}
     {% if treatment.patient.full_name %}

@@ -143,45 +143,11 @@
       </div>
 
       <div class="data">
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
-        <div class="img-min" onclick="imgFullScreenOpen(this)">
-          <img src="assets/img/img-result-test.jpg" alt="Img result" />
-        </div>
+        {% for t in similar_treatments %}
+          <div class="img-min" onclick="imgFullScreenOpen(this)">
+            <img src="{{ t.snapshot.url }}" alt="Img result" />
+          </div>
+        {% endfor %}
       </div>
     </div>
   </nav>

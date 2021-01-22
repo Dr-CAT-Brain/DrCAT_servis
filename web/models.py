@@ -48,7 +48,7 @@ class Doctor(models.Model):
     work_place = models.CharField(max_length=100, null=True, blank=True)
     education = models.CharField(max_length=100, null=True, blank=True)
     contacts = models.CharField(max_length=100, null=True, blank=True)
-    photo = models.ImageField(null=True, default='BaseProfilePhoto.svd')
+    photo = models.ImageField(null=True, default='profile_photo.jpg')
 
     def __str__(self):
         return f'{self.user.first_name} {self.user.last_name}; username: {self.user.username}'

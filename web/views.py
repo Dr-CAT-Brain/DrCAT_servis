@@ -3,6 +3,7 @@ import pathlib
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
@@ -28,8 +29,10 @@ def cabinet_view(request):
             doctor.work_place = form.cleaned_data['work_place']
             doctor.education = form.cleaned_data['education']
             doctor.contacts = form.cleaned_data['contacts']
-            doctor.photo = form.cleaned_data['image']
+            if form.cleaned_data['image']:
+                doctor.photo = form.cleaned_data['image']
             doctor.save()
+
     doctor = request.user.doctor
     data = {
         'full_name': doctor.full_name,
@@ -42,13 +45,18 @@ def cabinet_view(request):
     }
     form = PersonalData(data)
 
-    history = Treatment.objects.filter(doctor=doctor).all()
+    def get_queryset():
+        search_query = request.GET.get('q')
+        search_query = search_query if search_query else ''
+        return Treatment.objects.filter(
+            Q(doctor=doctor) & Q(patient__full_name__icontains=search_query)
+        )
 
     return render(request, 'cabinet.html',
                   context={'header': 'Личный кабинет',
                            'doctor': request.user.doctor,
                            'form': form,
-                           'history': history,
+                           'history': get_queryset,
                            })
 
 
@@ -94,11 +102,7 @@ def treatment_form_view(request):
             patient.save()
 
             image_absolute_path = get_absolute_path_to_project() + treatment.snapshot.url
-            # 1. Конвертируем полученную табличку в число
-            # 2. Сохраняем число
-            # 3. Сохраняем вероятность
-            # 4. Получаем рекомендации
-            # 5. Сохраняем рекомендации
+
             prediction = predict_picture(image_absolute_path)
             prediction.recommend_text = give_recommend(prediction.classification_type,
                                                        treatment.neurological_deficit,
@@ -188,6 +192,7 @@ class TreatmentDetailView(generic.DetailView):
         context['neurological_deficit'] = neurological_deficit_to_str[treatment.neurological_deficit]
         context['conscious_level'] = conscious_level_to_str[treatment.conscious_level]
         context['predicted_diagnosis'] = decode_label_detail(treatment.predict.classification_type)
+        context['similar_treatments'] = Treatment.objects.all()[:5]  # use get knn
         return context
 
 
