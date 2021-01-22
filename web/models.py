@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.conf import settings
-from .LabelDecoder import decode_label
+from .LabelDecoder import decode_label, decode_label_detail
 
 
 class Diagnosis(models.Model):
@@ -51,7 +51,7 @@ class Doctor(models.Model):
     photo = models.ImageField(null=True, default='profile_photo.jpg')
 
     def __str__(self):
-        return f'{self.user.first_name} {self.user.last_name}; username: {self.user.username}'
+        return f'{self.full_name} {self.user.username}'
 
 
 class RecommendText(models.Model):
@@ -90,7 +90,10 @@ class Treatment(models.Model):
                                    on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.patient.full_name
+        patology = ''
+        if self.predict:
+            patology = decode_label_detail(self.predict.classification_type)
+        return f'{self.patient.full_name}.{patology} '
 
     def get_snapshot_html(self):
         width = 270
@@ -104,5 +107,3 @@ class Treatment(models.Model):
         if self.temporary_contraindications:
             return [i.name for i in self.temporary_contraindications.all()]
         return []
-
-

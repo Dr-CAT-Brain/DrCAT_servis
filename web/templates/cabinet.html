@@ -56,7 +56,7 @@
 <ul>
   {% for treatment in history %}
     {% if treatment.patient.full_name %}
-      <li>{{ treatment.patient.full_name }}.{{ treatment.hematoma_volume}}</li>
+      <li>{{ treatment }}</li>
     {% else %}
       <li>Имя не указано</li>
     {% endif %}

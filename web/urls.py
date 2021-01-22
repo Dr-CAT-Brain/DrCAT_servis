@@ -9,6 +9,7 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('pass', lambda x: x, name='pass'),
     path('cabinet/', views.cabinet_view, name='cabinet'),
+    path('peoples/', views.DoctorsListView.as_view(), name='peoples'),
     path('treatment-form', views.treatment_form_view, name='treatment_form'),
     url(r'^report/(?P<pk>\d+)$', views.TreatmentDetailView.as_view(), name='treatment_report'),
     path('treatment-list', views.TreatmentListView.as_view(), name='treatment_list'),

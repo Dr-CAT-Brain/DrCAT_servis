@@ -13,7 +13,7 @@ from .LabelDecoder import decode_label, decode_label_detail
 from neuronet.model_predict import predict_picture
 
 from .forms import *
-from .models import Patient, Treatment, NeuronetPrediction
+from .models import Patient, Treatment, Doctor
 from neuronet.recomendation_algo import give_recommend
 
 
@@ -50,7 +50,7 @@ def cabinet_view(request):
         search_query = search_query if search_query else ''
         return Treatment.objects.filter(
             Q(doctor=doctor) & Q(patient__full_name__icontains=search_query)
-        )
+        ).all()
 
     return render(request, 'cabinet.html',
                   context={'header': 'Личный кабинет',
@@ -215,3 +215,21 @@ def api_login(request):
                 return HttpResponse('inactive user')
         else:
             return HttpResponse('Bad request')
+
+
+class DoctorsListView(generic.ListView):
+    template_name = 'doctor_list.html'
+    model = Doctor
+
+    def get_queryset(self):
+        search_query = self.request.GET.get('q')
+        search_query = search_query if search_query else ''
+        return Doctor.objects.filter(
+            Q(full_name__icontains=search_query) |
+            Q(qualification__icontains=search_query)
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['get_queryset'] = self.get_queryset()
+        return context
