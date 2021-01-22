@@ -3,6 +3,7 @@ import pathlib
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -16,8 +17,10 @@ from .forms import *
 from .models import Patient, Treatment, Doctor
 from neuronet.recomendation_algo import give_recommend
 
+LOGIN_URL = 'login'
 
-@login_required
+
+@login_required(login_url=LOGIN_URL)
 def cabinet_view(request):
     if request.method == "POST":
         form = PersonalData(request.POST, request.FILES)
@@ -88,7 +91,7 @@ def treatment_form_view(request):
             treatment.snapshot = form.cleaned_data['snapshot']
             treatment.patient = patient
 
-            if request.user:
+            if request.user.is_authenticated:
                 treatment.doctor = request.user.doctor
             treatment.save()
 
@@ -124,8 +127,9 @@ def treatment_form_view(request):
     return render(request, 'treatment_form.html', {'form': form})
 
 
-class TreatmentListView(generic.ListView):
+class TreatmentListView(LoginRequiredMixin, generic.ListView):
     # paginate_by = 10
+    login_url = LOGIN_URL
     model = Treatment
     template_name = 'treatment_list.html'
 
@@ -217,7 +221,8 @@ def api_login(request):
             return HttpResponse('Bad request')
 
 
-class DoctorsListView(generic.ListView):
+class DoctorsListView(LoginRequiredMixin, generic.ListView):
+    login_url = LOGIN_URL
     template_name = 'doctor_list.html'
     model = Doctor
 

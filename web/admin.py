@@ -40,7 +40,7 @@ class RecommendText(admin.ModelAdmin):
 
 @admin.register(NeuronetPrediction)
 class NeuronetPrediction(admin.ModelAdmin):
-    pass
+    inlines = [TreatmentInline]
 
 
 admin.site.site_header = 'Admin-panel'

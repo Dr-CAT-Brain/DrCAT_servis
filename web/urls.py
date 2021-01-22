@@ -12,7 +12,7 @@ urlpatterns = [
     path('peoples/', views.DoctorsListView.as_view(), name='peoples'),
     path('treatment-form', views.treatment_form_view, name='treatment_form'),
     url(r'^report/(?P<pk>\d+)$', views.TreatmentDetailView.as_view(), name='treatment_report'),
-    path('treatment-list', views.TreatmentListView.as_view(), name='treatment_list'),
+    path('treatment-list/', views.TreatmentListView.as_view(), name='treatment_list'),
     path('history', views.TreatmentHistoryView.as_view(), name='history_list'),
     url(r'^treatment/(?P<pk>\d+)$', views.TreatmentDetailView.as_view(), name='treatment_detail'),
     url('api/login', views.api_login)

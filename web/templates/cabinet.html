@@ -3,7 +3,6 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/cabinet.css' %}" />
 
-{% if user.is_authenticated %}
 {% load static %}
 <!--JQuery-->
 <script
@@ -62,8 +61,6 @@
     {% endif %}
   {% endfor %}
 </ul>
-{% else %}
-{% include 'authentication_need/html' %}
-{% endif %}
+
 {% endblock %}
 
