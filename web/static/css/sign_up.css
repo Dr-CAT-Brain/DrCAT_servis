@@ -1,0 +1,125 @@
+h1,
+p {
+  font-family: "Montserrat";
+}
+
+html {
+  overflow: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #c4c4c4;
+}
+
+html ::-webkit-scrollbar {
+  width: 10px;
+  /* width of the entire scrollbar */
+}
+
+html ::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background-color: #c4c4c4;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 36px;
+  color: #2e2e2e;
+  margin-top: 27px;
+  margin-left: 60px;
+}
+
+.form {
+  width: 1320px;
+  -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.16);
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.16);
+  border-radius: 30px;
+  background-color: #ffffff;
+  margin-top: 37px;
+  margin-left: 60px;
+  padding-left: 25px;
+}
+
+.form form {
+  width: 98%;
+  padding-left: 15px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 465px;
+}
+
+.form form .title {
+  padding-top: 24px;
+  font-weight: 700;
+  font-size: 24px;
+  margin: 0;
+}
+
+.form form .input-title {
+  color: #aaaaaa;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 24px;
+}
+
+.form form .input-title span {
+  color: #ff2828;
+}
+
+.form form input {
+  width: 97%;
+  height: 60px;
+  -webkit-box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  border-radius: 10px;
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+  padding-left: 21px;
+  color: #2e2e2e;
+  font-weight: 500;
+}
+
+.form form .row {
+  margin-bottom: 18px;
+}
+
+.form form .row img {
+  width: 212px;
+  height: 212px;
+  margin-top: 24px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.form form .row input {
+  display: none;
+}
+
+.form form .row label {
+  cursor: pointer;
+  height: 64px;
+  padding: 0 63px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+  padding-top: 17px;
+  color: #aaaaaa;
+  -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.16);
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.16);
+}
+
+.form form input[type="submit"] {
+  width: 251px;
+  height: 59px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #aaaaaa;
+  font-weight: 700;
+  font-size: 18px;
+  position: fixed;
+  bottom: 20px;
+  right: 155px;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}

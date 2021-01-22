@@ -100,7 +100,7 @@ class SignUpForm(UserCreationForm):
     education = forms.CharField(max_length=30, required=False)
     experience = forms.IntegerField(min_value=0, required=False)
     contacts = forms.CharField(max_length=150, required=False)
-    photo = forms.ImageField(required=False, allow_empty_file=True)
+    photo = forms.ImageField(required=True)
 
     class Meta:
         model = User

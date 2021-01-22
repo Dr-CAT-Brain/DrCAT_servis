@@ -1,19 +1,63 @@
+{% extends 'nav_bar.html' %}
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/sign_up.css' %}">
+<h1 class="title">Регистрация</h1>
+
+<div class="form">
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2 class="title">Персональные данные</h2>
+
+        <h2 class="input-title">ФИО пациента <span>*</span></h2>
+        {{ form.full_name }}
+
+        <h2 class="input-title">Логин(Email) <span>*</span></h2>
+        {{ form.email }}
+
+        <h2 class="input-title">Пароль <span>*</span></h2>
+        {{ form.password1 }}
+
+        <h2 class="input-title">Подтверждение пароля <span>*</span></h2>
+        {{ form.password2 }}
+
+<!--        <h2 class="input-title">Специальность</h2>-->
+<!--         -->
+
+        <h2 class="input-title">Квалификация</h2>
+        {{ form.qualification }}
+
+        <h2 class="input-title">Место работы</h2>
+        {{ form.work_place }}
+
+        <h2 class="input-title">Образование</h2>
+        {{ form.education }}
+
+        <h2 class="input-title">Стаж</h2>
+        {{ form.experience }}
+
+        <h2 class="input-title">Контакты</h2>
+        {{ form.contacts }}
+
+        <div class="row align-items-center">
+            <div class="col-auto">
+                {% load static %}
+                <img id="avatar-img" src="{% static 'assets/svg/avatar-reg.svg' %}" alt="Avatar reg">
+            </div>
+            <div class="col-auto">
+                <label id="input-container" for="id_photo">Загрузить фотографию</label>
+                {{ form.photo }}
+            </div>
+        </div>
+
+        <input id="send" type="submit" value="Зарегистрироваться" disabled>
+        {% for error in form.errors %}
           <p style="color: red">{{ error }}</p>
         {% endfor %}
-      </p>
-    {% endfor %}
-    <button type="submit">Sign up</button>
-  </form>
+    </form>
+</div>
+
+{% load static %}
+<script src="{% static 'js/inputReg.js' %} "></script>
+
 {% endblock %}

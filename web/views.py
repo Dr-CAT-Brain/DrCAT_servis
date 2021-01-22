@@ -224,7 +224,7 @@ def api_login(request):
 
 def sign_up(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = SignUpForm(request.POST, request.FILES)
         if form.is_valid():
             full_name = form.cleaned_data.get('full_name')
             username = full_name if full_name else f'acc_{User.objects.count() + 1}'
