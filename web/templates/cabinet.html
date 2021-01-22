@@ -1,66 +1,83 @@
 {% extends "nav_bar.html" %}
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/cabinet.css' %}" />
+<link rel="stylesheet" href="{% static 'css/cabinet.css' %}">
 
-{% load static %}
-<!--JQuery-->
-<script
-        src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-        crossorigin="anonymous"></script>
-
-<script rel="stylesheet" src="{% static 'js/cabinet.js' %}"></script>
-
-<div class="container">
-  {% if doctor.photo %}
-  <image src="{{ doctor.photo.url }}" id="id_profile_image"></image>
-  {% endif %}
-  <div id="id_personal_info">
-    <h2>{{ doctor.full_name }}</h2>
-    <h3>{{ doctor.qualification }}</h3>
-    <br />
-    <p>Место работы: {{ doctor.work_place }}</p> 
-    <br />
-    <p>Образование: {{ doctor.education }}</p> 
-    <br />
-    <p>Стаж: {{ doctor.experience }}</p>
-    <br />
-    <p>Контакты: {{ doctor.contacts }}</p>
-
-    <button id="id_editing_start">Редактировать</button>
-  </div>
-
-  <div id="id_edit_div" style="display: none;">
-    <form
-      action=""
-      method="post"
-      enctype="multipart/form-data"
-      id="id_edit_form"
-    >
-      {% csrf_token %}
-      <table>
-        {{ form.as_table }}
-      </table>
-      <input type="submit" value="Сохранить" />
-      <button id="id_cancel_editing" type="button">Отмена</button>
-    </form>
-  </div>
+<h1>Личный кабинет</h1>
+<div class="row">
+    <div class="col-auto">
+        {% if doctor.photo %}
+        <img src="{{doctor.photo.url}}" alt="photo">
+        {% else %}
+        {% load static %}
+        <img src="{% static 'media/profile_photo.jpg'" alt="photo">
+        {% endif %}
+    </div>
+    <div class="col-auto">
+        <div id="info">
+            <h2>{{ doctor.full_name }}
+                {% load static %}
+                <button id="id_editing_start"><img src="{% static 'assets/svg/editor.svg' %}" alt="Edit icon"></button>
+            </h2>
+            <p>Невролог</p>
+            <p class="first">Стаж:</p>
+            <p>Квалификация: {{ doctor.qualification }}</p>
+            <p>Место работы: {{ doctor.work_place }}</p>
+            <p>Образование: {{ doctor.education }}</p>
+            <p>Контакты: {{ doctor.contacts }}</p>
+        </div>
+        <form action=""
+              method="post"
+              enctype="multipart/form-data"
+              id="id_edit_form">
+            {% csrf_token %}
+            <h2>ФИО: {{ form.full_name }}
+                {% load static %}
+                <button id="id_cancel_editing"><img src="{% static 'assets/svg/editor.svg' %}" alt="Edit icon"></button>
+            </h2>
+            <p>Специальность: {{ form. }}<input type="text"></p>
+            <p class="first">Стаж: <input type="text"></p>
+            <p>Квалификация: <input type="text"></p>
+            <p>Место работы: <input type="text"></p>
+            <p>Образование: <input type="text"></p>
+            <p>Контакты: <input type="text"></p>
+        </form>
+    </div>
 </div>
 
-<form action="{% url 'cabinet' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
-</form>
+<div class="history">
+    <div class="row search">
+        <div class="col-auto d-flex align-items-center">
+            {% load static %}
+            <img src="{% static 'assets/svg/loupe-grey.svg' %}" alt="Loupe icon">
+        </div>
+        <div class="col-auto p-0">
+            <input id="searchLine" type="text" placeholder="Поиск">
+        </div>
+    </div>
 
-<ul>
-  {% for treatment in history %}
-    {% if treatment.patient.full_name %}
-      <li>{{ treatment }}</li>
-    {% else %}
-      <li>Имя не указано</li>
-    {% endif %}
-  {% endfor %}
-</ul>
+    <ul>
+        {% for treatment in history %}
+        <li>
+            <div class="row">
+                <div class="col-auto d-flex align-items-center">
+                    {% load static %}
+                    <img src="{% static 'assets/svg/Folder.svg' %}" alt="Folder ico">
+                </div>
+                <div class="col-auto d-flex align-items-center">
+                    {% if treatment.patient.full_name %}
+                    <a href="{% url 'treatment_detail' treatment.id %}">{{ treatment }}</a>
+                    {% else %}
+                    <a href="{% url 'treatment_detail' treatment.id %}">Подробности не указаны</a>
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% load static %}
+<script src="{% static 'js/search.js' %}"></script>
 
 {% endblock %}
-

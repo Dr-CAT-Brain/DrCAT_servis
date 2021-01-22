@@ -1,0 +1,66 @@
+{% extends "nav_bar.html" %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/cabinet.css' %}" />
+
+{% load static %}
+<!--JQuery-->
+<script
+        src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+
+<script rel="stylesheet" src="{% static 'js/cabinet.js' %}"></script>
+
+<div class="container">
+  {% if doctor.photo %}
+  <image src="{{ doctor.photo.url }}" id="id_profile_image"></image>
+  {% endif %}
+  <div id="id_personal_info">
+    <h2>{{ doctor.full_name }}</h2>
+    <h3>{{ doctor.qualification }}</h3>
+    <br />
+    <p>Место работы: {{ doctor.work_place }}</p> 
+    <br />
+    <p>Образование: {{ doctor.education }}</p> 
+    <br />
+    <p>Стаж: {{ doctor.experience }}</p>
+    <br />
+    <p>Контакты: {{ doctor.contacts }}</p>
+
+    <button id="id_editing_start">Редактировать</button>
+  </div>
+
+  <div id="id_edit_div" style="display: none;">
+    <form
+      action=""
+      method="post"
+      enctype="multipart/form-data"
+      id="id_edit_form"
+    >
+      {% csrf_token %}
+      <table>
+        {{ form.as_table }}
+      </table>
+      <input type="submit" value="Сохранить" />
+      <button id="id_cancel_editing" type="button">Отмена</button>
+    </form>
+  </div>
+</div>
+
+<form action="{% url 'cabinet' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
+<ul>
+  {% for treatment in history %}
+    {% if treatment.patient.full_name %}
+      <li>{{ treatment }}</li>
+    {% else %}
+      <li>Имя не указано</li>
+    {% endif %}
+  {% endfor %}
+</ul>
+
+{% endblock %}
+

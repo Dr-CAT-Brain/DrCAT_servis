@@ -15,3 +15,156 @@
 	min-width: 100px;
 }
 
+h1,
+h2,
+p {
+  font-family: "Montserrat";
+}
+
+html {
+  overflow: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #c4c4c4;
+}
+
+html ::-webkit-scrollbar {
+  width: 10px;
+  /* width of the entire scrollbar */
+}
+
+html ::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background-color: #c4c4c4;
+}
+
+h1 {
+  font-weight: 700;
+  color: #2e2e2e;
+  font-size: 36px;
+  margin-top: 27px;
+  margin-left: 60px;
+}
+
+.row {
+  margin-top: 24px;
+  margin-left: 60px;
+}
+
+.row img {
+  width: 242px;
+  height: 242px;
+  border-radius: 120px;
+}
+
+.row h2 {
+  font-weight: 700;
+  color: #2e2e2e;
+  font-size: 24px;
+}
+
+.row p {
+  margin-top: 15px;
+  font-weight: 700;
+  color: #aaaaaa;
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+.row p.first {
+  margin-top: 28px;
+}
+
+.history {
+  width: 90%;
+  height: 369px;
+  -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+  border-radius: 30px;
+  background-color: #ffffff;
+  margin-left: 60px;
+  margin-top: 30px;
+  padding-top: 5px;
+}
+
+.history .search {
+  width: 600px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: rgba(170, 170, 170, 0.25);
+  margin-left: 45px;
+}
+
+.history .search img {
+  width: 25px;
+  height: 25px;
+}
+
+.history .search input[type="text"] {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  width: 510px;
+  height: 100%;
+  padding-bottom: 3px;
+  font-weight: 500;
+}
+
+.history ul {
+  max-height: 190px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-right: 30px;
+}
+
+.history ul li {
+  margin: 14px 0;
+  list-style-type: none;
+}
+
+.history ul li .row {
+  margin-left: 0;
+  margin-top: 0;
+}
+
+.history ul li .row img {
+  width: 23px;
+  height: 23px;
+  border-radius: 0;
+}
+
+.history ul li .row a {
+  margin-top: 2px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #2e2e2e;
+  margin: 0;
+  text-decoration: none;
+}
+
+#id_edit_form {
+    display: none;
+}
+
+#info button {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+#info button img {
+  width: 23px;
+  height: 23px;
+  border-radius: 0;
+}
+
+#id_edit_form button {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+#id_edit_form button img {
+  width: 23px;
+  height: 23px;
+  border-radius: 0;
+}
