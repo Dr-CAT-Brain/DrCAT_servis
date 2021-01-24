@@ -1,13 +1,13 @@
 let HideEditMenu = () => {
-    $("#id_edit_div").fadeOut();
+    $("#id_edit_form").fadeOut();
 };
 
 let ShowEditMenu = () => {
-    $("#id_edit_div").show("slow");
+    $("#id_edit_form").show("slow");
 };
 
 let HideProfileInfo = () => {
-    $("#id_personal_info").hide();
+    $("#id_personal_info").fadeOut();
 };
 
 let ShowProfileInfo = () => {

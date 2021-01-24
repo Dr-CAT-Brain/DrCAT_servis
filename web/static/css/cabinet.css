@@ -145,13 +145,13 @@ h1 {
     display: none;
 }
 
-#info button {
+#id_personal_info button {
   outline: none;
   border: none;
   background-color: transparent;
 }
 
-#info button img {
+#id_personal_info button img {
   width: 23px;
   height: 23px;
   border-radius: 0;

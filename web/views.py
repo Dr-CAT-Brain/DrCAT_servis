@@ -26,6 +26,7 @@ def cabinet_view(request):
     if request.method == "POST":
         form = PersonalData(request.POST, request.FILES)
         if form.is_valid():
+            print(form.cleaned_data)
             doctor = request.user.doctor
             doctor.full_name = form.cleaned_data['full_name']
             doctor.qualification = form.cleaned_data['qualification']

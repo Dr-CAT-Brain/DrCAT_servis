@@ -2,6 +2,7 @@
 {% block content %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/cabinet.css' %}">
+<script src="{% static 'js/cabinet.js' %}"></script>
 
 <h1>Личный кабинет</h1>
 <div class="row">
@@ -14,14 +15,13 @@
         {% endif %}
     </div>
     <div class="col-auto">
-        <div id="info">
+        <div id="id_personal_info">
             <h2>{{ doctor.full_name }}
                 {% load static %}
                 <button id="id_editing_start"><img src="{% static 'assets/svg/editor.svg' %}" alt="Edit icon"></button>
             </h2>
-            <p>Невролог</p>
-            <p class="first">Стаж:</p>
-            <p>Квалификация: {{ doctor.qualification }}</p>
+            <p>{{ doctor.qualification }}</p>
+            <p class="first">Стаж: {{ doctor.experience }}</p>
             <p>Место работы: {{ doctor.work_place }}</p>
             <p>Образование: {{ doctor.education }}</p>
             <p>Контакты: {{ doctor.contacts }}</p>
@@ -35,12 +35,12 @@
                 {% load static %}
                 <button id="id_cancel_editing"><img src="{% static 'assets/svg/editor.svg' %}" alt="Edit icon"></button>
             </h2>
-            <p>Специальность: {{ form. }}<input type="text"></p>
-            <p class="first">Стаж: <input type="text"></p>
-            <p>Квалификация: <input type="text"></p>
-            <p>Место работы: <input type="text"></p>
-            <p>Образование: <input type="text"></p>
-            <p>Контакты: <input type="text"></p>
+            <p>Специальность: {{ form.qualification }}</p>
+            <p class="first">Стаж: {{ form.experience }}</p>
+            <p>Место работы: {{ form.work_place }}</p>
+            <p>Образование: {{ form.education }}</p>
+            <p>Контакты: {{ form.contacts }}</p>
+            <input type="submit" value="Сохранить"/>
         </form>
     </div>
 </div>
