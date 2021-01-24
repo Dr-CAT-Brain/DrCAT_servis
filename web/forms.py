@@ -80,6 +80,10 @@ class TreatmentForm(forms.Form):
 
     snapshot = forms.ImageField(required=True)
 
+    def clean_snapshot(self):
+        data = self.cleaned_data['snapshot']
+        return data
+
 
 class PersonalData(forms.Form):
     full_name = forms.CharField(max_length=100, required=True, label='ФИО')

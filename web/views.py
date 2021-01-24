@@ -26,7 +26,6 @@ def cabinet_view(request):
     if request.method == "POST":
         form = PersonalData(request.POST, request.FILES)
         if form.is_valid():
-            print(form.cleaned_data)
             doctor = request.user.doctor
             doctor.full_name = form.cleaned_data['full_name']
             doctor.qualification = form.cleaned_data['qualification']
@@ -65,6 +64,26 @@ def cabinet_view(request):
                            })
 
 
+class DoctorProfileDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Doctor
+    template_name = "doctor_profile.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        search_query = self.request.GET.get('q')
+        search_query = search_query if search_query else ''
+
+        pk = self.kwargs['pk']
+        doctor = Doctor.objects.filter(id=pk).first()
+
+        context['history'] = Treatment.objects.filter(
+            Q(doctor=doctor) & Q(patient__full_name__icontains=search_query)
+        ).all()
+
+        return context
+
+
 def get_absolute_path_to_project():
     return os.path.dirname(os.path.abspath(__file__)).replace('\\web', '').replace('\\', '/')
 
@@ -90,7 +109,7 @@ def treatment_form_view(request):
             treatment.neurological_deficit = form.cleaned_data['neurological_deficit']
             treatment.conscious_level = form.cleaned_data['conscious_level']
 
-            treatment.snapshot = form.cleaned_data['snapshot']
+            treatment.snapshot = form.clean_snapshot()
             treatment.patient = patient
 
             if request.user.is_authenticated:

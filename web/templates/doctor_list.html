@@ -19,7 +19,7 @@
     <ul>
         {% for d in get_queryset %}
         <li>
-            <a href="#" class="row">
+            <a href="{% url 'profile' d.id %}" class="row">
                 <div class="col-auto p-0">
                     {% if d.photo %}
                     <img src="{{ d.photo.url }}"/>

@@ -70,6 +70,11 @@ class NeuronetPrediction(models.Model):
         return f'{decode_label(self.classification_type)} : {format(self.confidence, ".2f")}%'
 
 
+def rename_file_by_pk(instance, filename):
+    ext = filename.split('.')[-1]
+    return 'snapshots/{}.{}'.format(Treatment.objects.count() + 1, ext)
+
+
 class Treatment(models.Model):
     neurological_deficit = models.PositiveSmallIntegerField(null=False, default=1)
     conscious_level = models.PositiveSmallIntegerField(null=False, default=15)
@@ -82,7 +87,7 @@ class Treatment(models.Model):
 
     temporary_contraindications = models.ManyToManyField(TemporaryContraindications, blank=True)
 
-    snapshot = models.ImageField(upload_to='snapshots', null=True, blank=True)
+    snapshot = models.ImageField(upload_to=rename_file_by_pk, null=True, blank=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True, blank=True)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, null=True, default=None, blank=True)
 

@@ -8,6 +8,7 @@ from . import views
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('cabinet/', views.cabinet_view, name='cabinet'),
+    url(r'^profile/(?P<pk>\d+)$', views.DoctorProfileDetailView.as_view(), name='profile'),
     path('peoples/', views.DoctorsListView.as_view(), name='peoples'),
     path('treatment-form', views.treatment_form_view, name='treatment_form'),
     url(r'^report/(?P<pk>\d+)$', views.TreatmentDetailView.as_view(), name='treatment_report'),
