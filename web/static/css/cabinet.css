@@ -53,7 +53,7 @@ h1 {
 .row img {
   width: 242px;
   height: 242px;
-  border-radius: 120px;
+  border-radius: 50%;
 }
 
 .row h2 {

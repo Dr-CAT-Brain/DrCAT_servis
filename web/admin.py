@@ -20,7 +20,7 @@ class PatientAdmin(admin.ModelAdmin):
 
 @admin.register(Treatment)
 class Treatment(admin.ModelAdmin):
-    list_display = ["get_snapshot_html", "patient"]
+    list_display = ["get_snapshot_for_admin", "patient"]
 
 
 @admin.register(TemporaryContraindications)

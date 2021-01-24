@@ -7,48 +7,71 @@ from sklearn.neighbors import NearestNeighbors
 import torch
 
 import warnings
+import pickle
 
 warnings.filterwarnings(action='ignore', category=DeprecationWarning)
 
 RESCALE_SIZE = 32
-TRAIN_DIR = Path('train/all_kt')
+TRAIN_DIR = Path('knn_img/train')
+TEST_DIR = 'knn_img/test/'
 
 
-def to_tensor(file_name):
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    ])
-    x = Image.open(file_name)
-    x.load()
-    x = x.crop((470, 0, 1449, 979))
-    x = x.resize((RESCALE_SIZE, RESCALE_SIZE))
-    x = np.array(x)
-    x = np.array(x / 255, dtype='float32')
-    x = transform(x)
-    x = torch.reshape(x, (-1,))
-    return x.tolist()
+class KNN:
+    def __init__(self):
+        self.neighbours = None
+        self.file_names = []
 
+    def fit(self, file_names: list):
+        X = [KNN.to_tensor(file_name) for file_name in file_names]
+        self.neighbours = NearestNeighbors().fit(X)
+        self.file_names = file_names
 
-train_files = sorted(list(TRAIN_DIR.rglob('*.jpg')))
+    def save_model(self, file_name):
+        assert self.neighbours
 
-X = [to_tensor(file_name) for file_name in train_files]
-neighbours = NearestNeighbors().fit(X)
+        with open(file_name + '.pkl', 'wb') as le_dump_file:
+            pickle.dump(self.neighbours, le_dump_file)
 
-neigh_ind = neighbours.kneighbors([to_tensor(train_files[0])])
+        with open(file_name + '_file_names' + '.pkl', 'wb') as le_dump_file:
+            pickle.dump(self.file_names, le_dump_file)
 
-for i in neigh_ind[1][0]:
-    print(train_files[i])
+    def load_form_file(self, file_name):
+        self.neighbours = pickle.load(open(file_name + '.pkl', 'rb'))
+        self.file_names = pickle.load(open(file_name + '_file_names' + '.pkl', 'rb'))
 
-test_file = Path("/content/gdrive/MyDrive/kt_test_fold/5.jpg")
-neigh_ind = neighbours.kneighbors([to_tensor(test_file)], 30)
-print(neigh_ind[1][0])
+    def predict(self, file_name: str, num=1) -> set:
+        assert self.neighbours
+        distance, indexes = self.neighbours.kneighbors([KNN.to_tensor(file_name)], num)
 
-for i in neigh_ind[1][0]:
-    print(train_files[i])
+        similar_files = set()
 
+        for i in indexes[0]:
+            similar_files.add(self.file_names[i])
 
-def give_KNN(file_name, num=20):
-    neigh_ind = neighbours.kneighbors([to_tensor(file_name)], num)
-    ressa = [train_files[i] for i in neigh_ind[1][0]]
-    return ressa
+        return similar_files
+
+    @staticmethod
+    def to_tensor(file_name):
+        transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+        x = Image.open(file_name)
+        x.load()
+        x = x.crop((470, 0, 1449, 979))
+        x = x.resize((RESCALE_SIZE, RESCALE_SIZE))
+        x = np.array(x)
+        x = np.array(x / 255, dtype='float32')
+        x = transform(x)
+        x = torch.reshape(x, (-1,))
+        return x.tolist()
+
+# Save model
+# knn = KNN()
+# knn.fit(list(TRAIN_DIR.rglob('*.jpg')))
+# knn.save_model('model_test')
+
+# Load model
+# knn = KNN()
+# knn.load_form_file('model_test')
+# print(knn.predict('knn_img/test/1.jpg'))

@@ -1,6 +1,7 @@
 import os
 import pathlib
 
+from django.conf import settings
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -13,6 +14,7 @@ from django.views import generic
 from .filters import TreatmentFilter
 from .LabelDecoder import decode_label, decode_label_detail
 from neuronet.model_predict import predict_picture
+from neuronet.KNN import KNN
 
 from .forms import *
 from .models import Patient, Treatment, Doctor, FAQ, FAQItem
@@ -62,6 +64,14 @@ def cabinet_view(request):
                            'form': form,
                            'history': get_queryset,
                            })
+
+
+def fit_KNN():
+    knn = KNN()
+    file_names_to_fit = [get_absolute_path_to_project() + settings.MEDIA_URL + str(x.snapshot)
+                         for x in Treatment.objects.all()]
+    knn.fit(file_names_to_fit)
+    knn.save_model(get_absolute_path_to_project() + '/neuronet/knn_3_samples')
 
 
 class DoctorProfileDetailView(LoginRequiredMixin, generic.DetailView):
@@ -217,7 +227,15 @@ class TreatmentDetailView(generic.DetailView):
         context['neurological_deficit'] = neurological_deficit_to_str[treatment.neurological_deficit]
         context['conscious_level'] = conscious_level_to_str[treatment.conscious_level]
         context['predicted_diagnosis'] = decode_label_detail(treatment.predict.classification_type)
-        context['similar_treatments'] = Treatment.objects.all()[:5]  # use get knn
+
+        knn = KNN()
+        knn.load_form_file(get_absolute_path_to_project() + '/neuronet/knn_3_samples')
+        path_to_snapshots = get_absolute_path_to_project() + settings.MEDIA_URL
+
+        knn_set = knn.predict(path_to_snapshots + str(treatment.snapshot), 3)
+
+        context['similar_treatments'] = list(knn_set)
+        # use get knn
         return context
 
 
@@ -299,6 +317,5 @@ def reference_view(request):
     faq = FAQ.objects.first()
     return render(request, 'reference.html',
                   context={
-                            'FAQItems': FAQItem.objects.filter(reference=faq)
-                           })
-
+                      'FAQItems': FAQItem.objects.filter(reference=faq)
+                  })

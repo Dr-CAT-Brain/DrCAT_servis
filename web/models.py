@@ -103,6 +103,12 @@ class Treatment(models.Model):
     def get_snapshot_html(self):
         return mark_safe(f'<img src="{settings.MEDIA_URL}{self.snapshot}" alt="File image"/>')
 
+    def get_snapshot_for_admin(self):
+        HEIGHT = 120
+        WIDTH = 200
+        return mark_safe(f'<img src="{settings.MEDIA_URL}{self.snapshot}" '
+                         f'style=width:{WIDTH}px; height:{HEIGHT}px; alt="File image"/>')
+
     def get_absolute_url(self):
         return reverse('treatment_detail', args=[str(self.id)])
 
