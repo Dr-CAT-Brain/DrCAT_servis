@@ -1,21 +1,41 @@
 {% extends 'nav_bar.html' %}
-
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/doctor_list.css' %}">
+<h1>Люди</h1>
 
-<form action="{% url 'peoples' %}" method="get">
-    <input name="q" type="text" placeholder="Search...">
-</form>
+<div class="row search">
+    <div class="col-auto d-flex align-items-center">
+        <img src="{% static 'assets/svg/loupe-grey.svg' %}" alt="Loupe icon">
+    </div>
+    <div class="col-auto p-0">
+        <form action="{% url 'peoples' %}" method="get">
+            <input id="searchLine" name="q" type="text" placeholder="Поиск">
+        </form>
+    </div>
+</div>
 
-{% for d in get_queryset %}
-    {% if d.photo %}
-        <image src="{{ d.photo.url }}" style="width: 150px; height: 150px;"></image>
-    {% else %}
-        {% load static %}
-        <image src="{% static 'assets/svg/profile_photo.svg' %}" style="width: 150px; height: 150px;"></image>
-    {% endif %}
+<div class="users">
+    <ul>
+        {% for d in get_queryset %}
+        <li>
+            <a href="#" class="row">
+                <div class="col-auto p-0">
+                    {% if d.photo %}
+                    <img src="{{ d.photo.url }}"/>
+                    {% else %}
+                    <img src="{% static 'assets/svg/profile_photo.svg' %}"/>
+                    {% endif %}
+                </div>
+                <div class="col-auto">
+                    <h2>{{ d.full_name }}</h2>
+                    <p>{{ d.qualification }}</p>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 
-    <h3>{{ d.full_name }}</h3>
-    <p>{{ d.qualification }}</p>
-{% endfor %}
-
+<script src="js/search.js"></script>
 {% endblock %}

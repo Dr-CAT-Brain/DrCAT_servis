@@ -1,0 +1,21 @@
+{% extends 'nav_bar.html' %}
+
+{% block content %}
+
+<form action="{% url 'peoples' %}" method="get">
+    <input name="q" type="text" placeholder="Search...">
+</form>
+
+{% for d in get_queryset %}
+    {% if d.photo %}
+        <image src="{{ d.photo.url }}" style="width: 150px; height: 150px;"></image>
+    {% else %}
+        {% load static %}
+        <image src="{% static 'assets/svg/profile_photo.svg' %}" style="width: 150px; height: 150px;"></image>
+    {% endif %}
+
+    <h3>{{ d.full_name }}</h3>
+    <p>{{ d.qualification }}</p>
+{% endfor %}
+
+{% endblock %}

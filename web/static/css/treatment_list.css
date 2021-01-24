@@ -1,0 +1,107 @@
+h1,
+h2,
+p {
+  font-family: "Montserrat";
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #c4c4c4;
+}
+
+html ::-webkit-scrollbar {
+  width: 10px;
+  /* width of the entire scrollbar */
+}
+
+html ::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background-color: #c4c4c4;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 36px;
+  color: #2e2e2e;
+  margin-left: 60px;
+  margin-top: 27px;
+}
+
+.search {
+  width: 600px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: rgba(170, 170, 170, 0.25);
+  margin-left: 60px;
+  margin-top: 46px;
+}
+
+.search img {
+  width: 25px;
+  height: 25px;
+}
+
+.search input[type="text"] {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  width: 510px;
+  height: 100%;
+  padding-bottom: 3px;
+  font-weight: 500;
+}
+
+.library {
+  width: 90%;
+  -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+  border-radius: 30px;
+  background-color: #ffffff;
+  margin-top: 32px;
+  margin-left: 60px;
+  padding-top: 45px;
+  padding-left: 45px;
+}
+
+.library .list {
+  max-height: 300px;
+  margin-right: 60px;
+  overflow: scroll;
+}
+
+.library .list li {
+  list-style-type: none;
+  display: inline-block;
+}
+
+.library .list li a {
+  text-decoration: none;
+  margin: 12px 15px;
+  display: inline-block;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.library .list li a:hover:after {
+  content: "";
+  cursor: pointer;
+  display: block;
+  width: 120px;
+  height: 120px;
+  background-image: url(../assets/svg/loupe-plus-min.svg);
+  position: absolute;
+  top: 0;
+}
+
+.library .list li a img {
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+}
+
+.library .list li a p {
+  display: none;
+}

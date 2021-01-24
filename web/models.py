@@ -42,7 +42,7 @@ class Patient(models.Model):
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    full_name = models.CharField(max_length=100, null=False, blank=False, default='Фамилия Имя Отчество')
+    full_name = models.CharField(max_length=100, null=False, blank=False, default='Фамилия имя отчество')
     qualification = models.CharField(max_length=100, null=True, blank=True)
     experience = models.PositiveSmallIntegerField(null=True, blank=True)
     work_place = models.CharField(max_length=100, null=True, blank=True)
@@ -96,9 +96,7 @@ class Treatment(models.Model):
         return f'{self.patient.full_name}.{patology} '
 
     def get_snapshot_html(self):
-        width = 270
-        height = 150
-        return mark_safe(f'<img src="{settings.MEDIA_URL}{self.snapshot}" width="{width}" height="{height}" />')
+        return mark_safe(f'<img src="{settings.MEDIA_URL}{self.snapshot}" alt="File image"/>')
 
     def get_absolute_url(self):
         return reverse('treatment_detail', args=[str(self.id)])

@@ -1,9 +1,9 @@
 {% extends "nav_bar.html" %}
-
-{% load widget_tweaks %}
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/treatment_list.css' %}">
+<h1>Библиотека снимков</h1>
 
-{% if user.is_authenticated %}
 
 <form method="get">
     {{ filter.form.as_p }}
@@ -11,32 +11,120 @@
 </form>
 
 
-{% if filter.qs %}
-<div class="row">
-    {% for treatment in filter.qs %}
-    <div class="form-group col-sm-4 col-md-3">
-        <div style="min-width: 300px;">
-            {% if treatment.snapshot %}
-            {{ treatment.get_snapshot_html }}
-            <br>
-            {% endif %}
-            <div style="">
-                <a href="{{ treatment.get_absolute_url }}">{{ treatment.patient.full_name }}</a>
-                <br><br>
-                <p>{{treatment.hematoma_volume}}</p>
-            </div>
-        </div>
+<div class="row search">
+    <div class="col-auto d-flex align-items-center">
+        <img src="{% static 'assets/svg/loupe-grey.svg' %}" alt="Loupe icon">
     </div>
-    {% endfor %}
+    <div class="col-auto p-0">
+        <input id="searchLine" type="text" placeholder="Поиск">
+    </div>
 </div>
 
-{% else %}
-<p>Ничего не найдено</p>
-{% endif %}
+<div class="library">
+    <div class="list">
+        {% if filter.qs %}
+        <ul>
+            {% for treatment in filter.qs %}
+            <li>
+                <a href="{{treatment.get_absolute_url}}">
+                    {% if treatment.snapshot %}
+                        {{ treatment.get_snapshot_html }}
+                    {% endif %}
+                </a>
+            </li>
+            {% endfor %}
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="assets/img/img-result-test.jpg" alt="File img">
+                    <p>Константинов Иван Егорович - САК</p>
+                </a>
+            </li>
+        </ul>
+        {% else %}
+         <p>По данному запросу ничего не найдено</p>
+        {% endif %}
+    </div>
+</div>
 
-{% else %}
+{% load static %}
+<script src="{% static 'js/search.js' %}"></script>
 
-{% include "authentication_need.html" %}
-
-{% endif %}
 {% endblock %}

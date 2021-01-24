@@ -1,0 +1,42 @@
+{% extends "nav_bar.html" %}
+
+{% load widget_tweaks %}
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<form method="get">
+    {{ filter.form.as_p }}
+    <input type="submit" value="Найти"/>
+</form>
+
+
+{% if filter.qs %}
+<div class="row">
+    {% for treatment in filter.qs %}
+    <div class="form-group col-sm-4 col-md-3">
+        <div style="min-width: 300px;">
+            {% if treatment.snapshot %}
+                {{ treatment.get_snapshot_html }}
+            <br>
+            {% endif %}
+            <div style="">
+                <a href="{{ treatment.get_absolute_url }}">{{ treatment.patient.full_name }}</a>
+                <br><br>
+                <p>{{treatment.hematoma_volume}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<p>Ничего не найдено</p>
+{% endif %}
+
+{% else %}
+
+{% include "authentication_need.html" %}
+
+{% endif %}
+{% endblock %}

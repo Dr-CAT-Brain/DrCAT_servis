@@ -22,7 +22,7 @@ p {
 }
 
 html {
-  overflow: hidden;
+overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: #c4c4c4;
 }
@@ -110,7 +110,7 @@ h1 {
 }
 
 .history ul {
-  max-height: 190px;
+  max-height: 280px;
   overflow-y: scroll;
   overflow-x: hidden;
   margin-right: 30px;
@@ -168,3 +168,35 @@ h1 {
   height: 23px;
   border-radius: 0;
 }
+
+form input {
+  margin-top: 9px;
+  margin-left: 10px;
+  outline: none;
+  height: 40px;
+  border: none;
+  -webkit-box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  border-radius: 10px;
+  background-color: white;
+  padding-left: 20px;
+  font-weight: 500;
+  color: #2e2e2e;
+  outline: none;
+}
+
+form input[type=submit] {
+  margin-top: 9px;
+  outline: none;
+  height: 40px;
+  width: 200px;
+  border: none;
+  -webkit-box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+  border-radius: 10px;
+  background-color: white;
+  padding: 0;
+  font-weight: 500;
+  color: #2e2e2e;
+}
+
