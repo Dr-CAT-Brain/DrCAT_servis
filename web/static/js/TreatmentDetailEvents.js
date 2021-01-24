@@ -2,6 +2,10 @@ let setActive = false;
 $('#sidebar').toggleClass('active');
 
 $(document).ready(function () {
+    $('#previousButton').on('click', () => {
+        window.history.back();
+    })
+
     $('#sidebarCollapse').on('click', function () {
         document.getElementById("open-buttons").style.zIndex = "-1"
         document.getElementById("data").style.display = "block";

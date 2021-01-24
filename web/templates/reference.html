@@ -1,0 +1,10 @@
+{% extends 'nav_bar.html' %}
+{% block content %}
+{% load static %}
+
+{% for item in FAQItems %}
+    <h2>{{ item.header }}</h2>
+    <p>{{ item.text }}</p>
+{% endfor %}
+
+{% endblock %}

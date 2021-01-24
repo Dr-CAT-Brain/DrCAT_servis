@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^treatment/(?P<pk>\d+)$', views.TreatmentDetailView.as_view(), name='treatment_detail'),
     url('api/login', views.api_login),
     path('signup/', views.sign_up, name='sign_up'),
+    path('FAQ/', views.reference_view, name='reference')
 ]
 
 if settings.DEBUG:

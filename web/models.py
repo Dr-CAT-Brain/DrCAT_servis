@@ -64,7 +64,7 @@ class NeuronetPrediction(models.Model):
     classification_type = models.PositiveSmallIntegerField(null=True)
     confidence = models.FloatField(null=True)
 
-    recommend_text = models.OneToOneField(RecommendText, on_delete=models.CASCADE)
+    recommend_text = models.OneToOneField(RecommendText, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f'{decode_label(self.classification_type)} : {format(self.confidence, ".2f")}%'
@@ -110,3 +110,19 @@ class Treatment(models.Model):
         if self.temporary_contraindications:
             return [i.name for i in self.temporary_contraindications.all()]
         return []
+
+
+class FAQ(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class FAQItem(models.Model):
+    header = models.CharField(max_length=100, null=False)
+    text = models.TextField(null=False)
+    reference = models.ForeignKey(FAQ, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.header

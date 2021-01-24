@@ -43,5 +43,15 @@ class NeuronetPrediction(admin.ModelAdmin):
     inlines = [TreatmentInline]
 
 
+class FAQItemInline(admin.TabularInline):
+    model = FAQItem
+    extra = 1
+
+
+@admin.register(FAQ)
+class FAQ(admin.ModelAdmin):
+    inlines = [FAQItemInline]
+
+
 admin.site.site_header = 'Admin-panel'
 admin.site.index_title = 'Databases'

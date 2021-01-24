@@ -55,12 +55,12 @@
         <a class="activ" href="{% url 'treatment_list' %}">Библиотека снимков</a>
         {% endif %}
 
-        {% if request.path == '/pass/' %}
+        {% if request.path == '/FAQ/' %}
         <div class="active">
-            <a class="now" href="">Справка</a>
+            <a class="now" href="{% url 'reference' %}">Справка</a>
         </div>
         {% else %}
-        <a class="activ" href="">Справка</a>
+            <a class="activ" href="{% url 'reference' %}">Справка</a>
         {% endif %}
     </nav>
 </nav>

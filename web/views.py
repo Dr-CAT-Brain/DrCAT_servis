@@ -15,7 +15,7 @@ from .LabelDecoder import decode_label, decode_label_detail
 from neuronet.model_predict import predict_picture
 
 from .forms import *
-from .models import Patient, Treatment, Doctor
+from .models import Patient, Treatment, Doctor, FAQ, FAQItem
 from neuronet.recomendation_algo import give_recommend
 
 LOGIN_URL = 'login'
@@ -293,3 +293,12 @@ class DoctorsListView(LoginRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         context['get_queryset'] = self.get_queryset()
         return context
+
+
+def reference_view(request):
+    faq = FAQ.objects.first()
+    return render(request, 'reference.html',
+                  context={
+                            'FAQItems': FAQItem.objects.filter(reference=faq)
+                           })
+
