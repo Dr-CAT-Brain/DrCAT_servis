@@ -2,46 +2,141 @@
 {% block content %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/treatment_list.css' %}">
-<h1>Библиотека снимков</h1>
 
 
-<form method="get">
+<!--<form method="get">
     {{ filter.form.as_p }}
     <input type="submit" value="Найти"/>
-</form>
+</form>-->
 
 
-<div class="row search">
-    <div class="col-auto d-flex align-items-center">
-        <img src="{% static 'assets/svg/loupe-grey.svg' %}" alt="Loupe icon">
+<div class="wrapper">
+    <div id="content">
+        <h1>Библиотека снимков</h1>
+        <div class="row search">
+            <div class="col-auto d-flex align-items-center">
+                <img src="{% static 'assets/svg/loupe-grey.svg' %}" alt="Loupe icon">
+            </div>
+            <div class="col-auto p-0">
+                <input id="searchLine" type="text" placeholder="Поиск">
+            </div>
+            <div class="col-auto d-flex align-items-center btn" onclick="openSideBar()">
+                <img src="{% static 'assets/svg/filtres.svg' %}" alt="Filtres icon">
+            </div>
+        </div>
+        
+        <div class="library">
+            <div class="list">
+                {% if filter.qs %}
+                <ul>
+                    {% for treatment in filter.qs %}
+                    <li>
+                        <a href="{{treatment.get_absolute_url}}">
+                            {% if treatment.snapshot %}
+                                {{ treatment.get_snapshot_html }}
+                            {% endif %}
+                            <p>ТЕКСТ ДЛЯ ПОИСКА ЗДЕСЬ</p>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                 <p>По данному запросу ничего не найдено</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    <div class="col-auto p-0">
-        <input id="searchLine" type="text" placeholder="Поиск">
-    </div>
-</div>
+    <nav class="d-none" id="sidebar">
+        <div id="data">
+            <div class="row">
+                <div class="col-auto d-flex align-items-center">
+                    <h1 class="title m-0">Фильтр</h1>
+                </div>
+                <div class="col-auto p-0 d-flex align-items-center">
+                    <button id="sidebarCollapse2" onclick="closeSideBar()">
+                        <p>Свернуть</p>
+                    </button>
+                </div>
+            </div>
 
-<div class="library">
-    <div class="list">
-        {% if filter.qs %}
-        <ul>
-            {% for treatment in filter.qs %}
-            <li>
-                <a href="{{treatment.get_absolute_url}}">
-                    {% if treatment.snapshot %}
-                        {{ treatment.get_snapshot_html }}
-                    {% endif %}
-                    <p>ТЕКСТ ДЛЯ ПОИСКА ЗДЕСЬ</p>
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-         <p>По данному запросу ничего не найдено</p>
-        {% endif %}
-    </div>
+            <h2 class="data-title">Тип патологии</h2>
+
+            <div class="data">
+                <div id="radioType" class="row">
+                    <div class="col-auto">
+                        <input class="d-none" id="type-1" type="checkbox">
+                        <label for="type-1" onclick="$(this).toggleClass('active');">САК</label>
+                    </div>
+                    <div class="col-auto">
+                        <input class="d-none" id="type-2" type="checkbox">
+                        <label for="type-2" onclick="$(this).toggleClass('active');">ВМГ</label>
+                    </div>
+                    <div class="col-auto">
+                        <input class="d-none" id="type-3" type="checkbox">
+                        <label for="type-3" onclick="$(this).toggleClass('active');">ВЖК</label>
+                    </div>
+                    <div class="col-auto">
+                        <input class="d-none" id="type-4" type="checkbox">
+                        <label for="type-4" onclick="$(this).toggleClass('active');">Ишемия</label>
+                    </div>
+                    <div class="col-auto">
+                        <input class="d-none" id="type-5" type="checkbox">
+                        <label for="type-5" onclick="$(this).toggleClass('active');">Опухоль</label>
+                    </div>
+                </div>
+
+                <h2 class="data-title">Объем гематомы (см³)</h2>
+
+                <div class="d-flex justify-content-center align-items-center">
+                    <input type="text" class="input-volume" id="volume-min" placeholder="От">
+                    <p class="text-volume">–</p>
+                    <input type="text" class="input-volume" id="volume-max" placeholder="До">
+                </div>
+
+                <h2 class="data-title">Время начала симптоматики (часов назад)</h2>
+
+                <div class="d-flex justify-content-center align-items-center">
+                    <input type="text" class="input-volume" id="time-min" placeholder="От">
+                    <p class="text-volume">–</p>
+                    <input type="text" class="input-volume" id="time-max" placeholder="До">
+                </div>
+
+                <h2 class="data-title">Травма</h2>
+                <div id="radioType" class="row">
+                    <div class="col-auto">
+                        <input class="d-none" id="injure-1" type="radio">
+                        <label for="injure-1" onclick="setActive2(this)">Да</label>
+                    </div>
+                    <div class="col-auto">
+                        <input class="d-none" id="injure-2" type="radio">
+                        <label for="injure-2" onclick="setActive2(this)">Нет</label>
+                    </div>
+                    <div class="col-auto">
+                        <input class="d-none" id="injure-3" type="radio">
+                        <label for="injure-3" onclick="setActive2(this)">Неизвестно</label>
+                    </div>
+                </div>
+
+                <h2 class="data-title">Симптомы инсульта</h2>
+                <div id="radioType" class="row">
+                    <div class="col-auto">
+                        <input class="d-none" id="insult-1" type="radio">
+                        <label for="insult-1" onclick="setActive3(this)">Да</label>
+                    </div>
+                    <div class="col-auto">
+                        <input class="d-none" id="insult-2" type="radio">
+                        <label for="insult-2" onclick="setActive3(this)">Нет</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+</nav>
 </div>
 
 {% load static %}
 <script src="{% static 'js/search.js' %}"></script>
+
+{% load static %}
+<script src="{% static 'js/library_settings.js' %}"></script>
 
 {% endblock %}

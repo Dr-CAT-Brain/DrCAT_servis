@@ -11,7 +11,6 @@ html {
 
 html ::-webkit-scrollbar {
   width: 10px;
-  /* width of the entire scrollbar */
 }
 
 html ::-webkit-scrollbar-thumb {
@@ -45,7 +44,7 @@ h1 {
   border: none;
   background-color: transparent;
   outline: none;
-  width: 510px;
+  width: 480px;
   height: 100%;
   padding-bottom: 3px;
   font-weight: 500;
@@ -104,4 +103,178 @@ h1 {
 
 .library .list li a p {
   display: none;
+}
+
+.wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+}
+
+#sidebar {
+  min-width: 480px;
+  max-width: 480px;
+  -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  padding-top: 40px;
+  padding-left: 20px;
+}
+
+#sidebar #data .title {
+  font-weight: 700;
+  font-size: 27px;
+  left: 10000px;
+}
+
+#sidebar #data .data-title {
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 15px;
+}
+
+#sidebar #data .data {
+  margin-top: 16px;
+  margin-right: 20px;
+  max-height: 520px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#sidebar #data .data label {
+  -webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background-color: #ffffff;
+  font-weight: 500;
+  font-size: 16px;
+  color: #808080;
+  padding: 4px 19px;
+  cursor: pointer;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+#sidebar #data .data label.active {
+  background-color: #004dc1;
+  color: #ffffff;
+}
+
+#sidebar #data .data .data1 {
+  margin-top: 20px;
+  padding-left: 7px;
+}
+
+#sidebar #data .data .data1 .col-auto {
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
+#sidebar #data .data .data1 .col-auto p {
+  font-weight: 700;
+  font-size: 17px;
+}
+
+#sidebar #data .data .data1 .col-auto span {
+  -webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background-color: #ffffff;
+  font-weight: 500;
+  font-size: 16px;
+  color: #808080;
+  padding: 4px 19px;
+}
+
+#sidebar #data .data .data-title2 {
+  margin-top: 25px;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+#sidebar #data .data .d-span {
+  margin-left: 2px;
+}
+
+#sidebar #data .data .data-title3 {
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+#sidebar #data .data .pathologies {
+  margin-top: 30px;
+  font-weight: 700;
+  font-size: 24px;
+  margin-left: 2px;
+}
+
+#sidebar #data .data ul {
+  padding-left: 15px;
+}
+
+#sidebar #data .data ul li {
+  margin-top: 11px;
+  margin-bottom: 11px;
+  list-style: none;
+}
+
+#sidebarCollapse2 {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  height: 24px;
+  padding-top: 5px;
+  padding-right: 30px;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+#sidebarCollapse2 p {
+  font-weight: 500;
+  font-size: 16px;
+  color: #aaaaaa;
+}
+
+#sidebar.active {
+  margin-right: -480px;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+#content {
+  width: 100%;
+  padding: 20px;
+  min-height: 100vh;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.input-volume {
+  width: 100px;
+  height: 30px;
+  -webkit-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background-color: #ffffff;
+  padding-left: 30px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #808080;
+  border: none;
+  outline: none;
+  margin: 0;
+}
+
+.text-volume {
+  font-size: 50px;
+  margin: 0 20px;
 }
