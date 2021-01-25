@@ -48,7 +48,7 @@ class KNN:
         similar_files = set()
 
         for i in indexes[0]:
-            similar_files.add(self.treatments[int(i)].snapshot.url)
+            similar_files.add(self.treatments[int(i)])
 
         return similar_files
 

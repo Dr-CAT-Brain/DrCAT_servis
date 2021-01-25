@@ -75,7 +75,7 @@ class Migration(migrations.Migration):
             name='NeuronetPrediction',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('classification_type', models.PositiveSmallIntegerField()),
+                ('classification_types', models.PositiveSmallIntegerField()),
                 ('confidence', models.PositiveSmallIntegerField(null=True)),
                 ('treatment', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='web.treatment')),
             ],

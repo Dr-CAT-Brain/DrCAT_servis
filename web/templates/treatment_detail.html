@@ -1,174 +1,176 @@
 {% extends 'nav_bar.html' %} {% block content %} {% load static %}
-<link rel="stylesheet" href="{% static 'css/treatment_detail.css' %}" />
+<link rel="stylesheet" href="{% static 'css/treatment_detail.css' %}"/>
 <div onclick="imgFullScreenClose(this)" id="imgFullScreen">
-  <img src="#" alt="Img Full Screen" />
+    <img src="#" alt="Img Full Screen"/>
 </div>
 
 <div class="wrapper">
-  <div id="content">
-    <h1 class="title">Результаты</h1>
-    <div class="row">
-      <div class="col-auto col-left">
-        <div class="img" onclick="imgFullScreenOpen(this)">
-          <img src="{{ treatment.snapshot.url }}" alt="Img result" />
-        </div>
-      </div>
-      <div class="col col-right">
-        <h2 class="diagnosis">Предполагаемый диагноз:</h2>
-        <p>{{ predicted_diagnosis }}</p>
+    <div id="content">
+        <h1 class="title">Результаты</h1>
+        <div class="row">
+            <div class="col-auto col-left">
+                <div class="img" onclick="imgFullScreenOpen(this)">
+                    <img src="{{ treatment.snapshot.url }}" alt="Img result"/>
+                </div>
+            </div>
+            <div class="col col-right">
+                <h2 class="diagnosis">Предполагаемый диагноз:</h2>
+                <p>{{ predicted_diagnosis }}. {{ hunt_hess }}</p>
 
-        <h2 class="recommendation">Рекомендации:</h2>
-        <div class="result">
-            <div class="text">
-                <p><span>Операция:</span> {{ treatment.predict.recommend_text.operation }}</p>
-                <p><span>Рекомендации:</span></p>
-                 <p class="big-text">
-                    {{ treatment.predict.recommend_text.treatment_tactics }}
-                 </p>
-                <p><span>Рекомендации при согласии на хирургическое лечение:</span></p>
-                <p class="big-text">
-                  {% if  treatment.predict.recommend_text.tactics_if_agree %}
-                    {{ treatment.predict.recommend_text.tactics_if_agree }}
-                  {% else %}
-                    Отсутствуют
-                  {% endif %}
-                </p>
+                <h2 class="recommendation">Рекомендации:</h2>
+                <div class="result">
+                    <div class="text">
+                        <p><span>Операция:</span> {{ treatment.predict.recommend_text.operation }}</p>
+                        <p><span>Рекомендации:</span></p>
+                        <p class="big-text">
+                            {{ treatment.predict.recommend_text.treatment_tactics }}
+                        </p>
+                        <p><span>Рекомендации при согласии на хирургическое лечение:</span></p>
+                        <p class="big-text">
+                            {% if treatment.predict.recommend_text.tactics_if_agree %}
+                            {{ treatment.predict.recommend_text.tactics_if_agree }}
+                            {% else %}
+                            Отсутствуют
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    </div>
-  </div>
-  <div id="open-buttons" class="row">
-    <div class="col-auto">
-      <button id="sidebarCollapse">
-        <p>Смотреть сведения</p>
-      </button>
-    </div>
-    <div class="col-auto">
-      <button id="simularCollapse">
-        {% load static %}
-        <img src="{% static 'assets/svg/Similar.svg' %}" alt="Simular icons" />
-      </button>
-    </div>
-  </div>
-
-  <button id="previousButton">
-    <p>Назад</p>
-  </button>
-
-  <nav id="sidebar" class="d-none">
-    <div id="data">
-      <div class="row">
+    <div id="open-buttons" class="row">
         <div class="col-auto">
-          <h1 class="title">Сведения о пациенте</h1>
+            <button id="sidebarCollapse">
+                <p>Смотреть сведения</p>
+            </button>
         </div>
         <div class="col-auto">
-          <button id="sidebarCollapse2">
-            <p>Свернуть</p>
-          </button>
+            <button id="simularCollapse">
+                {% load static %}
+                <img src="{% static 'assets/svg/Similar.svg' %}" alt="Simular icons"/>
+            </button>
         </div>
-      </div>
-
-      <h2 class="data-title">Данные о пациенте</h2>
-
-      <div class="data">
-        <div class="row">
-          {% if treatment.patient.full_name %}
-          <div class="col-auto">
-            <span>{{ treatment.patient.full_name }}</span>
-          </div>
-          {% endif %} {% if treatment.patient.age %}
-          <div class="col-auto">
-            <span>{{ treatment.patient.age }} лет</span>
-          </div>
-          {% endif %}
-        </div>
-        <div class="row data1">
-          <div class="col-auto">
-            <p>Травма</p>
-            <span>{{ is_injure_label }}</span>
-          </div>
-          <div class="col-auto">
-            <p>Симптомы инсульта</p>
-            <span>{{ has_stroke_symptoms }}</span>
-          </div>
-          {% if treatment.hematoma_volume %}
-          <div class="col-auto">
-            <p>Объем гематомы</p>
-            <span>{{ treatment.hematoma_volume }} см³</span>
-          </div>
-          {% endif %}
-        </div>
-
-        <h2 class="data-title2">Неврологический дефицит</h2>
-        <span class="d-span">{{ neurological_deficit }}</span>
-
-        <h2 class="data-title3">Уровень сознания</h2>
-        <span class="d-span">{{ conscious_level }}</span>
-
-        <h2 class="pathologies">Сопутствующие патологии</h2>
-        {% if  treatment.patient.diagnoses.all %}
-          <ul>
-            {% for i in treatment.patient.diagnoses.all %}
-            <li><span>{{ i.name }}</span></li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p>Отсутствуют</p>
-        {% endif %}
-
-        <h2 class="pathologies">Иные противопоказания</h2>
-        {% if  treatment.temporary_contraindications.all %}
-          <ul>
-            {% for i in treatment.temporary_contraindications.all %}
-            <li><span>{{ i.name }}</span></li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p>Отсутствуют</p>
-        {% endif %}
-      </div>
     </div>
 
-    <div id="simular">
-      <div class="row">
-        <div class="col-auto">
-          <h1 class="title">Похожие</h1>
-        </div>
-        <div class="col-auto">
-          <button id="simularCollapse2">
-            <p>Свернуть</p>
-          </button>
-        </div>
-      </div>
+    <button id="previousButton">
+        <p>Назад</p>
+    </button>
 
-      <div class="data">
-        {% for t in similar_treatments %}
-          <div class="img-min" onclick="imgFullScreenOpen(this)">
-            <img src="{{ t }}" alt="Img result" />
-          </div>
-        {% endfor %}
-      </div>
-    </div>
-  </nav>
+    <nav id="sidebar" class="d-none">
+        <div id="data">
+            <div class="row">
+                <div class="col-auto">
+                    <h1 class="title">Сведения о пациенте</h1>
+                </div>
+                <div class="col-auto">
+                    <button id="sidebarCollapse2">
+                        <p>Свернуть</p>
+                    </button>
+                </div>
+            </div>
+
+            <h2 class="data-title">Данные о пациенте</h2>
+
+            <div class="data">
+                <div class="row">
+                    {% if treatment.patient.full_name %}
+                    <div class="col-auto">
+                        <span>{{ treatment.patient.full_name }}</span>
+                    </div>
+                    {% endif %} {% if treatment.patient.age %}
+                    <div class="col-auto">
+                        <span>{{ treatment.patient.age }} лет</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="row data1">
+                    <div class="col-auto">
+                        <p>Травма</p>
+                        <span>{{ is_injure_label }}</span>
+                    </div>
+                    <div class="col-auto">
+                        <p>Симптомы инсульта</p>
+                        <span>{{ has_stroke_symptoms }}</span>
+                    </div>
+                    {% if treatment.hematoma_volume %}
+                    <div class="col-auto">
+                        <p>Объем гематомы</p>
+                        <span>{{ treatment.hematoma_volume }} см³</span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <h2 class="data-title2">Неврологический дефицит</h2>
+                <span class="d-span">{{ neurological_deficit }}</span>
+
+                <h2 class="data-title3">Уровень сознания</h2>
+                <span class="d-span">{{ conscious_level }}</span>
+
+                <h2 class="pathologies">Сопутствующие патологии</h2>
+                {% if treatment.patient.diagnoses.all %}
+                <ul>
+                    {% for i in treatment.patient.diagnoses.all %}
+                    <li><span>{{ i.name }}</span></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Отсутствуют</p>
+                {% endif %}
+
+                <h2 class="pathologies">Иные противопоказания</h2>
+                {% if treatment.temporary_contraindications.all %}
+                <ul>
+                    {% for i in treatment.temporary_contraindications.all %}
+                    <li><span>{{ i.name }}</span></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Отсутствуют</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="simular">
+            <div class="row">
+                <div class="col-auto">
+                    <h1 class="title">Похожие</h1>
+                </div>
+                <div class="col-auto">
+                    <button id="simularCollapse2">
+                        <p>Свернуть</p>
+                    </button>
+                </div>
+            </div>
+
+            <div class="data">
+                {% for t in similar_treatments %}
+                <a href="{% url 'treatment_detail' t.id %}">
+                    <div class="img-min">
+                        <img src="{{ t.snapshot.url }}" alt="Img result"/>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </nav>
 </div>
 
 <!--bootstrap-->
 <script
-  src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-  integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-  crossorigin="anonymous"
+        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"
 ></script>
 <script
-  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-  crossorigin="anonymous"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"
 ></script>
 
 <!--Montserrat font-->
 <link
-  href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap"
-  rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap"
+        rel="stylesheet"
 />
 
 {% load static %}

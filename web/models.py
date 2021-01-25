@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.conf import settings
-from .LabelDecoder import decode_label, decode_label_detail
+from .LabelDecoder import decode_label_detail
 
 
 class Diagnosis(models.Model):
@@ -61,13 +61,18 @@ class RecommendText(models.Model):
 
 
 class NeuronetPrediction(models.Model):
-    classification_type = models.PositiveSmallIntegerField(null=True)
     confidence = models.FloatField(null=True)
 
     recommend_text = models.OneToOneField(RecommendText, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return f'{decode_label(self.classification_type)} : {format(self.confidence, ".2f")}%'
+        return f'{decode_label_detail(self.classification_types)} : {format(self.confidence, ".2f")}%'
+
+
+class ClassificationType(models.Model):
+    value = models.PositiveSmallIntegerField()
+    prediction = models.ForeignKey(NeuronetPrediction, on_delete=models.CASCADE,
+                                   related_name='classification_types')
 
 
 def rename_file_by_pk(instance, filename):
@@ -132,3 +137,4 @@ class FAQItem(models.Model):
 
     def __str__(self):
         return self.header
+

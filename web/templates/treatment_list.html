@@ -88,9 +88,11 @@
                 <h2 class="data-title">Объем гематомы (см³)</h2>
 
                 <div class="d-flex justify-content-center align-items-center">
-                    <input type="text" class="input-volume" id="volume-min" placeholder="От">
-                    <p class="text-volume">–</p>
-                    <input type="text" class="input-volume" id="volume-max" placeholder="До">
+                    {{ filter.form.hematoma_volume.0 }}
+                    {{ filter.debug }}
+<!--                    <input type="text" class="input-volume" id="volume-min" placeholder="От">-->
+<!--                    <p class="text-volume">–</p>-->
+<!--                    <input type="text" class="input-volume" id="volume-max" placeholder="До">-->
                 </div>
 
                 <h2 class="data-title">Время начала симптоматики (часов назад)</h2>

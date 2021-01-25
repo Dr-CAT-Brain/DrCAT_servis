@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='neuronetprediction',
-            name='classification_type',
+            name='classification_types',
             field=models.PositiveSmallIntegerField(null=True),
         ),
     ]

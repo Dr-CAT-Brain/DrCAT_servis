@@ -11,14 +11,15 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import generic
+
+from neuronet.Models import predict_picture
 from .filters import TreatmentFilter
-from .LabelDecoder import decode_label, decode_label_detail
-from neuronet.model_predict import predict_picture
+from .LabelDecoder import decode_label_detail
 from neuronet.KNN import KNN
+from neuronet.recomendation import get_hunt_hess_by_treatment, adapt_int_to_patology, get_recommendations
 
 from .forms import *
-from .models import Patient, Treatment, Doctor, FAQ, FAQItem
-from neuronet.recomendation_algo import give_recommend
+from .models import Patient, Treatment, Doctor, FAQ, FAQItem, ClassificationType
 
 LOGIN_URL = 'login'
 
@@ -130,16 +131,14 @@ def treatment_form_view(request):
             image_absolute_path = get_absolute_path_to_project() + treatment.snapshot.url
 
             prediction = predict_picture(image_absolute_path)
-            prediction.recommend_text = give_recommend(prediction.classification_type,
-                                                       treatment.neurological_deficit,
-                                                       treatment.conscious_level,
-                                                       treatment.time_passed,
-                                                       treatment.hematoma_volume,
-                                                       treatment.is_injury,
-                                                       treatment.has_stroke_symptoms,
-                                                       treatment.patient.get_diagnoses_name_list(),
-                                                       treatment.get_temporary_contraindications_name_list())
+
+            patologies = []
+            for i in ClassificationType.objects.filter(prediction=prediction).all():
+                patologies.append(adapt_int_to_patology(i.value, treatment))
+
+            prediction.recommend_text = get_recommendations(patologies)
             prediction.save()
+
             treatment.predict = prediction
             treatment.save()
 
@@ -218,8 +217,8 @@ class TreatmentDetailView(generic.DetailView):
         context['has_stroke_symptoms'] = bool_to_str[treatment.has_stroke_symptoms]
         context['neurological_deficit'] = neurological_deficit_to_str[treatment.neurological_deficit]
         context['conscious_level'] = conscious_level_to_str[treatment.conscious_level]
-        context['predicted_diagnosis'] = decode_label_detail(treatment.predict.classification_type)
-
+        context['predicted_diagnosis'] = decode_label_detail(ClassificationType.objects.filter(prediction=treatment.predict).all())
+        context['hunt_hess'] = get_hunt_hess_by_treatment(treatment)
         context['similar_treatments'] = get_similar_snapshots(treatment, 3)
 
         return context

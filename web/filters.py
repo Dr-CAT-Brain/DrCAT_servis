@@ -30,3 +30,4 @@ class TreatmentFilter(django_filters.FilterSet):
     class Meta:
         model = Treatment
         fields = {}
+
