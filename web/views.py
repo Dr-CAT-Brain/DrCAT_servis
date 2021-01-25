@@ -66,14 +66,6 @@ def cabinet_view(request):
                            })
 
 
-def fit_KNN():
-    knn = KNN()
-    file_names_to_fit = [get_absolute_path_to_project() + settings.MEDIA_URL + str(x.snapshot)
-                         for x in Treatment.objects.all()]
-    knn.fit(file_names_to_fit)
-    knn.save_model(get_absolute_path_to_project() + '/neuronet/knn_3_samples')
-
-
 class DoctorProfileDetailView(LoginRequiredMixin, generic.DetailView):
     model = Doctor
     template_name = "doctor_profile.html"
@@ -228,15 +220,29 @@ class TreatmentDetailView(generic.DetailView):
         context['conscious_level'] = conscious_level_to_str[treatment.conscious_level]
         context['predicted_diagnosis'] = decode_label_detail(treatment.predict.classification_type)
 
-        knn = KNN()
-        knn.load_form_file(get_absolute_path_to_project() + '/neuronet/knn_3_samples')
-        path_to_snapshots = get_absolute_path_to_project() + settings.MEDIA_URL
+        context['similar_treatments'] = get_similar_snapshots(treatment, 3)
 
-        knn_set = knn.predict(path_to_snapshots + str(treatment.snapshot), 3)
-
-        context['similar_treatments'] = list(knn_set)
-        # use get knn
         return context
+
+
+def get_similar_snapshots(treatment: Treatment, num=3) -> list:
+    file_name = 'knn_model_save'
+    knn = KNN()
+
+    try:
+        knn.load_form_file(get_absolute_path_to_project() + '/neuronet/' + file_name)
+    except FileNotFoundError:
+        knn = fit_knn_by_all_treatments(file_name)
+
+    knn_set = knn.predict(treatment, num)
+    return list(knn_set)
+
+
+def fit_knn_by_all_treatments(file_name) -> KNN:
+    knn = KNN()
+    knn.fit(Treatment.objects.all())
+    knn.save_model(get_absolute_path_to_project() + '/neuronet/' + file_name)
+    return knn
 
 
 def api_login(request):
