@@ -15,7 +15,11 @@
             </div>
             <div class="col col-right">
                 <h2 class="diagnosis">Предполагаемый диагноз:</h2>
-                <p>{{ predicted_diagnosis }}. {{ hunt_hess }}</p>
+                <p>{{ predicted_diagnosis }}
+                    {% if hunt_hess %}
+                        -   {{ hunt_hess }}
+                    {% endif %}
+                </p>
 
                 <h2 class="recommendation">Рекомендации:</h2>
                 <div class="result">
@@ -28,14 +32,12 @@
                         <p class="big-text">
                             {{ treatment.predict.recommend_text.treatment_tactics }}
                         </p>
+                        {% if treatment.predict.recommend_text.tactics_if_agree %}
                         <p><span>Рекомендации при согласии на хирургическое лечение:</span></p>
-                        <p class="big-text">
-                            {% if treatment.predict.recommend_text.tactics_if_agree %}
-                            {{ treatment.predict.recommend_text.tactics_if_agree }}
-                            {% else %}
-                            Отсутствуют
-                            {% endif %}
-                        </p>
+                            <p class="big-text">
+                                {{ treatment.predict.recommend_text.tactics_if_agree }}
+                            </p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
