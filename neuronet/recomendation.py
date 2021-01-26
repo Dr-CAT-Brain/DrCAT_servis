@@ -363,10 +363,7 @@ def get_recommendations(pathologies: list) -> RecommendText:
         operation_text_if_agree.update(patology.operation_text_if_agree)
 
     recommend = RecommendText.objects.create(operation='.'.join(operation_text),
-                                             treatment_tactics='.'.join(recommendations),
+                                             treatment_tactics=''.join(recommendations),
                                              tactics_if_agree='.'.join(operation_text_if_agree))
 
     return recommend
-
-
-

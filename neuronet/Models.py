@@ -5,14 +5,12 @@ import pickle
 import numpy as np
 from torch.utils.data import DataLoader
 import torch.nn as nn
-from neuronet.KTDataset import KTDataset
+from neuronet.CTDataset import CTDataset
 from neuronet.Net import SimpleCnn
 from neuronet.model_small import SmallCnn
 import pathlib
 
 from web.models import NeuronetPrediction, ClassificationType
-from .recomendation import *
-from web.LabelDecoder import name_decoder
 
 root_path = os.getcwd() + '\\neuronet'
 path_to_weights = root_path + "\\weights\\"
@@ -50,7 +48,7 @@ tumor_encoder = pickle.load(open(path_to_encoders + "label_tumor_encoder.pkl", '
 class Diagnose:
     def __init__(self, file_name):
         test_files = [str(pathlib.PurePosixPath(file_name))]
-        test_dataset = KTDataset(test_files, mode="test")
+        test_dataset = CTDataset(test_files, mode="test")
         test_loader = DataLoader(test_dataset, shuffle=False, batch_size=64)
         vmg_dictionary = {"ВМГ отсутствует": 0,
                           "ВМГ задняя яма": 1,
@@ -96,7 +94,11 @@ class Diagnose:
         self.probabilities = []
 
     def get_mean_probability(self):
-        assert self.probabilities
+        self.probabilities = [
+            self.vmg_proba, self.sak_proba, self.vgk_proba,
+            self.ish_proba, self.tumor_proba
+        ]
+
         return sum(self.probabilities) / len(self.probabilities)
 
     def predict(self, model, test_loader):
@@ -115,51 +117,35 @@ class Diagnose:
         classes = []
         if self.vmg and self.vgk:
             classes.append(1)
-            self.probabilities += [self.vmg_proba, self.vgk_proba]
         if self.vmg and self.ish:
             classes.append(6)
-            self.probabilities += [self.vmg_proba, self.ish_proba]
         if self.vmg and self.sak:
             classes.append(9)
-            self.probabilities += [self.vmg_proba, self.sak_proba]
         if self.vmg and not self.vgk and not self.ish and not self.sak:
             classes.append(self.vmg + 1)
-            self.probabilities += [self.vmg_proba]
         if self.vgk and not self.vmg:
             classes.append(0)
-            self.probabilities += [self.vgk_proba]
         if self.ish and not self.vmg:
             classes.append(5)
-            self.probabilities += [self.ish_proba]
         if self.tumor:
             classes.append(7)
-            self.probabilities += [self.tumor_proba]
         if self.sak and not self.vmg:
             classes.append(8)
-            self.probabilities += [self.sak_proba]
-
-        if not self.probabilities:
-            self.probabilities = [-1]
 
         return classes
 
 
 def predict_picture(full_path):
     d = Diagnose(full_path)
-    d.adapt_predict_to_database() # to generate probabilities
-
-    print(d.probabilities, d.adapt_predict_to_database())
 
     prediction = NeuronetPrediction(
         confidence=d.get_mean_probability()
     )
-
     prediction.save()
+
     for model_predict in d.adapt_predict_to_database():
         classification_type = ClassificationType.objects.create(value=model_predict, prediction=prediction)
         prediction.classification_types.add(classification_type)
         prediction.save()
 
     return prediction
-
-# REFACTOR THIS FILE

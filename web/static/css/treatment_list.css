@@ -52,6 +52,7 @@ h1 {
 
 .library {
   width: 90%;
+  height: 70%;
   -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
           box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
   border-radius: 30px;
@@ -63,7 +64,7 @@ h1 {
 }
 
 .library .list {
-  max-height: 300px;
+  max-height: 100%;
   margin-right: 60px;
   overflow: scroll;
 }

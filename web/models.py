@@ -102,7 +102,7 @@ class Treatment(models.Model):
     def __str__(self):
         patology = ''
         if self.predict:
-            patology = decode_label_detail(self.predict.classification_type)
+            patology = decode_label_detail(ClassificationType.objects.filter(prediction=self.predict).all())
         return f'{self.patient.full_name}.{patology} '
 
     def get_snapshot_html(self):

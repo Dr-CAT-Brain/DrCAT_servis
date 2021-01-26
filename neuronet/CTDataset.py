@@ -9,7 +9,7 @@ from torch.utils.data import Dataset, DataLoader
 RESCALE_SIZE = 224
 
 
-class KTDataset(Dataset):
+class CTDataset(Dataset):
     """
     Датасет с картинками, который паралельно подгружает их из папок
     производит скалирование и превращение в торчевые тензоры
