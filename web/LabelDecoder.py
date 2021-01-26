@@ -14,8 +14,8 @@ name_decoder = {
 
 def decode_label_detail(patology_indexes: list):
     answer = ''
-    for i in patology_indexes:
-        print(i)
+
+    for i in patology_indexes.all():
         answer += f'{name_decoder[i.value]} и '
 
     return answer[:-2]

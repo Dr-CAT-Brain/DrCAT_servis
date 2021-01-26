@@ -51,7 +51,6 @@ class TreatmentForm(forms.Form):
 
     neurological_deficit = forms.ChoiceField(
         choices=[(1, 'I'), (2, 'II'), (3, 'III'), (4, 'IV')],
-        initial=1,
         widget=forms.RadioSelect,
         label='Неврологический дефицит*'
     )
@@ -59,7 +58,6 @@ class TreatmentForm(forms.Form):
     conscious_level = forms.ChoiceField(
         choices=[(15, '15 Ясное'), (14, '14-13 Умеренное оглушение'), (12, '12-11 Глубокое оглушение'),
                  (9, '10-8 Сопор'), (7, 'Умеренная кома'), (5, 'Глубокая кома'), (3, 'Терминальная кома')],
-        initial=15,
         widget=forms.RadioSelect,
         label='Неврологический дефицит*'
     )

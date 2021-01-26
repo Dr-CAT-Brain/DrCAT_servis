@@ -14,7 +14,7 @@ from .LabelDecoder import decode_label_detail
 from neuronet.KNN import KNN
 from neuronet.recomendation import get_hunt_hess_by_treatment, adapt_int_to_patology, get_recommendations
 
-from .forms import *
+from .forms import TreatmentForm
 from .models import Patient, Treatment, Doctor, FAQ, FAQItem, ClassificationType
 
 LOGIN_URL = 'login'
@@ -107,6 +107,10 @@ def treatment_form_view(request):
 
             treatment.neurological_deficit = form.cleaned_data['neurological_deficit']
             treatment.conscious_level = form.cleaned_data['conscious_level']
+
+            print(form.cleaned_data['neurological_deficit'],
+                  form.cleaned_data['conscious_level']
+                  )
 
             treatment.snapshot = form.clean_snapshot()
             treatment.patient = patient

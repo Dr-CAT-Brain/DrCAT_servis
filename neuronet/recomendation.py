@@ -15,6 +15,13 @@ def get_contraindications(treatment: Treatment) -> str:
     return ', '.join(contraindications)
 
 
+def is_treatment_have_SAK(treatment: Treatment):
+    for i in treatment.predict.classification_types.all():
+        if i.value in [8, 9]:
+            return True
+    return False
+
+
 def get_hunt_hess_by_treatment(treatment: Treatment) -> str:
     degree = 0
     if treatment.conscious_level == 15 and treatment.neurological_deficit == 1:
@@ -32,10 +39,8 @@ def get_hunt_hess_by_treatment(treatment: Treatment) -> str:
         3: 'III',
         4: 'IV'
     }
-    # [7, 8, 9] - САК
-    print(degree)
-    # Fix treatment.predict.classification_types not in [7, 8, 9]
-    return '' if (degree <= 0) or (treatment.predict.classification_types not in [7, 8, 9]) \
+
+    return '' if (degree <= 0) or not is_treatment_have_SAK(treatment) \
         else f'{int_to_roman[degree]} степень общей тяжести состояния по шкале Hunt Hess'
 
 
@@ -61,7 +66,7 @@ class VMG_VJK:
         self.operation_text_if_agree = []
 
     def prepare_recommendation(self):
-        if self.treatment.is_injury:
+        if self.treatment.is_injury == True:
             self.operation_text = high_operation_probability
             self.operation_text_if_agree += [
                 CT_angiography,
@@ -122,7 +127,7 @@ class VMG_posterior_fossa:
         self.operation_text_if_agree = []
 
     def prepare_recommendation(self):
-        if self.treatment.is_injury:
+        if self.treatment.is_injury == True:
             self.operation_text = high_operation_probability
             self.operation_text_if_agree += [
                 CT_angiography,
@@ -200,7 +205,8 @@ class VMG_operation:
         self.operation_text_if_agree = []
 
     def prepare_recommendation(self):
-        if self.treatment.is_injury:
+        print(self.treatment.__dict__)
+        if self.treatment.is_injury == True:
             self.operation_text = high_operation_probability
             self.operation_text_if_agree += [
                 CT_angiography,
@@ -208,11 +214,11 @@ class VMG_operation:
             ]
             return
 
-        if self.treatment.hematoma_volume:
+        if self.treatment.hematoma_volume >= 0:
             if 30 <= self.treatment.hematoma_volume <= 60:
-                if not self.treatment.temporary_contraindications.all() and \
+                if (not self.treatment.temporary_contraindications.all() and \
                         not self.treatment.patient.diagnoses.all() \
-                        and int(self.treatment.conscious_level) >= 8 or self.treatment.is_injury:
+                        and int(self.treatment.conscious_level) >= 8):
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [
                         CT_angiography,
@@ -220,6 +226,11 @@ class VMG_operation:
                     ]
                 else:
                     self.operation_text = high_operation_probability
+                    print(self.treatment.conscious_level)
+                    if int(self.treatment.conscious_level) <= 8:
+                        self.recommendation_items += [
+                            patient_has_contraindications_for_surgery.format('низкий уровень сознания'),
+                        ]
 
                     if get_contraindications(self.treatment):
                         self.recommendation_items += [
@@ -350,7 +361,7 @@ class SAK_VMG:
         self.operation_text_if_agree = []
 
     def prepare_recommendation(self):
-        if self.treatment.is_injury:
+        if self.treatment.is_injury == True:
             self.operation_text = high_operation_probability
             self.operation_text_if_agree += [
                 CT_angiography,

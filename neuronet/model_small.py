@@ -33,7 +33,6 @@ class SmallCnn(nn.Module):
         x = self.conv3(x)
         x = self.conv4(x)
 
-        # print(x.shape)
 
         x = x.view(x.size(0), -1)
         logits = self.out(x)

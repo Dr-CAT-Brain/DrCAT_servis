@@ -17,20 +17,21 @@ path_to_weights = root_path + "\\weights\\"
 path_to_encoders = root_path + "\\encoders\\"
 
 vmg_model = SimpleCnn(4)
-vmg_model.load_state_dict(torch.load(path_to_weights + "KT_vmg_2.pth", map_location=torch.device('cpu')))
-vmg_encoder = {0: "ВМГ консерва",
-               1: "ВМГ отсутствует",
-               2: "ВМГ операция",
-               3: "ВМГ задняя яма"}
+vmg_model.load_state_dict(torch.load(path_to_weights + "KT_vmg_4.pth", map_location=torch.device('cpu')))
+vmg_encoder = {0: "ВМГ задняя яма",
+               1: "ВМГ консерва",
+               2: "ВМГ отсутствует",
+               3: "ВМГ операция"}
 
 vgk_model = SimpleCnn(2)
 vgk_model.load_state_dict(torch.load(path_to_weights + "KT_vgk_6.pth", map_location=torch.device('cpu')))
 vgk_encoder = {0: "ВЖК",
                1: "ВЖК отсутствует"}
 
-sak_model = SmallCnn(2)
-sak_model.load_state_dict(torch.load(path_to_weights + "KT_sak_small_3.pth", map_location=torch.device('cpu')))
-sak_encoder = pickle.load(open(path_to_encoders + "label_sak_encoder.pkl", 'rb'))
+sak_model = SmallCnn(1)
+sak_model.load_state_dict(torch.load(path_to_weights + "KT_binary_sak_smalla_29.pth", map_location=torch.device('cpu')))
+sak_encoder = {0: "САК отсутствует",
+               1: "САК"}
 
 ish_model = SmallCnn(2)
 ish_model.load_state_dict(torch.load(path_to_weights + "KT_ish_small_7.pth", map_location=torch.device('cpu')))
@@ -67,11 +68,10 @@ class Diagnose:
         self.vgk_label = vgk_encoder[self.vgk_pred]
         self.vgk = 1 - self.vgk_pred
 
-        probs = self.predict(sak_model, test_loader)
-        self.sak_proba = np.max(probs) * 100
-        self.sak_pred = np.argmax(probs)
-        self.sak_label = sak_encoder.classes_[self.sak_pred]
-        self.sak = 1 if self.sak_label == "САК" else 0
+        probs = self.predict_binary(sak_model, test_loader)
+        self.sak_proba = probs[0]
+        self.sak = 1 if self.sak_proba >= 0.5 else 0
+        self.sak_label = sak_encoder[self.sak]
 
         probs = self.predict(sdg_model, test_loader)
         self.sdg_proba = np.max(probs) * 100
@@ -92,6 +92,16 @@ class Diagnose:
         self.tumor = 1 if self.tumor_label == "опухоль" else 0
 
         self.probabilities = []
+
+    def predict_binary(self, model, test_loader):
+        with torch.no_grad():
+            logits = []
+            for inputs in test_loader:
+                model.eval()
+                outputs = model(inputs).cpu()
+                logits.append(outputs)
+        probs = torch.sigmoid(torch.cat(logits)).numpy()
+        return probs
 
     def get_mean_probability(self):
         self.probabilities = [
