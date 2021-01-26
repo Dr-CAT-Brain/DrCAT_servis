@@ -106,6 +106,7 @@ ENV/
 .DS_Store
 *.sqlite3
 media/
+documents/
 *.pyc
 *.db
 *.pid

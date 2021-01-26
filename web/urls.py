@@ -19,7 +19,9 @@ urlpatterns = [
     url(r'^treatment/(?P<pk>\d+)$', views.TreatmentDetailView.as_view(), name='treatment_detail'),
     url('api/login', views.api_login),
     path('signup/', views.sign_up, name='sign_up'),
-    path('FAQ/', views.reference_view, name='reference')
+    path('FAQ/', views.reference_view, name='reference'),
+    path('refit_knn', views.refit_knn, name='refit_knn'),
+    url('formalize_document/(?P<pk>\d+)$', views.formalize_treatment_to_document, name='formalize_document'),
 ]
 
 if settings.DEBUG:

@@ -83,7 +83,7 @@ class VMG_VJK:
                     repeated_consultation_if_source_of_hemorrhage
                 ]
             elif 30 < self.treatment.hematoma_volume < 60:
-                if not self.treatment.temporary_contraindications.all() and not self.treatment.patient.diagmnoses.all() \
+                if not self.treatment.temporary_contraindications.all() and not self.treatment.patient.diagnoses.all() \
                         and int(self.treatment.conscious_level) >= 8:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [
@@ -144,7 +144,7 @@ class VMG_posterior_fossa:
                     repeated_consultation_if_source_of_hemorrhage,
                 ]
             elif 15 < self.treatment.hematoma_volume < 60:
-                if not self.treatment.temporary_contraindications.all() and not self.treatment.patient.diagmnoses.all() \
+                if not self.treatment.temporary_contraindications.all() and not self.treatment.patient.diagnoses.all() \
                         or self.treatment.is_injury:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [
@@ -213,7 +213,8 @@ class VMG_operation:
             ]
             return
 
-        if self.treatment.hematoma_volume >= 0:
+        if self.treatment.hematoma_volume:
+            print('ok')
             if 30 <= self.treatment.hematoma_volume <= 60:
                 if (not self.treatment.temporary_contraindications.all() and \
                         not self.treatment.patient.diagnoses.all() \
@@ -377,7 +378,7 @@ class SAK_VMG:
                     repeated_consultation_if_source_of_hemorrhage,
                 ]
             elif 30 < self.treatment.hematoma_volume < 60:
-                if not self.treatment.temporary_contraindications.all() and not self.treatment.patient.diagmnoses.all() \
+                if not self.treatment.temporary_contraindications.all() and not self.treatment.patient.diagnoses.all() \
                         or self.treatment.is_injury:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [

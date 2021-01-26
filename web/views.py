@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import generic
@@ -52,9 +52,9 @@ def cabinet_view(request):
     def get_queryset():
         search_query = request.GET.get('q')
         search_query = search_query if search_query else ''
-        return Treatment.objects.filter(
+        return reversed(Treatment.objects.filter(
             Q(doctor=doctor) & Q(patient__full_name__icontains=search_query)
-        ).all()
+        ).all())
 
     return render(request, 'cabinet.html',
                   context={'header': 'Личный кабинет',
@@ -152,13 +152,12 @@ class TreatmentListView(LoginRequiredMixin, generic.ListView):
     model = Treatment
     template_name = 'treatment_list.html'
 
-    def get_ordering(self):
-        ordering = self.request.GET.get('ordering', 'hematoma_volume')
-        return ordering
+    def get_queryset(self):
+        return Treatment.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = TreatmentFilter(self.request.GET, queryset=Treatment.objects.all())
+        context['filter'] = TreatmentFilter(self.request.GET, queryset=self.get_queryset().order_by('hematoma_volume'))
         context['header'] = 'Библиотека снимков'
         return context
 
@@ -169,7 +168,7 @@ class TreatmentHistoryView(generic.ListView):
     template_name = 'treatment_list.html'
 
     def get_queryset(self):
-        return Treatment.objects.filter(doctor=self.request.user.doctor).all()
+        return Treatment.objects.filter(doctor=self.request.user.doctor).reverse()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -233,6 +232,18 @@ def get_similar_snapshots(treatment: Treatment, num=3) -> list:
 
     knn_set = knn.predict(treatment, num)
     return list(knn_set)
+
+
+def refit_knn(request):
+    fit_knn_by_all_treatments('knn_model_save')
+    return HttpResponse('Success')
+
+
+def formalize_treatment_to_document(request, pk):
+    treatment = Treatment.objects.filter(pk=pk).first()
+    path = treatment.formalize_to_document(str(pk))
+    response = FileResponse(open(path, 'rb'), filename='Заключение.docx', content_type='application/docx')
+    return response
 
 
 def fit_knn_by_all_treatments(file_name) -> KNN:

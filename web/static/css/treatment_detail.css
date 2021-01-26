@@ -165,7 +165,7 @@ html ::-webkit-scrollbar-thumb {
 
 #previousButton {
   /* Style for "Background" */
-  width: 183px;
+  width: 165px;
   height: 59px;
   border-radius: 10px;
   background-color: #ffffff;
@@ -175,8 +175,33 @@ html ::-webkit-scrollbar-thumb {
   border: none;
   position: fixed;
   bottom: 31px;
-  left: 90px;
+  left: 80px;
 }
+
+#getReportButton {
+  /* Style for "Background" */
+  width: 165px;
+  height: 59px;
+  border-radius: 10px;
+  background-color: #004dc1;
+  -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+  outline: none;
+  border: none;
+  position: fixed;
+  bottom: 31px;
+  left: 300px;
+}
+
+
+#getReportButton p {
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #fff;
+  margin-top: 17px;
+}
+
 
 #previousButton p {
   font-weight: 700;

@@ -1,9 +1,12 @@
+import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.conf import settings
 from .LabelDecoder import decode_label_detail
+from docx import Document
+from docx.shared import Inches
 
 
 class Diagnosis(models.Model):
@@ -122,6 +125,66 @@ class Treatment(models.Model):
             return [i.name for i in self.temporary_contraindications.all()]
         return []
 
+    def formalize_to_document(self, file_name) -> str:
+        self.document = Document()
+        self.document.add_heading('Заключение', 0)
+
+        p1 = self.document.add_paragraph('')
+        p1.add_run("Пациент: ").bold = True
+        p1.add_run(self.patient.full_name)
+
+        p2 = self.document.add_paragraph('')
+        p2.add_run("Дата рождения: ").bold = True
+
+        p3 = self.document.add_paragraph('')
+        p3.add_run("Возраст: ").bold = True
+        p3.add_run(str(self.patient.age) + " лет")
+
+        p4 = self.document.add_paragraph('')
+        p4.add_run("Дата консультации: ").bold = True
+        now = datetime.datetime.now()
+        self.date = str(now.strftime("%d-%m-%Y %H:%M")).split()[0]
+        p4.add_run(self.date)
+
+        p5 = self.document.add_paragraph('')
+        p5.add_run("Анамнез: ").bold = True
+
+        if self.patient.diagnoses.all():
+            self.document.add_paragraph("Сопутствующие патологии: ")
+            for i in self.patient.diagnoses.all():
+                self.document.add_paragraph(i.name, style='List Bullet')
+
+        if self.temporary_contraindications.all():
+            self.document.add_paragraph("Противопоказания: ")
+            for i in self.temporary_contraindications.all():
+                self.document.add_paragraph(i, style='List Bullet')
+
+        p6 = self.document.add_paragraph('')
+        p6.add_run("Данные обследования: ").bold = True
+        self.document.add_paragraph("Уровень сознания: " + str(self.conscious_level))
+        self.document.add_paragraph("Неврологический дефицит: " + str(self.neurological_deficit))
+        if self.has_stroke_symptoms:
+            self.document.add_paragraph("Присутствуют симптомы инсульта")
+        else:
+            self.document.add_paragraph("Симптомы инсульта отсутствуют")
+        if self.is_injury:
+            self.document.add_paragraph("Была получена травма")
+
+        p7 = self.document.add_paragraph('')
+        p7.add_run("Диагноз: ").bold = True
+        p7.add_run(decode_label_detail(ClassificationType.objects.filter(prediction=self.predict).all()))
+
+        p8 = self.document.add_paragraph('')
+        p8.add_run("Рекомендовано: ").bold = True
+
+        if self.predict.recommend_text.treatment_tactics:
+            for recommend in self.predict.recommend_text.treatment_tactics.split('.')[:-1]:
+                self.document.add_paragraph(recommend + '.', style='List Bullet')
+
+        path = f'documents/{file_name}.docx'
+        self.document.save(path)
+        return path
+
 
 class FAQ(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
@@ -137,4 +200,3 @@ class FAQItem(models.Model):
 
     def __str__(self):
         return self.header
-

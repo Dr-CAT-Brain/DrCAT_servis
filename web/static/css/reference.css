@@ -1,0 +1,70 @@
+h1,
+h2,
+li {
+  font-family: "Montserrat";
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #c4c4c4;
+}
+
+html ::-webkit-scrollbar {
+  width: 10px;
+  /* width of the entire scrollbar */
+}
+
+html ::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background-color: #c4c4c4;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 36px;
+  color: #2e2e2e;
+  margin-left: 60px;
+  margin-top: 27px;
+}
+
+.text {
+  width: 90%;
+  -webkit-box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.08);
+  border-radius: 30px;
+  background-color: #ffffff;
+  margin-top: 32px;
+  margin-left: 60px;
+  padding: 30px 60px;
+  padding-bottom: 10px;
+}
+
+.text h2 {
+  font-weight: 700;
+  color: #2e2e2e;
+  font-size: 24px;
+}
+
+.text ul li {
+  font-weight: 500;
+  color: #2e2e2e;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}
+
+.col img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.col {
+  padding: 0 10px;
+  
+}
+
