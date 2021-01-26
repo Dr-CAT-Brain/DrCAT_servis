@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+<style>
+        h2,
+        h4,
+        p,
+        label {
+            font-family: 'Montserrat';
+            font-size: 24px;
+        }
+
+        html {
+            overflow: hidden;
+        }
+
+        input[type=radio] {
+            display: none;
+        }
+
+        input[type=text] {
+            height: 25px;
+            font-size: 18px;
+        }
+
+        h4 {
+            margin: 20px;
+        }
+
+        label div {
+            display: inline-block;
+            width: 59px;
+            height: 59px;
+            border-radius: 10px;
+            background-color: #004dc1;
+
+            font-size: 24px;
+            text-align: center;
+            padding-top: 15px;
+            box-sizing: border-box;
+            color: white;
+            cursor: pointer;
+        }
+
+        .active {
+            background-color: darkslategrey;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+
+        input[type=checkbox] {
+            width: 25px !important;
+            height: 25px !important;
+        }
+
+        select {
+            height: 40px;
+            margin-top: 30px;
+            font-size: 18px;
+        }
+
+        .bottom {
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+
+        button {
+            width: 150px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        #modal {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.432);
+            position: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #modal div {
+            width: 800px;
+            height: 600px;
+            background-color: #fff;
+            overflow-y: scroll;
+            padding: 20px;
+        }
+
+
+
+
+
+</style>
+<div id="modal" onclick="this.style.display = 'none'">
+    <div>
+        <h2>Диагноз:</h2>
+        <p id="diagnoz"></p>
+        <h2>Рекомендации:</h2>
+        <p id="recomend1"></p>
+        <h2>Рекомендации при согласии на оператиыное лечение</h2>
+        <p id="recomend2"></p>
+    </div>
+</div>
+<form action="#" method="post" style="padding-left: 30px">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col">
+            <h2>Данные о пациенте</h2>
+            <p>Возраст: {{ form.age }}</p>
+            <p>Время начала симптоматики: {{ form.time_passed }}</p>
+            <p>Объем гематомы (см³): {{ form.hematoma_volume }}</p>
+
+            <h4>Травма</h4>
+            <h2>{{ form.is_injure.label_tag }}<span>*</span></h2>
+            {{ form.is_injure.error }}
+
+            {% for choice in form.is_injure %}
+            {{ choice.tag }}
+            <label id="id_is_injure_L{{ forloop.counter0 }}" for="id_is_injure_{{ forloop.counter0 }}"
+                   onclick="selectInjury(this)">
+                <div style="width: auto; padding: 15px 10px;">
+                    {{ choice.choice_label }}
+                </div>
+            </label>
+            {% endfor %}
+
+            <h4>Симптомы инсульта</h4>
+            {% for choice in form.has_stroke_symptoms %}
+            {{ choice.tag }}
+            <label id="id_has_stroke_symptoms_L{{ forloop.counter0 }}"
+                   for="id_has_stroke_symptoms_{{ forloop.counter0 }}" onclick="selectSimptoms(this)">
+                <div>
+                    {{ choice.choice_label }}
+                </div>
+            </label>
+            {% endfor %}
+
+            <h4>Неврологический дефицит</h4>
+            {{ form.neurological_deficit.0.tag }}
+            <label id="deficit-1l" class="col col-main col-first" for="deficit-1" onclick="selectDefficit(this)">
+                <div>
+                    I
+                </div>
+            </label>
+
+            {{ form.neurological_deficit.1.tag }}
+            <label id="deficit-2l" class="col col-main" for="deficit-2" onclick="selectDefficit(this)">
+                <div>
+                    II
+                </div>
+            </label>
+
+            {{ form.neurological_deficit.2.tag }}
+            <label id="deficit-3l" class="col col-main" for="deficit-3" onclick="selectDefficit(this)">
+                <div>
+                    III
+                </div>
+            </label>
+
+            {{ form.neurological_deficit.3.tag }}
+            <label id="deficit-4l" class="col col-main col-last" for="deficit-4" onclick="selectDefficit(this)">
+                <div>
+                    IV
+                </div>
+            </label>
+
+            <h4>Уровень сознания</h4>
+
+            {{ form.conscious_level.0.tag }}
+            <label id="level-1l" class="col col-main col-first" for="level-1" onclick="selectLevel(this)">
+                <div>
+                    15
+                </div>
+            </label>
+
+            {{ form.conscious_level.1.tag }}
+            <label id="level-2l" class="col col-main" for="level-2" onclick="selectLevel(this)">
+                <div>
+                    14-13
+                </div>
+            </label>
+
+            {{ form.conscious_level.2.tag }}
+            <label id="level-3l" class="col col-main" for="level-3" onclick="selectLevel(this)">
+                <div>
+                    12-11
+                </div>
+            </label>
+
+            {{ form.conscious_level.3.tag }}
+            <label id="level-4l" class="col col-main" for="level-4" onclick="selectLevel(this)">
+                <div>
+                    10-8
+                </div>
+            </label>
+
+            {{ form.conscious_level.4.tag }}
+            <label id="level-5l" class="col col-main" for="level-5" onclick="selectLevel(this)">
+                <div>
+                    7-6
+                </div>
+            </label>
+
+            {{ form.conscious_level.5.tag }}
+            <label id="level-6l" class="col col-main" for="level-6" onclick="selectLevel(this)">
+                <div>
+                    5-4
+                </div>
+            </label>
+
+            {{ form.conscious_level.6.tag }}
+            <label id="level-7l" class="col col-main col-last" for="level-7" onclick="selectLevel(this)">
+                <div>
+                    3
+                </div>
+            </label>
+        </div>
+
+        <div class="col">
+            <h2>Анамнез</h2>
+            <p>Сопутствующие патологии</p>
+
+            <div id="anamez1">
+                {% for row in form.diagnoses %}
+                {{ row.items }}
+
+                <div>
+                    {{ row.tag }}
+                    <label for="id_diagnoses_{{ forloop.counter0 }}">{{ row.choice_label }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <div style="display: block;">
+                <input id="pathologies-7" type="checkbox" style="width: 30px; height: 30px;" onclick="disableAll1()">
+                <label>Отсутсвует</label>
+            </div>
+            <div style="display: block;">
+                <input id="pathologies-8" type="checkbox" style="width: 30px; height: 30px;" onclick="disableAll1()">
+                <label>Неизвестно</label>
+            </div>
+
+            <p>Иные противопоказания</p>
+            <div id="anamez2">
+                {% for row in form.temporary_contraindications %}
+                {{ row.items }}
+
+                <div>
+                    {{ row.tag }}
+                    <label id="id_temporary_contraindications_{{forllop.counter0}}">{{ row.choice_label }}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <div style="display: block;">
+                <input id="pathologies-7" type="checkbox" style="width: 30px; height: 30px;" onclick="disableAll2()">
+                <label>Отсутсвует</label>
+            </div>
+            <div style="display: block;">
+                <input id="pathologies-8" type="checkbox" style="width: 30px; height: 30px;" onclick="disableAll2()">
+                <label>Неизвестно</label>
+            </div>
+
+            <div class="bottom">
+                {{form.patology_type}}
+                <input id="submitBtn" type="submit" value="Отправить"/>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<div class="col-2">
+
+    {% if form.errors %}
+    {% for field in form %}
+    {% for error in field.errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+</div>
+
+</body>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script>
+    window.onload = function() {
+    if (document.getElementById("diagnoz").innerHTML == "") {
+        document.getElementById("modal").style.display = "none"
+    }
+    $("#id_is_injure_L2").click();
+    $("#id_has_stroke_symptoms_L1").click();
+    $("#deficit-1l").click();
+    $("#level-1l").click();
+}
+
+    let previousLevel = null;
+    function selectLevel(target) {
+        $(previousLevel).toggleClass("active");
+        $(document.querySelector("#" + target.id + " > div")).toggleClass("active");
+
+        previousLevel = document.querySelector("#" + target.id + " > div");
+    }
+
+    let previousDefficit = null;
+    function selectDefficit(target) {
+        $(previousDefficit).toggleClass("active");
+        $(document.querySelector("#" + target.id + " > div")).toggleClass("active");
+
+        previousDefficit = document.querySelector("#" + target.id + " > div");
+    }
+
+    let previousSimptoms = null;
+    function selectSimptoms(target) {
+        $(previousSimptoms).toggleClass("active");
+        $(document.querySelector("#" + target.id + " > div")).toggleClass("active");
+
+        previousSimptoms = document.querySelector("#" + target.id + " > div");
+    }
+
+    let previousInjury = null;
+    function selectInjury(target) {
+        $(previousInjury).toggleClass("active");
+        $(document.querySelector("#" + target.id + " > div")).toggleClass("active");
+
+        previousInjury = document.querySelector("#" + target.id + " > div");
+    }
+
+    let disabledNow1 = false;
+    function disableAll1() {
+        let checkboxs1 = document.querySelectorAll("#anamez1 > div > input");
+
+        disabledNow1 = !disabledNow1;
+        checkboxs1.forEach(element => {
+            $(element).attr("disabled", disabledNow1);
+        });
+    }
+
+    let disabledNow2 = false;
+    function disableAll2() {
+        let checkboxs1 = document.querySelectorAll("#anamez2 > div > input");
+
+        disabledNow1 = !disabledNow1;
+        checkboxs1.forEach(element => {
+            $(element).attr("disabled", disabledNow1);
+        });
+    }
+
+
+
+
+
+</script>
+
+</html>

@@ -1,5 +1,18 @@
 from web.models import Treatment, RecommendText
 from neuronet.recomendation_text import *
+from ordered_set import OrderedSet
+
+
+def get_contraindications(treatment: Treatment) -> str:
+    contraindications = []
+
+    for i in treatment.patient.diagnoses.all():
+        contraindications.append(i.name)
+
+    for i in treatment.temporary_contraindications.all():
+        contraindications.append(i.name)
+
+    return ', '.join(contraindications)
 
 
 def get_hunt_hess_by_treatment(treatment: Treatment) -> str:
@@ -58,7 +71,7 @@ class VMG_VJK:
                 ]
             elif 30 < self.treatment.hematoma_volume < 60:
                 if not self.treatment.temporary_contraindications and not self.treatment.patient.diagmnoses \
-                        and int(self.treatment.conscious_level) >= 8:
+                        and int(self.treatment.conscious_level) >= 8 or self.treatment.is_injury:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [
                         CT_angiography,
@@ -67,7 +80,7 @@ class VMG_VJK:
                 else:
                     self.operation_text = high_operation_probability
                     self.recommendation_items += [
-                        patient_has_contraindications_for_surgery,
+                        patient_has_contraindications_for_surgery.format(get_contraindications(self.treatment)),
                         dynamic_observation_if_abandonment_of_operation
                     ]
                     self.operation_text_if_agree += [
@@ -104,7 +117,8 @@ class VMG_posterior_fossa:
                     repeated_consultation_if_source_of_hemorrhage,
                 ]
             elif 15 < self.treatment.hematoma_volume < 60:
-                if not self.treatment.temporary_contraindications and not self.treatment.patient.diagmnoses:
+                if not self.treatment.temporary_contraindications and not self.treatment.patient.diagmnoses \
+                        or self.treatment.is_injury:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [
                         CT_angiography,
@@ -113,7 +127,7 @@ class VMG_posterior_fossa:
                 else:
                     self.operation_text = high_operation_probability
                     self.recommendation_items += [
-                        patient_has_contraindications_for_surgery,
+                        patient_has_contraindications_for_surgery.format(get_contraindications(self.treatment)),
                         dynamic_observation_if_abandonment_of_operation,
                     ]
                     self.operation_text_if_agree += [
@@ -162,7 +176,7 @@ class VMG_operation:
         if self.treatment.hematoma_volume:
             if 30 <= self.treatment.hematoma_volume <= 60:
                 if not self.treatment.temporary_contraindications and not self.treatment.patient.diagmnoses \
-                        and int(self.treatment.conscious_level) >= 8:
+                        and int(self.treatment.conscious_level) >= 8 or self.treatment.is_injury:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [
                         CT_angiography,
@@ -171,7 +185,7 @@ class VMG_operation:
                 else:
                     self.operation_text = high_operation_probability
                     self.recommendation_items += [
-                        patient_has_contraindications_for_surgery,
+                        patient_has_contraindications_for_surgery.format(get_contraindications(self.treatment)),
                         dynamic_observation_if_abandonment_of_operation,
                     ]
                     self.operation_text_if_agree += [
@@ -304,7 +318,8 @@ class SAK_VMG:
                     repeated_consultation_if_source_of_hemorrhage,
                 ]
             elif 30 < self.treatment.hematoma_volume < 60:
-                if not self.treatment.temporary_contraindications and not self.treatment.patient.diagmnoses:
+                if not self.treatment.temporary_contraindications and not self.treatment.patient.diagmnoses \
+                        or self.treatment.is_injury:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [
                         CT_angiography,
@@ -313,7 +328,7 @@ class SAK_VMG:
                 else:
                     self.operation_text = high_operation_probability
                     self.recommendation_items += [
-                        patient_has_contraindications_for_surgery,
+                        patient_has_contraindications_for_surgery.format(get_contraindications(self.treatment)),
                         dynamic_observation_if_abandonment_of_operation,
                     ]
                     self.operation_text_if_agree += [
@@ -352,18 +367,18 @@ def adapt_int_to_patology(num: int, treatment: Treatment):
 
 
 def get_recommendations(pathologies: list) -> RecommendText:
-    recommendations = set()
-    operation_text = set()
-    operation_text_if_agree = set()
+    recommendations = OrderedSet()
+    operation_text = OrderedSet()
+    operation_text_if_agree = OrderedSet()
 
     for patology in pathologies:
         patology.prepare_recommendation()
         recommendations.update(patology.recommendation_items)
-        operation_text.update(patology.operation_text)
+        operation_text.add(patology.operation_text)
         operation_text_if_agree.update(patology.operation_text_if_agree)
 
     recommend = RecommendText.objects.create(operation='.'.join(operation_text),
-                                             treatment_tactics=''.join(recommendations),
-                                             tactics_if_agree='.'.join(operation_text_if_agree))
+                                             treatment_tactics=' '.join(recommendations),
+                                             tactics_if_agree=' '.join(operation_text_if_agree))
 
     return recommend

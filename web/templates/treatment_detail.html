@@ -20,7 +20,10 @@
                 <h2 class="recommendation">Рекомендации:</h2>
                 <div class="result">
                     <div class="text">
+                        {% if treatment.predict.recommend_text.operation %}
                         <p><span>Операция:</span> {{ treatment.predict.recommend_text.operation }}</p>
+                        {% endif %}
+
                         <p><span>Рекомендации:</span></p>
                         <p class="big-text">
                             {{ treatment.predict.recommend_text.treatment_tactics }}

@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from .views_test import treatment_form_short_view
 
 from . import views
 
@@ -11,6 +12,7 @@ urlpatterns = [
     url(r'^profile/(?P<pk>\d+)$', views.DoctorProfileDetailView.as_view(), name='profile'),
     path('peoples/', views.DoctorsListView.as_view(), name='peoples'),
     path('treatment-form', views.treatment_form_view, name='treatment_form'),
+    path('treatment-form-short', treatment_form_short_view),
     url(r'^report/(?P<pk>\d+)$', views.TreatmentDetailView.as_view(), name='treatment_report'),
     path('treatment-list/', views.TreatmentListView.as_view(), name='treatment_list'),
     path('history', views.TreatmentHistoryView.as_view(), name='history_list'),
