@@ -83,7 +83,7 @@ class VMG_VJK:
                     repeated_consultation_if_source_of_hemorrhage
                 ]
             elif 30 < self.treatment.hematoma_volume < 60:
-                if not self.treatment.temporary_contraindications and not self.treatment.patient.diagmnoses \
+                if not self.treatment.temporary_contraindications.all() and not self.treatment.patient.diagmnoses.all() \
                         and int(self.treatment.conscious_level) >= 8:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [
@@ -144,7 +144,7 @@ class VMG_posterior_fossa:
                     repeated_consultation_if_source_of_hemorrhage,
                 ]
             elif 15 < self.treatment.hematoma_volume < 60:
-                if not self.treatment.temporary_contraindications and not self.treatment.patient.diagmnoses \
+                if not self.treatment.temporary_contraindications.all() and not self.treatment.patient.diagmnoses.all() \
                         or self.treatment.is_injury:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [
@@ -205,7 +205,6 @@ class VMG_operation:
         self.operation_text_if_agree = []
 
     def prepare_recommendation(self):
-        print(self.treatment.__dict__)
         if self.treatment.is_injury == True:
             self.operation_text = high_operation_probability
             self.operation_text_if_agree += [
@@ -226,7 +225,7 @@ class VMG_operation:
                     ]
                 else:
                     self.operation_text = high_operation_probability
-                    print(self.treatment.conscious_level)
+
                     if int(self.treatment.conscious_level) <= 8:
                         self.recommendation_items += [
                             patient_has_contraindications_for_surgery.format('низкий уровень сознания'),
@@ -378,7 +377,7 @@ class SAK_VMG:
                     repeated_consultation_if_source_of_hemorrhage,
                 ]
             elif 30 < self.treatment.hematoma_volume < 60:
-                if not self.treatment.temporary_contraindications and not self.treatment.patient.diagmnoses \
+                if not self.treatment.temporary_contraindications.all() and not self.treatment.patient.diagmnoses.all() \
                         or self.treatment.is_injury:
                     self.operation_text = high_operation_probability
                     self.operation_text_if_agree += [

@@ -2,6 +2,7 @@ import os
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -14,7 +15,7 @@ from .LabelDecoder import decode_label_detail
 from neuronet.KNN import KNN
 from neuronet.recomendation import get_hunt_hess_by_treatment, adapt_int_to_patology, get_recommendations
 
-from .forms import TreatmentForm
+from .forms import TreatmentForm, SignUpForm, PersonalData
 from .models import Patient, Treatment, Doctor, FAQ, FAQItem, ClassificationType
 
 LOGIN_URL = 'login'
@@ -107,10 +108,6 @@ def treatment_form_view(request):
 
             treatment.neurological_deficit = form.cleaned_data['neurological_deficit']
             treatment.conscious_level = form.cleaned_data['conscious_level']
-
-            print(form.cleaned_data['neurological_deficit'],
-                  form.cleaned_data['conscious_level']
-                  )
 
             treatment.snapshot = form.clean_snapshot()
             treatment.patient = patient
@@ -217,7 +214,8 @@ class TreatmentDetailView(generic.DetailView):
         context['has_stroke_symptoms'] = bool_to_str[treatment.has_stroke_symptoms]
         context['neurological_deficit'] = neurological_deficit_to_str[treatment.neurological_deficit]
         context['conscious_level'] = conscious_level_to_str[treatment.conscious_level]
-        context['predicted_diagnosis'] = decode_label_detail(ClassificationType.objects.filter(prediction=treatment.predict).all())
+        context['predicted_diagnosis'] = decode_label_detail(
+            ClassificationType.objects.filter(prediction=treatment.predict).all())
         context['hunt_hess'] = get_hunt_hess_by_treatment(treatment)
         context['similar_treatments'] = get_similar_snapshots(treatment, 3)
 

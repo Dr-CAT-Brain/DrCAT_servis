@@ -23,7 +23,6 @@ def give_recommend(patology_index=0,  # [int]
                    has_stroke_symptoms=True,  # [True/False]
                    chronic=None,  # [[*]/None]
                    temporary_contraindications=None):  # [[*]/None]
-    print(patology_index, neurological_deficit, conscious_level, time_passed, chronic, temporary_contraindications)
     recs = set()
     recs_if_agree = set()
     operation = 'Операция не показана. '
