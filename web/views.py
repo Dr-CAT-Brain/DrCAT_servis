@@ -221,7 +221,7 @@ class TreatmentDetailView(generic.DetailView):
         return context
 
 
-def get_similar_snapshots(treatment: Treatment, num=3) -> list:
+def get_similar_snapshots(treatment: Treatment, num=5) -> list:
     file_name = 'knn_model_save'
     knn = KNN()
 
