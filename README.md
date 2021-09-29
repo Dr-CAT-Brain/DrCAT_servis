@@ -1,7 +1,7 @@
 # Проект Dr.CAT
 
 ### Демо работы:
-https://youtu.be/SsMCnCGcuOo
+https://youtu.be/xKky6J-u5-0
 
 ### Защита проекта на V Уральской Проектной смене 2021:
 https://drive.google.com/file/d/1PRM3ZvSFCMBCeltpeH-_sXHYtVZxpP7t/view?usp=sharing
